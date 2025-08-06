@@ -1,0 +1,153 @@
+/* 卡片组件样式 */
+
+/* 基础卡片 */
+.card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-base);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  transition: all var(--transition-base);
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.card.clickable {
+  cursor: pointer;
+}
+
+.card-title {
+  font-weight: bold;
+  font-size: var(--font-base);
+  margin-bottom: var(--space-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-subtitle {
+  font-size: var(--font-sm);
+  color: var(--dark-gray);
+}
+
+.card-icon {
+  font-size: 22px;
+  margin-right: var(--space-sm);
+}
+
+/* 卡片网格布局 */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
+  padding: var(--space-base);
+}
+
+.reading-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 0 var(--space-base);
+}
+
+.writing-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
+  padding: var(--space-base);
+}
+
+/* 特殊卡片类型 */
+.reading-card, .writing-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-base);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  transition: all var(--transition-base);
+  cursor: pointer;
+}
+
+.reading-card:hover, .writing-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* 卡片状态和徽章 */
+.card-badge {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  padding: 2px var(--space-sm);
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.card-badge.urgent {
+  background: var(--error-color);
+  color: var(--white);
+}
+
+.card-badge.new {
+  background: var(--success-color);
+  color: var(--white);
+}
+
+.card-deadline {
+  font-size: var(--font-xs);
+  color: var(--warning-color);
+  margin-top: var(--space-xs);
+}
+
+.card-status {
+  font-size: var(--font-xs);
+  margin-top: var(--space-xs);
+}
+
+.card-status.online {
+  color: var(--success-color);
+}
+
+.card-status.offline {
+  color: var(--dark-gray);
+}
+
+/* 进度条 */
+.card-progress {
+  margin-top: var(--space-sm);
+}
+
+.progress-bar {
+  height: 4px;
+  background: var(--gray);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--success-color);
+  border-radius: var(--radius-sm);
+  transition: width var(--transition-base);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+  
+  .reading-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .writing-grid {
+    grid-template-columns: 1fr;
+  }
+}

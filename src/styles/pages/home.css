@@ -1,0 +1,396 @@
+/* 首页专用样式 */
+
+/* 个性化学习中心样式 */
+.recommendation-section, 
+.overview-section, 
+.quick-actions, 
+.ability-analysis {
+  margin: var(--space-base);
+}
+
+.section-title {
+  font-size: var(--font-base); 
+  font-weight: bold; 
+  margin-bottom: var(--space-sm);
+  color: var(--black);
+}
+
+/* AI推荐区域 */
+.recommendation-card {
+  background: var(--gradient-primary);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.rec-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-base);
+}
+
+.rec-title {
+  font-size: var(--font-lg);
+  font-weight: bold;
+}
+
+.rec-badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 20px;
+  font-size: var(--font-xs);
+}
+
+.rec-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.rec-item {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: var(--space-sm);
+}
+
+.rec-icon {
+  font-size: 24px;
+  margin-right: var(--space-sm);
+}
+
+.rec-text {
+  flex: 1;
+}
+
+.rec-main {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.rec-sub {
+  font-size: var(--font-xs);
+  opacity: 0.8;
+}
+
+.rec-btn {
+  background: var(--white);
+  color: var(--primary-light);
+  border: none;
+  padding: var(--space-sm) var(--space-base);
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+
+.rec-btn:hover {
+  transform: scale(1.05);
+}
+
+/* 学习概览区域 */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+}
+
+.overview-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-base);
+  text-align: center;
+  box-shadow: var(--shadow-base);
+  transition: transform var(--transition-base);
+}
+
+.overview-card:hover {
+  transform: translateY(-2px);
+}
+
+.overview-card.primary {
+  background: var(--gradient-warm);
+  color: var(--white);
+}
+
+.overview-icon {
+  font-size: var(--font-2xl);
+  margin-bottom: var(--space-sm);
+}
+
+.overview-number {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: var(--space-xs);
+}
+
+.overview-label {
+  font-size: var(--font-sm);
+  margin-bottom: 2px;
+}
+
+.overview-detail {
+  font-size: var(--font-xs);
+  opacity: 0.7;
+}
+
+/* 快捷功能增强 */
+.card.clickable {
+  cursor: pointer;
+  position: relative;
+}
+
+.card-progress {
+  margin-top: var(--space-sm);
+}
+
+.progress-bar {
+  height: 4px;
+  background: var(--gray);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--success-color);
+  border-radius: var(--radius-sm);
+  transition: width var(--transition-base);
+}
+
+.card-badge {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  padding: 2px var(--space-sm);
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.card-badge.urgent {
+  background: var(--error-color);
+  color: var(--white);
+}
+
+.card-deadline {
+  font-size: var(--font-xs);
+  color: var(--warning-color);
+  margin-top: var(--space-xs);
+}
+
+.card-status {
+  font-size: var(--font-xs);
+  margin-top: var(--space-xs);
+}
+
+.card-status.online {
+  color: var(--success-color);
+}
+
+/* 能力分析区域 */
+.ability-analysis {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.ability-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.ability-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-base);
+  background: var(--gradient-primary);
+  border-radius: var(--radius-lg);
+  color: var(--white);
+}
+
+.ability-score {
+  text-align: center;
+}
+
+.score-number {
+  font-size: var(--font-2xl);
+  font-weight: bold;
+  margin-bottom: var(--space-xs);
+}
+
+.score-label {
+  font-size: var(--font-sm);
+  margin-bottom: 2px;
+}
+
+.score-trend {
+  font-size: var(--font-xs);
+  opacity: 0.9;
+}
+
+.ability-level {
+  text-align: center;
+}
+
+.level-badge {
+  padding: var(--space-sm) var(--space-base);
+  border-radius: 20px;
+  font-weight: bold;
+  margin-bottom: var(--space-sm);
+  display: inline-block;
+}
+
+.level-badge.intermediate {
+  background: var(--warning-color);
+  color: var(--white);
+}
+
+.level-desc {
+  font-size: var(--font-xs);
+  opacity: 0.9;
+}
+
+.ability-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.ability-item {
+  display: flex;
+  align-items: center;
+  padding: var(--space-sm);
+  border-radius: var(--radius-base);
+  background: var(--light-gray);
+}
+
+.ability-info {
+  display: flex;
+  align-items: center;
+  min-width: 120px;
+}
+
+.ability-icon {
+  font-size: 20px;
+  margin-right: var(--space-sm);
+}
+
+.ability-name {
+  font-weight: bold;
+  margin-right: var(--space-sm);
+}
+
+.ability-level-text {
+  font-size: var(--font-xs);
+  padding: 2px var(--space-sm);
+  border-radius: 10px;
+}
+
+.ability-item.excellent .ability-level-text {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.ability-item.good .ability-level-text {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.ability-item.average .ability-level-text {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.ability-item.needs-improvement .ability-level-text {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.ability-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--gray);
+  border-radius: var(--radius-sm);
+  margin: 0 var(--space-sm);
+  overflow: hidden;
+}
+
+.ability-fill {
+  height: 100%;
+  border-radius: var(--radius-sm);
+  background: var(--gradient-success);
+  transition: width var(--transition-slow);
+}
+
+.ability-score-text {
+  font-weight: bold;
+  min-width: 40px;
+  text-align: right;
+}
+
+.ability-suggestions {
+  background: var(--light-gray);
+  border-radius: var(--radius-base);
+  padding: var(--space-base);
+}
+
+.suggestion-title {
+  font-weight: bold;
+  margin-bottom: var(--space-sm);
+  color: var(--black);
+}
+
+.suggestion-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-sm);
+  color: var(--dark-gray);
+}
+
+.suggestion-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--warning-color);
+  border-radius: var(--radius-full);
+  margin-right: var(--space-sm);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .overview-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+  
+  .ability-header {
+    flex-direction: column;
+    gap: var(--space-sm);
+    text-align: center;
+  }
+  
+  .rec-item {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-sm);
+  }
+  
+  .recommendation-section, 
+  .overview-section, 
+  .quick-actions, 
+  .ability-analysis {
+    margin: var(--space-sm);
+  }
+}

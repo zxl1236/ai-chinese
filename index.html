@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI语文学习助手</title>
+  
+  <!-- 基础样式 -->
+  <link rel="stylesheet" href="src/styles/base/reset.css">
+  <link rel="stylesheet" href="src/styles/base/variables.css">
+  <link rel="stylesheet" href="src/styles/base/utilities.css">
+  
+  <!-- 组件样式 -->
+  <link rel="stylesheet" href="src/styles/components/header.css">
+  <link rel="stylesheet" href="src/styles/components/navigation.css">
+  <link rel="stylesheet" href="src/styles/components/cards.css">
+  
+  <!-- 页面样式 -->
+  <link rel="stylesheet" href="src/styles/pages/home.css">
+  <link rel="stylesheet" href="src/styles/pages/modern-reading.css">
+  <link rel="stylesheet" href="src/styles/pages/classical-chinese.css">
+  <link rel="stylesheet" href="src/styles/components/text-marker.css">
+  
+  <!-- SEO和PWA相关 -->
+  <meta name="description" content="AI语文学习助手 - 智能化语文学习平台，提供个性化学习方案">
+  <meta name="keywords" content="语文学习,AI教育,在线学习,现代文阅读,写作训练">
+  <link rel="icon" href="assets/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+</head>
+<body>
+  <!-- 页面内容将由JavaScript动态生成 -->
+  
+  <!-- 加载提示 -->
+  <div id="loading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">正在加载中...</div>
+  </div>
+
+  <!-- 数据文件 -->
+  <script src="src/data/config.js"></script>
+  <script src="src/data/questions.js"></script>
+  
+  <!-- 工具函数 -->
+  <script src="src/scripts/utils/helpers.js"></script>
+  <script src="src/scripts/utils/storage.js"></script>
+  <script src="src/scripts/utils/TextMarker.js"></script>
+  
+  <!-- 组件脚本 -->
+  <script src="src/components/Header/Header.js"></script>
+  <script src="src/components/Navigation/Navigation.js"></script>
+  
+  <!-- 页面脚本 -->
+  <script src="src/pages/Home/Home.js"></script>
+  <script src="src/pages/Study/Study.js"></script>
+  <script src="src/pages/ModernReading/ModernReading.js"></script>
+  <script src="src/pages/ClassicalChinese/ClassicalChinese.js"></script>
+  
+  <!-- 主应用脚本 -->
+  <script src="src/main.js"></script>
+
+  <style>
+    /* 加载动画样式 */
+    .loading-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--light-gray);
+      border-top: 4px solid var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: var(--space-base);
+    }
+    
+    .loading-text {
+      color: var(--dark-gray);
+      font-size: var(--font-sm);
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* 页面容器基础样式 */
+    .main-content {
+      min-height: calc(100vh - 140px);
+    }
+    
+    .page-container {
+      padding-bottom: var(--space-xl);
+    }
+    
+    /* 隐藏加载动画 */
+    .loaded .loading-container {
+      display: none;
+    }
+  </style>
+
+  <script>
+    // 页面加载完成后隐藏加载动画
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.body.classList.add('loaded');
+      }, 500);
+    });
+  </script>
+</body>
+</html>

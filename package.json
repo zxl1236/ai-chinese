@@ -1,0 +1,51 @@
+{
+  "name": "ai-yuwen-learning",
+  "version": "1.0.0",
+  "description": "AI语文学习助手 - 智能化语文学习平台，提供个性化学习方案",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve . -l 3000",
+    "dev": "live-server --port=3000 --entry-file=index.html",
+    "build": "npm run build:css && npm run build:js",
+    "build:css": "echo 'Building CSS...'",
+    "build:js": "echo 'Building JavaScript...'",
+    "lint": "eslint src/**/*.js",
+    "format": "prettier --write src/**/*.{js,css,html}",
+    "test": "echo 'Running tests...'",
+    "deploy:github": "gh-pages -d .",
+    "deploy:netlify": "netlify deploy --prod --dir=.",
+    "deploy:surge": "surge . --domain your-domain.surge.sh"
+  },
+  "keywords": [
+    "education",
+    "chinese-language",
+    "ai-learning",
+    "reading-comprehension",
+    "writing-training",
+    "student-platform"
+  ],
+  "author": "AI语文开发团队",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "eslint": "^8.0.0",
+    "prettier": "^2.8.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/ai-yuwen-learning.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/ai-yuwen-learning/issues"
+  },
+  "homepage": "https://github.com/your-username/ai-yuwen-learning#readme",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  }
+}

@@ -1,0 +1,151 @@
+/* 写作页面特有样式 */
+.writing-header {
+  background-color: #4a90e2;
+  color: white;
+  padding: 30px 0;
+  text-align: center;
+}
+
+.writing-header h1 {
+  margin-bottom: 10px;
+}
+
+.writing-header p {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.writing-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.writing-tabs {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 30px;
+}
+
+.writing-tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+}
+
+.writing-tab.active {
+  border-bottom-color: #4a90e2;
+  color: #4a90e2;
+  font-weight: bold;
+}
+
+.writing-content {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+.writing-exercise {
+  margin-bottom: 30px;
+}
+
+.exercise-title {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.exercise-description {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.exercise-prompt {
+  background-color: #f5f5f5;
+  border-left: 4px solid #4a90e2;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.writing-textarea {
+  width: 100%;
+  min-height: 300px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: 'Microsoft YaHei', Arial, sans-serif;
+  font-size: 16px;
+  resize: vertical;
+  margin-bottom: 20px;
+}
+
+.writing-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.word-count {
+  color: #666;
+}
+
+.timer {
+  background-color: #f5f5f5;
+  padding: 10px 15px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.writing-tips {
+  margin-top: 40px;
+}
+
+.tips-title {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #4a90e2;
+}
+
+.tips-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.tips-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.tips-list li:last-child {
+  border-bottom: none;
+}
+
+.writing-examples {
+  margin-top: 40px;
+}
+
+.example-toggle {
+  color: #4a90e2;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.example-toggle:hover {
+  text-decoration: underline;
+}
+
+.example-content {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 20px;
+  margin-top: 15px;
+  display: none;
+}
+
+.example-content.show {
+  display: block;
+}

@@ -1,0 +1,587 @@
+/* 全局样式 */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+body { background-color: #f7f8fa; padding-bottom: 80px; color: #333; }
+.header {
+  background-color: #1a237e; color: white; padding: 16px;
+  font-size: 18px; font-weight: bold; text-align: center;
+  position: sticky; top: 0; z-index: 100;
+}
+.card-grid, .writing-grid {
+  display: grid; gap: 12px; padding: 16px;
+}
+.card-grid { grid-template-columns: 1fr 1fr; }
+.writing-grid { grid-template-columns: 1fr 1fr; }
+.reading-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; padding: 0 16px;
+}
+.card, .reading-card, .writing-card {
+  background: white; border-radius: 12px; padding: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center;
+  transition: transform 0.2s;
+}
+.card:hover, .reading-card:hover, .writing-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.card-title {
+  font-weight: bold; font-size: 16px; margin-bottom: 4px;
+  display: flex; align-items: center; justify-content: center;
+}
+.card-subtitle { font-size: 14px; color: #666; }
+.card-icon { font-size: 22px; margin-right: 6px; }
+.radar-chart-container {
+  background: white; margin: 16px; padding: 20px; border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.skill-progress {
+  margin: 12px 0; display: flex; align-items: center;
+}
+.skill-name {
+  width: 50px; font-size: 14px; color: #555;
+}
+.skill-bar {
+  flex: 1; height: 10px; background-color: #e0e0e0;
+  border-radius: 5px; overflow: hidden; margin: 0 10px;
+}
+.skill-fill { height: 100%; border-radius: 5px; }
+
+/* 个性化学习中心样式 */
+.recommendation-section, .overview-section, .quick-actions, .ability-analysis {
+  margin: 16px;
+}
+
+.section-title {
+  font-size: 16px; 
+  font-weight: bold; 
+  margin-bottom: 12px;
+  color: #333;
+}
+
+/* AI推荐区域 */
+.recommendation-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  padding: 20px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.rec-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.rec-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.rec-badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.rec-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rec-item {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.rec-icon {
+  font-size: 24px;
+  margin-right: 12px;
+}
+
+.rec-text {
+  flex: 1;
+}
+
+.rec-main {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.rec-sub {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.rec-btn {
+  background: white;
+  color: #667eea;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.rec-btn:hover {
+  transform: scale(1.05);
+}
+
+/* 学习概览区域 */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.overview-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: transform 0.2s;
+}
+
+.overview-card:hover {
+  transform: translateY(-2px);
+}
+
+.overview-card.primary {
+  background: linear-gradient(135deg, #ff6b6b, #feca57);
+  color: white;
+}
+
+.overview-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.overview-number {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.overview-label {
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.overview-detail {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* 快捷功能增强 */
+.card.clickable {
+  cursor: pointer;
+  position: relative;
+}
+
+.card-progress {
+  margin-top: 8px;
+}
+
+.progress-bar {
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #4caf50;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.card-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.card-badge.urgent {
+  background: #ff5252;
+  color: white;
+}
+
+.card-deadline {
+  font-size: 12px;
+  color: #ff9800;
+  margin-top: 4px;
+}
+
+.card-status {
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.card-status.online {
+  color: #4caf50;
+}
+
+/* 能力分析区域 */
+.ability-analysis {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.ability-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ability-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 12px;
+  color: white;
+}
+
+.ability-score {
+  text-align: center;
+}
+
+.score-number {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.score-label {
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.score-trend {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.ability-level {
+  text-align: center;
+}
+
+.level-badge {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+.level-badge.intermediate {
+  background: #ff9800;
+  color: white;
+}
+
+.level-desc {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.ability-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ability-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f8f9fa;
+}
+
+.ability-info {
+  display: flex;
+  align-items: center;
+  min-width: 120px;
+}
+
+.ability-icon {
+  font-size: 20px;
+  margin-right: 8px;
+}
+
+.ability-name {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.ability-level-text {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.ability-item.excellent .ability-level-text {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.ability-item.good .ability-level-text {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.ability-item.average .ability-level-text {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.ability-item.needs-improvement .ability-level-text {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.ability-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 12px;
+  overflow: hidden;
+}
+
+.ability-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #4caf50, #8bc34a);
+  transition: width 0.5s ease;
+}
+
+.ability-score-text {
+  font-weight: bold;
+  min-width: 40px;
+  text-align: right;
+}
+
+.ability-suggestions {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.suggestion-title {
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.suggestion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #666;
+}
+
+.suggestion-dot {
+  width: 6px;
+  height: 6px;
+  background: #ff9800;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .overview-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .ability-header {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+  
+  .rec-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+}
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: white; display: flex; justify-content: space-around;
+  padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+}
+.nav-item {
+  display: flex; flex-direction: column; align-items: center;
+  font-size: 12px; color: #666; cursor: pointer;
+}
+.nav-item.active { color: #1a237e; }
+.nav-icon { font-size: 24px; margin-bottom: 3px; }
+.section-title {
+  font-size: 16px; font-weight: bold; margin: 20px 0 10px 16px;
+}
+.modern-practice-tabbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.practice-type-tab {
+  background: #f0f2fa;
+  border: none;
+  border-radius: 20px;
+  padding: 7px 18px;
+  font-size: 15px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  margin-bottom: 4px;
+}
+.practice-type-tab.active, .practice-type-tab:hover {
+  background: #1a237e;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(26,35,126,0.08);
+}
+.practice-article-tab {
+  background: #f0f2fa;
+  border: none;
+  border-radius: 20px;
+  padding: 7px 18px;
+  font-size: 15px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  margin-bottom: 4px;
+}
+.practice-article-tab.active, .practice-article-tab:hover {
+  background: #1a237e;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(26,35,126,0.08);
+}
+.practice-q-tab {
+  background: #f0f2fa;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 15px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.practice-q-tab.active, .practice-q-tab:hover {
+  background: #ff9800;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(255,152,0,0.08);
+}
+.practice-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 28px 22px 18px 22px;
+  max-width: 480px;
+  margin: 0 auto 18px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.practice-question {
+  font-size: 17px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 8px;
+}
+.practice-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.practice-option {
+  background: #f5f6fa;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 15px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: background 0.2s, border 0.2s, color 0.2s;
+}
+.practice-option:hover {
+  background: #e3e7fa;
+  border: 1.5px solid #bfc6f7;
+}
+.practice-option.selected {
+  background: #1a237e;
+  color: #fff;
+  border: 1.5px solid #1a237e;
+}
+.practice-submit-btn {
+  background: #ff9800;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 0;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+.practice-submit-btn:hover {
+  background: #fb8c00;
+}
+.practice-info-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f5f6fa;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #666;
+  max-width: 480px;
+  margin: 0 auto 0 auto;
+}
+.practice-article-content {
+  max-width: 500px;
+  margin: 0 auto 18px auto;
+  background: #f7f8fa;
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+.practice-article-title {
+  font-weight: bold;
+  font-size: 17px;
+  margin-bottom: 6px;
+}
+.practice-article-text {
+  font-size: 15px;
+  color: #444;
+}
+@media (max-width: 600px) {
+  .practice-card, .practice-info-bar { max-width: 98vw; padding-left: 8px; padding-right: 8px; }
+}

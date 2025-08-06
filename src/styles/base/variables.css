@@ -1,0 +1,64 @@
+/* CSS 变量定义 */
+:root {
+  /* 主色调 */
+  --primary-color: #1a237e;
+  --primary-light: #667eea;
+  --primary-dark: #0d47a1;
+  
+  /* 功能色彩 */
+  --success-color: #4caf50;
+  --warning-color: #ff9800;
+  --error-color: #f44336;
+  --info-color: #2196f3;
+  
+  /* 中性色彩 */
+  --white: #ffffff;
+  --light-gray: #f7f8fa;
+  --gray: #e0e0e0;
+  --dark-gray: #666666;
+  --black: #333333;
+  
+  /* 渐变色 */
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-warm: linear-gradient(135deg, #ff6b6b, #feca57);
+  --gradient-success: linear-gradient(90deg, #4caf50, #8bc34a);
+  
+  /* 字体大小 */
+  --font-xs: 12px;
+  --font-sm: 14px;
+  --font-base: 16px;
+  --font-lg: 18px;
+  --font-xl: 24px;
+  --font-2xl: 32px;
+  
+  /* 间距 */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-base: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  
+  /* 圆角 */
+  --radius-sm: 4px;
+  --radius-base: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 50%;
+  
+  /* 阴影 */
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+  --shadow-base: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-lg: 0 4px 12px rgba(0,0,0,0.15);
+  
+  /* 过渡动画 */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  
+  /* Z-index层级 */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal: 400;
+  --z-popover: 500;
+}

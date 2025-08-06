@@ -1,0 +1,360 @@
+/* 文本标记工具样式 */
+.text-marker-toolbar {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  padding: var(--space-sm);
+  margin-bottom: var(--space-base);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 10px;
+  z-index: 100;
+}
+
+.marker-tools {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.marker-btn {
+  background: white;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-xs);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  position: relative;
+}
+
+.marker-btn:hover {
+  background: #f8f9fa;
+  border-color: #adb5bd;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.marker-btn.active {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+}
+
+.marker-btn.clear-btn {
+  background: #fff3cd;
+  border-color: #ffeaa7;
+  color: #856404;
+}
+
+.marker-btn.clear-btn:hover {
+  background: #ffeaa7;
+}
+
+.marker-btn.toggle-btn.active {
+  background: #28a745;
+  border-color: #28a745;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7); }
+  70% { box-shadow: 0 0 0 6px rgba(40, 167, 69, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+}
+
+/* 标记模式下的容器样式 */
+.marking-mode {
+  user-select: text;
+  cursor: crosshair;
+}
+
+.marking-mode .practice-article-text,
+.marking-mode .practice-question,
+.marking-mode .practice-options,
+.marking-mode .creative-container,
+.marking-mode .ai-analysis-container,
+.marking-mode .comparison-container,
+.marking-mode .extension-container {
+  background: rgba(33, 150, 243, 0.05);
+  border-radius: 8px;
+  transition: background 0.3s ease;
+  position: relative;
+}
+
+.marking-mode .practice-question {
+  padding: var(--space-sm);
+  margin: var(--space-xs) 0;
+  border: 1px dashed rgba(33, 150, 243, 0.3);
+}
+
+.marking-mode .practice-options .practice-option {
+  background: rgba(33, 150, 243, 0.03);
+  margin: var(--space-xs) 0;
+  padding: var(--space-xs);
+  border-radius: 4px;
+  border: 1px dashed rgba(33, 150, 243, 0.2);
+}
+
+.marking-mode .practice-question::before {
+  content: "📝 可标记";
+  position: absolute;
+  top: -8px;
+  right: 8px;
+  background: rgba(33, 150, 243, 0.1);
+  color: var(--primary-color);
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+/* 文本标记样式 */
+.text-mark {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* 题目中的标记样式增强 */
+.practice-question .text-mark {
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.practice-options .text-mark {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* 圈圈标记 */
+.text-mark-circle {
+  border: 2px solid #ff6b6b;
+  border-radius: 50px;
+  padding: 2px 6px;
+  background: rgba(255, 107, 107, 0.1);
+  color: #c92a2a;
+  font-weight: bold;
+}
+
+.text-mark-circle:hover {
+  background: rgba(255, 107, 107, 0.2);
+  transform: scale(1.05);
+}
+
+/* 题目中的圈圈标记样式 */
+.practice-question .text-mark-circle {
+  border: 3px solid #ff4757;
+  background: rgba(255, 71, 87, 0.15);
+  color: #2f1b14;
+  padding: 3px 8px;
+  box-shadow: 0 2px 4px rgba(255, 71, 87, 0.3);
+}
+
+.practice-options .text-mark-circle {
+  border: 2px solid #ff6348;
+  background: rgba(255, 99, 72, 0.12);
+  color: #8b2635;
+  padding: 2px 6px;
+}
+
+/* 高亮标记 */
+.text-mark-highlight {
+  background: linear-gradient(120deg, #a8e6cf 0%, #dcedc1 100%);
+  padding: 2px 4px;
+  border-radius: 4px;
+  color: #2d5016;
+  font-weight: 500;
+}
+
+.text-mark-highlight:hover {
+  background: linear-gradient(120deg, #88d8a3 0%, #c8e6c9 100%);
+}
+
+/* 题目中的高亮标记样式 */
+.practice-question .text-mark-highlight {
+  background: linear-gradient(120deg, #7bed9f 0%, #70a1ff 100%);
+  color: #2f3542;
+  padding: 3px 6px;
+  box-shadow: 0 2px 4px rgba(123, 237, 159, 0.4);
+}
+
+.practice-options .text-mark-highlight {
+  background: linear-gradient(120deg, #a4b0be 0%, #c8d6e5 100%);
+  color: #2f3640;
+  padding: 2px 5px;
+}
+
+/* 下划线标记 */
+.text-mark-underline {
+  border-bottom: 3px solid #4ecdc4;
+  background: rgba(78, 205, 196, 0.1);
+  color: #0d7377;
+  font-weight: 500;
+}
+
+.text-mark-underline:hover {
+  border-bottom-color: #26a69a;
+  background: rgba(78, 205, 196, 0.2);
+}
+
+/* 题目中的下划线标记样式 */
+.practice-question .text-mark-underline {
+  border-bottom: 4px solid #3742fa;
+  background: rgba(55, 66, 250, 0.1);
+  color: #2f3542;
+  padding: 2px 4px;
+}
+
+.practice-options .text-mark-underline {
+  border-bottom: 3px solid #5352ed;
+  background: rgba(83, 82, 237, 0.08);
+  color: #40407a;
+  padding: 1px 3px;
+}
+
+/* 笔记标记 */
+.text-mark-note {
+  background: linear-gradient(120deg, #ffd93d 0%, #ff9a3c 100%);
+  color: #8b4513;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-weight: bold;
+  position: relative;
+}
+
+.text-mark-note::after {
+  content: "📝";
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 12px;
+  background: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.text-mark-note:hover {
+  background: linear-gradient(120deg, #ffed4a 0%, #f6ad55 100%);
+  transform: scale(1.02);
+}
+
+/* 题目中的笔记标记样式 */
+.practice-question .text-mark-note {
+  background: linear-gradient(120deg, #ff9ff3 0%, #f368e0 100%);
+  color: #6a1b9a;
+  padding: 3px 6px;
+  box-shadow: 0 2px 4px rgba(255, 159, 243, 0.4);
+}
+
+.practice-question .text-mark-note::after {
+  content: "💭";
+  background: #fff;
+  color: #6a1b9a;
+}
+
+.practice-options .text-mark-note {
+  background: linear-gradient(120deg, #fdcb6e 0%, #e17055 100%);
+  color: #2d3436;
+  padding: 2px 5px;
+}
+
+.practice-options .text-mark-note::after {
+  content: "✏️";
+  font-size: 10px;
+}
+
+/* 提示框样式 */
+.marker-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: var(--space-sm) var(--space-base);
+  border-radius: 8px;
+  font-size: var(--font-sm);
+  z-index: 1000;
+  opacity: 0;
+  transform: translateX(100px);
+  transition: all 0.3s ease;
+  max-width: 300px;
+  word-wrap: break-word;
+}
+
+.marker-toast.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .marker-tools {
+    justify-content: center;
+  }
+  
+  .marker-btn {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+  
+  .text-marker-toolbar {
+    position: static;
+    margin-bottom: var(--space-sm);
+  }
+  
+  .marker-toast {
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+}
+
+/* 选择状态样式 */
+::selection {
+  background: rgba(33, 150, 243, 0.3);
+  color: inherit;
+}
+
+::-moz-selection {
+  background: rgba(33, 150, 243, 0.3);
+  color: inherit;
+}
+
+/* 标记工具栏收起/展开动画 */
+.text-marker-toolbar.collapsed {
+  height: 40px;
+  overflow: hidden;
+}
+
+.text-marker-toolbar.collapsed .marker-tools {
+  opacity: 0.7;
+}
+
+/* 标记统计信息 */
+.marker-stats {
+  font-size: var(--font-xs);
+  color: var(--gray);
+  margin-left: auto;
+  padding: var(--space-xs);
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+.marker-stats .stat-item {
+  display: inline-block;
+  margin-left: var(--space-xs);
+}
+
+.marker-stats .stat-item:first-child {
+  margin-left: 0;
+}
