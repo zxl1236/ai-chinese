@@ -51,7 +51,7 @@ class ModernReadingPage {
             stem: '🤖 AI智能分析：下列对文本相关内容和艺术特色的分析鉴赏，不正确的一项是（3分）',
             options: [
               'A. 子胥过了昭关，所见风景与前大不相同，那大片绿色和原野，也是子胥再次"获得了真实的生命"的心情写照。',
-              'B. "唯恐把这段江水渡完"表现了逃亡中的子胥的心态，只有在江上的这段短暂时光，他才能够平和地欣赏风景。',
+              'B. "多少天的风尘仆仆"表现了子胥逃亡路上的艰辛，江上的经历让他暂时忘却了奔波之苦。',
               'C. 子胥同渔夫道别，说话时"有些嗫嚅""半吞半吐"，表现的是子胥渴望同渔夫交流，又碍于隐情而无法敞开心扉。',
               'D. "你渡我过了江，同时也渡过了我的仇恨"，子胥在江上领会到渔夫的"世界"，他对自己的使命有了更深的理解。'
             ],
@@ -200,11 +200,11 @@ class ModernReadingPage {
               📖 六分阅读法
             </div>
             <div class="summary-content">
-              <div class="reading-method-item"><strong>1分钟</strong> </div>
-              <div class="reading-method-item"><strong>2分钟</strong></div>
-              <div class="reading-method-item"><strong>1分钟</strong> </div>
-              <div class="reading-method-item"><strong>1分钟</strong> </div>
-              <div class="reading-method-item"><strong>1分钟</strong> </div>
+              <div class="reading-method-item"><strong>1分钟</strong> 快速浏览全文，把握大意</div>
+              <div class="reading-method-item"><strong>2分钟</strong> 精读题目，圈出关键词</div>
+              <div class="reading-method-item"><strong>1分钟</strong> 带着问题重读文章相关段落</div>
+              <div class="reading-method-item"><strong>1分钟</strong> 对比选项，找出最佳答案</div>
+              <div class="reading-method-item"><strong>1分钟</strong> 检查答案，确认无误</div>
             </div>
           </div>
         </div>
@@ -320,7 +320,7 @@ class ModernReadingPage {
           <div class="creative-container">
             <div class="creative-hint">🎨 发挥你的创意和想象力，表达要生动有感染力</div>
             <textarea class="practice-creative-input" rows="5" placeholder="请发挥想象，写出你的创意表达..."></textarea>
-            <div class="word-counter">字数统计: <span id="word-count">0</span>/100</div>
+            <div class="word-counter">字数统计: <span class="creative-word-count">0</span>/100</div>
           </div>
         `;
       
@@ -486,23 +486,49 @@ class ModernReadingPage {
       });
     }
 
-    // 简答题交互
-    if (question.type === 'short') {
-      submitBtn.addEventListener('click', function() {
-        if (answered) return;
-        if (!shortInput.value.trim()) {
-          feedback.style.display = 'block';
-          feedback.style.color = '#e53935';
-          feedback.textContent = '请填写答案';
-          return;
+    // 所有非单选题交互（包括AI分析、创意表达、对比分析、拓展思考）
+    if (['short', 'ai-analysis', 'creative', 'comparison', 'extension'].includes(question.type)) {
+      const inputElement = shortInput || 
+                          questionCard.querySelector('.practice-analysis-input') ||
+                          questionCard.querySelector('.practice-creative-input') ||
+                          questionCard.querySelector('.practice-comparison-input') ||
+                          questionCard.querySelector('.practice-extension-input');
+      
+      if (inputElement) {
+        // 为创意表达题添加字数统计
+        if (question.type === 'creative') {
+          const wordCountElement = questionCard.querySelector('.creative-word-count');
+          if (wordCountElement) {
+            inputElement.addEventListener('input', function() {
+              const wordCount = inputElement.value.length;
+              wordCountElement.textContent = wordCount;
+              
+              // 字数超限提示
+              if (wordCount > 100) {
+                wordCountElement.style.color = '#e53935';
+              } else {
+                wordCountElement.style.color = '';
+              }
+            });
+          }
         }
+        
+        submitBtn.addEventListener('click', function() {
+          if (answered) return;
+          if (!inputElement.value.trim()) {
+            feedback.style.display = 'block';
+            feedback.style.color = '#e53935';
+            feedback.textContent = '请填写答案';
+            return;
+          }
 
-        answered = true;
-        feedback.style.display = 'block';
-        feedback.style.color = '#43a047';
-        feedback.textContent = '已提交，可查看参考答案';
-        resetBtn.style.display = 'inline-block';
-      });
+          answered = true;
+          feedback.style.display = 'block';
+          feedback.style.color = '#43a047';
+          feedback.textContent = '已提交，可查看参考答案和AI解析';
+          resetBtn.style.display = 'inline-block';
+        });
+      }
     }
 
     // 显示/隐藏解析
@@ -529,8 +555,19 @@ class ModernReadingPage {
           opt.style.border = '';
           opt.style.opacity = 1;
         });
-      } else if (question.type === 'short') {
-        shortInput.value = '';
+      } else {
+        // 清空所有可能的输入框
+        const inputs = [
+          shortInput,
+          questionCard.querySelector('.practice-analysis-input'),
+          questionCard.querySelector('.practice-creative-input'),
+          questionCard.querySelector('.practice-comparison-input'),
+          questionCard.querySelector('.practice-extension-input')
+        ];
+        
+        inputs.forEach(input => {
+          if (input) input.value = '';
+        });
       }
       
       feedback.style.display = 'none';

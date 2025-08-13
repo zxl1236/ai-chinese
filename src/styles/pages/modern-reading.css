@@ -89,6 +89,8 @@
 }
 
 .practice-article-header {
+  display: flex;
+  flex-direction: column;
   text-align: center;
   padding-bottom: var(--space-sm);
   border-bottom: 1px solid var(--light-gray);
