@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后端API测试</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #1d4ed8;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 5px;
+            border-left: 4px solid #2563eb;
+        }
+        .success { border-left-color: #10b981; }
+        .error { border-left-color: #ef4444; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 后端API测试</h1>
+        
+        <div class="test-section">
+            <h3>1. 健康检查</h3>
+            <button class="test-button" onclick="testHealth()">测试 /api/health</button>
+            <div id="health-result" class="result" style="display: none;"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>2. 题目分析</h3>
+            <button class="test-button" onclick="testAnalyzeTopic()">测试题目分析API</button>
+            <div id="analyze-result" class="result" style="display: none;"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>3. 写作灵感</h3>
+            <button class="test-button" onclick="testInspiration()">测试写作灵感API</button>
+            <div id="inspiration-result" class="result" style="display: none;"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>4. SmartAI助手测试</h3>
+            <button class="test-button" onclick="testSmartAI()">测试SmartAI初始化</button>
+            <div id="smartai-result" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- 加载SmartAI助手 -->
+    <script src="src/writing-module/smart-ai-assistant.js"></script>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+
+        async function testHealth() {
+            const resultDiv = document.getElementById('health-result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '🔄 正在测试...';
+            
+            try {
+                const response = await fetch(API_BASE + '/health');
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `✅ 健康检查成功！<br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `❌ 健康检查失败: ${error.message}`;
+            }
+        }
+
+        async function testAnalyzeTopic() {
+            const resultDiv = document.getElementById('analyze-result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '🔄 正在分析题目...';
+            
+            try {
+                const response = await fetch(API_BASE + '/analyze-topic', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        topic: '我的变形记'
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `✅ 题目分析成功！<br><div style="max-height: 200px; overflow-y: auto;"><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `HTTP ${response.status}`);
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `❌ 题目分析失败: ${error.message}`;
+            }
+        }
+
+        async function testInspiration() {
+            const resultDiv = document.getElementById('inspiration-result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '🔄 正在获取写作灵感...';
+            
+            try {
+                const response = await fetch(API_BASE + '/get-inspiration', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        topic: '青春的色彩'
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `✅ 写作灵感获取成功！<br><div style="max-height: 200px; overflow-y: auto;"><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `HTTP ${response.status}`);
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `❌ 写作灵感获取失败: ${error.message}`;
+            }
+        }
+
+        async function testSmartAI() {
+            const resultDiv = document.getElementById('smartai-result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '🔄 正在测试SmartAI...';
+            
+            try {
+                // 检查SmartAI是否已初始化
+                if (typeof window.smartAI !== 'undefined') {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = '✅ SmartAI助手已成功初始化！<br>可以在控制台中使用 window.smartAI 访问';
+                    
+                    // 测试连接检查
+                    if (window.smartAI.checkConnection) {
+                        await window.smartAI.checkConnection();
+                        resultDiv.innerHTML += '<br>✅ 连接检查完成';
+                    }
+                } else {
+                    // 等待初始化
+                    let attempts = 0;
+                    const maxAttempts = 10;
+                    
+                    const checkInterval = setInterval(() => {
+                        attempts++;
+                        if (typeof window.smartAI !== 'undefined') {
+                            clearInterval(checkInterval);
+                            resultDiv.className = 'result success';
+                            resultDiv.innerHTML = '✅ SmartAI助手初始化成功！';
+                        } else if (attempts >= maxAttempts) {
+                            clearInterval(checkInterval);
+                            resultDiv.className = 'result error';
+                            resultDiv.innerHTML = '❌ SmartAI助手初始化超时';
+                        }
+                    }, 500);
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `❌ SmartAI测试失败: ${error.message}`;
+            }
+        }
+
+        // 页面加载完成后的自动测试
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                console.log('🧪 开始自动测试...');
+                testHealth();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

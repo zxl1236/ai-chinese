@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI助手点击测试</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #1d4ed8;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 5px;
+            border-left: 4px solid #2563eb;
+        }
+        .success { border-left-color: #10b981; }
+        .error { border-left-color: #ef4444; }
+        .console-output {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 AI助手点击功能测试</h1>
+        
+        <div class="test-section">
+            <h3>1. 初始化测试</h3>
+            <button class="test-button" onclick="testInit()">检查AI助手初始化</button>
+            <button class="test-button" onclick="forceInit()">强制重新初始化</button>
+            <div id="init-result" class="result" style="display: none;"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>2. 元素检测</h3>
+            <button class="test-button" onclick="testElements()">检测AI助手元素</button>
+            <div id="elements-result" class="result" style="display: none;"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>3. 事件测试</h3>
+            <button class="test-button" onclick="testEvents()">测试点击事件</button>
+            <button class="test-button" onclick="rebindEvents()">重新绑定事件</button>
+            <button class="test-button" onclick="simulateClick()">模拟点击AI助手</button>
+            <div id="events-result" class="result" style="display: none;"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>4. 控制台输出</h3>
+            <button class="test-button" onclick="clearConsole()">清空控制台</button>
+            <div id="console-output" class="console-output"></div>
+        </div>
+    </div>
+
+    <!-- 加载SmartAI助手 -->
+    <script src="src/writing-module/smart-ai-assistant.js"></script>
+
+    <script>
+        // 拦截console.log输出
+        const originalConsoleLog = console.log;
+        const consoleOutput = document.getElementById('console-output');
+        
+        console.log = function(...args) {
+            originalConsoleLog.apply(console, args);
+            if (consoleOutput) {
+                const message = args.map(arg => 
+                    typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                ).join(' ');
+                consoleOutput.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${message}</div>`;
+                consoleOutput.scrollTop = consoleOutput.scrollHeight;
+            }
+        };
+
+        function testInit() {
+            const resultDiv = document.getElementById('init-result');
+            resultDiv.style.display = 'block';
+            
+            const smartAI = window.smartAI;
+            const hasSmartAI = typeof smartAI !== 'undefined';
+            
+            if (hasSmartAI) {
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = `
+                    ✅ SmartAI已初始化<br>
+                    类型: ${typeof smartAI}<br>
+                    构造函数: ${smartAI.constructor.name}<br>
+                    方法数量: ${Object.getOwnPropertyNames(Object.getPrototypeOf(smartAI)).length}
+                `;
+            } else {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = '❌ SmartAI未初始化';
+            }
+        }
+
+        function forceInit() {
+            if (typeof window.initSmartAI === 'function') {
+                window.initSmartAI();
+                setTimeout(testInit, 1000);
+            } else {
+                console.log('🔧 手动创建AI助手...');
+                window.smartAI = new SmartAIAssistant();
+                setTimeout(testInit, 1000);
+            }
+        }
+
+        function testElements() {
+            const resultDiv = document.getElementById('elements-result');
+            resultDiv.style.display = 'block';
+            
+            const elements = {
+                'smart-ai-assistant': document.getElementById('smart-ai-assistant'),
+                'ai-trigger': document.getElementById('ai-trigger'),
+                'ai-panel': document.getElementById('ai-panel'),
+                'analyze-topic-btn': document.getElementById('analyze-topic-btn'),
+                'get-inspiration-btn': document.getElementById('get-inspiration-btn')
+            };
+            
+            let html = '<h4>元素检测结果:</h4>';
+            let allExists = true;
+            
+            for (const [id, element] of Object.entries(elements)) {
+                const exists = !!element;
+                if (!exists) allExists = false;
+                
+                html += `<div>${exists ? '✅' : '❌'} ${id}: ${exists ? '存在' : '不存在'}`;
+                if (exists) {
+                    const style = getComputedStyle(element);
+                    html += ` (display: ${style.display}, visibility: ${style.visibility})`;
+                }
+                html += '</div>';
+            }
+            
+            resultDiv.className = `result ${allExists ? 'success' : 'error'}`;
+            resultDiv.innerHTML = html;
+        }
+
+        function testEvents() {
+            const resultDiv = document.getElementById('events-result');
+            resultDiv.style.display = 'block';
+            
+            const trigger = document.getElementById('ai-trigger');
+            
+            if (!trigger) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = '❌ AI触发按钮不存在';
+                return;
+            }
+            
+            // 检查事件监听器
+            const hasClickEvent = trigger.onclick !== null;
+            // DevTools 专属 API，在普通页面中不可用，需安全判断
+            const eventListeners = (typeof getEventListeners === 'function') ? getEventListeners(trigger) : {};
+            
+            let html = '<h4>事件检测结果:</h4>';
+            html += `<div>onclick属性: ${hasClickEvent ? '✅ 存在' : '❌ 不存在'}</div>`;
+            
+            if (eventListeners.click && eventListeners.click.length > 0) {
+                html += `<div>addEventListener: ✅ 存在 (${eventListeners.click.length}个监听器)</div>`;
+            } else {
+                // 无法直接检测 addEventListener，通过 SmartAI 实例判断
+                const hasSmartAI = window.smartAI && typeof window.smartAI.handleTriggerClick === 'function';
+                html += `<div>addEventListener: ${hasSmartAI ? '✅ 推断存在（通过SmartAI实例）' : '❌ 无监听器或无法检测'}</div>`;
+            }
+            
+            // 检查SmartAI实例的togglePanel方法
+            if (window.smartAI && typeof window.smartAI.togglePanel === 'function') {
+                html += '<div>togglePanel方法: ✅ 存在</div>';
+            } else {
+                html += '<div>togglePanel方法: ❌ 不存在或未初始化</div>';
+            }
+            
+            // 检查CSS样式
+            const computedStyle = getComputedStyle(trigger);
+            html += `<div>pointer-events: ${computedStyle.pointerEvents}</div>`;
+            html += `<div>z-index: ${computedStyle.zIndex}</div>`;
+            html += `<div>position: ${computedStyle.position}</div>`;
+
+            // 实际点击一次并检测面板是否切换
+            const panel = document.getElementById('ai-panel');
+            const isVisible = (el) => {
+                if (!el) return false;
+                const s = getComputedStyle(el);
+                return s.display !== 'none' && s.visibility !== 'hidden' && s.opacity !== '0';
+            };
+            const before = isVisible(panel);
+            console.log('🧪 测试点击开始，面板可见(前):', before);
+
+            try {
+                trigger.click();
+            } catch (e) {
+                try {
+                    const ev = new MouseEvent('click', { view: window, bubbles: true, cancelable: true });
+                    trigger.dispatchEvent(ev);
+                } catch (err) {
+                    console.log('❌ 触发点击失败:', err.message);
+                }
+            }
+
+            setTimeout(() => {
+                const after = isVisible(panel);
+                console.log('🧪 测试点击结束，面板可见(后):', after);
+                const toggled = before !== after;
+                const status = toggled ? 'success' : 'error';
+                const verdict = toggled ? '✅ 点击触发成功，面板状态已切换' : '❌ 点击似乎未生效，面板状态无变化';
+                resultDiv.className = `result ${status}`;
+                resultDiv.innerHTML = `${html}<div style="margin-top:8px;">${verdict}</div>`;
+            }, 150);
+        }
+
+        function simulateClick() {
+            const trigger = document.getElementById('ai-trigger');
+            
+            if (!trigger) {
+                console.log('❌ AI触发按钮不存在，无法模拟点击');
+                return;
+            }
+            
+            console.log('🖱️ 模拟点击AI助手按钮...');
+            
+            // 尝试多种点击方式
+            try {
+                // 方式1: 直接点击
+                trigger.click();
+                console.log('✅ trigger.click() 执行完成');
+                
+                // 方式2: 触发事件
+                const clickEvent = new MouseEvent('click', {
+                    view: window,
+                    bubbles: true,
+                    cancelable: true
+                });
+                trigger.dispatchEvent(clickEvent);
+                console.log('✅ dispatchEvent() 执行完成');
+                
+                // 方式3: 如果有SmartAI实例，直接调用方法
+                if (window.smartAI && typeof window.smartAI.togglePanel === 'function') {
+                    window.smartAI.togglePanel();
+                    console.log('✅ smartAI.togglePanel() 执行完成');
+                }
+                
+            } catch (error) {
+                console.log('❌ 点击模拟失败:', error.message);
+            }
+        }
+
+        function rebindEvents() {
+            console.log('🔧 强制重新绑定AI助手事件...');
+            
+            if (window.smartAI && typeof window.smartAI.bindEvents === 'function') {
+                window.smartAI.bindEvents();
+                console.log('✅ 已调用smartAI.bindEvents()');
+            } else {
+                console.log('❌ 无法调用smartAI.bindEvents()');
+                
+                // 手动绑定事件
+                const trigger = document.getElementById('ai-trigger');
+                if (trigger && window.smartAI && typeof window.smartAI.togglePanel === 'function') {
+                    console.log('🔨 手动绑定点击事件...');
+                    
+                    const clickHandler = (e) => {
+                        console.log('🖱️ 手动绑定的点击事件触发！');
+                        e.preventDefault();
+                        e.stopPropagation();
+                        window.smartAI.togglePanel();
+                    };
+                    
+                    trigger.removeEventListener('click', clickHandler);
+                    trigger.addEventListener('click', clickHandler);
+                    trigger.onclick = clickHandler;
+                    
+                    console.log('✅ 手动绑定完成');
+                }
+            }
+            
+            // 重新测试事件
+            setTimeout(testEvents, 500);
+        }
+
+        function clearConsole() {
+            document.getElementById('console-output').innerHTML = '';
+        }
+
+        // 页面加载完成后自动运行测试
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                console.log('🚀 页面加载完成，开始自动测试...');
+                testInit();
+                setTimeout(testElements, 1000);
+                setTimeout(testEvents, 2000);
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

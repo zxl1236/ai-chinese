@@ -33,7 +33,9 @@ class WritingModule {
             outlineContent: document.getElementById('outline-content'),
             draftsList: document.getElementById('drafts-list'),
             draftsCount: document.getElementById('drafts-count'),
-            imageInput: document.getElementById('image-input')
+            imageInput: document.getElementById('image-input'),
+            // AI助手相关元素
+            
         };
 
         this.sidebarCollapsed = false;
@@ -105,8 +107,18 @@ class WritingModule {
             this.renderSubCategories();
             this.renderTopics();
         } else {
-            console.error('写作题目数据未加载');
-            this.showError('写作题目数据加载失败，请刷新页面重试');
+            console.error('写作题目数据未加载，尝试延迟加载...');
+            // 延迟重试加载
+            setTimeout(() => {
+                if (typeof writingPrompts !== 'undefined') {
+                    this.writingData = writingPrompts;
+                    this.updateCategoryDisplay();
+                    this.renderSubCategories();
+                    this.renderTopics();
+                } else {
+                    this.showError('写作题目数据加载失败，请检查网络连接或刷新页面重试');
+                }
+            }, 1000);
         }
     }
 
@@ -491,16 +503,13 @@ class WritingModule {
             });
         }
 
-        // AI助手按钮
-        const aiBtn = document.getElementById('show-ai');
-        if (aiBtn) {
-            aiBtn.addEventListener('click', () => {
-                this.showModal('ai-modal');
-            });
-        }
+        // AI助手按钮已移除
+
+        // AI配置关闭按钮
+
 
         // 保存草稿按钮
-        const saveDraftBtn = document.getElementById('save-draft');
+    const saveDraftBtn = document.getElementById('save-draft');
         if (saveDraftBtn) {
             saveDraftBtn.addEventListener('click', () => {
                 this.saveDraft();
@@ -508,14 +517,14 @@ class WritingModule {
         }
 
         // 导出按钮
-        const exportMdBtn = document.getElementById('export-md');
+    const exportMdBtn = document.getElementById('export-md');
         if (exportMdBtn) {
             exportMdBtn.addEventListener('click', () => {
                 this.exportToMarkdown();
             });
         }
 
-        const exportPdfBtn = document.getElementById('export-pdf');
+    const exportPdfBtn = document.getElementById('export-pdf');
         if (exportPdfBtn) {
             exportPdfBtn.addEventListener('click', () => {
                 this.exportToPDF();
@@ -909,14 +918,81 @@ class WritingModule {
             this.elements.topicsList.innerHTML = `<div class="error-message">${message}</div>`;
         }
     }
+
+    // AI助手相关方法（已废弃，使用简化版AI助手）
+
+    showNewAiAssistant() {
+        // 使用简化版AI助手
+        if (typeof window.simpleAI !== 'undefined') {
+            window.simpleAI.show();
+        } else {
+            // 如果简化版AI助手还没初始化，等待一下再试
+            setTimeout(() => {
+                if (typeof window.simpleAI !== 'undefined') {
+                    window.simpleAI.show();
+                } else {
+                    this.showNotification('AI助手正在加载中，请稍后重试...', 'warning');
+                }
+            }, 1000);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', () => {
-    // 确保writing-prompts.js已加载
-    if (typeof writingPrompts !== 'undefined') {
-        window.writingModule = new WritingModule();
-    } else {
-        console.error('写作题目数据未加载，请检查writing-prompts.js文件');
-    }
+    console.log('🚀 开始初始化写作模块...');
+    
+    // 延迟初始化，确保所有脚本都已加载
+    setTimeout(() => {
+        if (typeof writingPrompts !== 'undefined') {
+            window.writingModule = new WritingModule();
+            console.log('✅ 写作模块已加载，AI助手将自动启动');
+        } else {
+            console.error('❌ 写作题目数据未加载，请检查writing-prompts.js文件');
+            // 显示错误信息给用户
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: #f8d7da;
+                color: #721c24;
+                padding: 20px;
+                border-radius: 8px;
+                border: 1px solid #f5c6cb;
+                z-index: 10000;
+                text-align: center;
+            `;
+            errorDiv.innerHTML = `
+                <h3>⚠️ 加载失败</h3>
+                <p>写作题目数据加载失败，请检查：</p>
+                <ul style="text-align: left;">
+                    <li>网络连接是否正常</li>
+                    <li>是否从正确的路径访问页面</li>
+                    <li>浏览器控制台是否有错误信息</li>
+                </ul>
+                <button onclick="location.reload()" style="margin-top: 10px; padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">刷新页面</button>
+            `;
+            document.body.appendChild(errorDiv);
+        }
+    }, 500);
 });

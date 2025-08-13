@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>写作模块访问测试</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            text-align: center;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 写作模块访问测试</h1>
+        
+        <div id="status" class="status"></div>
+        
+        <h3>测试链接：</h3>
+        <a href="src/writing-module/writing.html?category=全命题作文" class="test-button">
+            📋 测试全命题作文 (src/writing-module/)
+        </a>
+        
+        <a href="writing-module/writing.html?category=全命题作文" class="test-button">
+            📋 测试全命题作文 (writing-module/)
+        </a>
+        
+        <a href="src/writing-module/writing.html" class="test-button">
+            📄 测试写作模块 (无参数)
+        </a>
+        
+        <h3>服务器状态：</h3>
+        <div id="server-status">检查中...</div>
+        
+        <h3>文件检查：</h3>
+        <div id="file-status">检查中...</div>
+    </div>
+
+    <script>
+        // 检查服务器状态
+        fetch('/')
+            .then(response => {
+                document.getElementById('server-status').innerHTML = 
+                    '<span style="color: green;">✅ 服务器运行正常</span>';
+            })
+            .catch(error => {
+                document.getElementById('server-status').innerHTML = 
+                    '<span style="color: red;">❌ 服务器连接失败: ' + error.message + '</span>';
+            });
+
+        // 检查文件是否存在
+        fetch('src/writing-module/writing.html')
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('file-status').innerHTML = 
+                        '<span style="color: green;">✅ src/writing-module/writing.html 存在</span>';
+                } else {
+                    document.getElementById('file-status').innerHTML = 
+                        '<span style="color: red;">❌ src/writing-module/writing.html 不存在</span>';
+                }
+            })
+            .catch(error => {
+                document.getElementById('file-status').innerHTML = 
+                    '<span style="color: red;">❌ 无法访问文件: ' + error.message + '</span>';
+            });
+
+        // 显示当前URL信息
+        document.getElementById('status').innerHTML = 
+            '<div class="success">当前页面: ' + window.location.href + '</div>';
+    </script>
+</body>
+</html>

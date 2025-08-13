@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek模型测试</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .test-box {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        button {
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: scale(1.02);
+        }
+        .result {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .success { background: rgba(76, 175, 80, 0.3); }
+        .error { background: rgba(244, 67, 54, 0.3); }
+        .loading { background: rgba(255, 193, 7, 0.3); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 DeepSeek模型测试工具</h1>
+        
+        <div class="test-box">
+            <h3>📡 连接测试</h3>
+            <input type="text" id="endpoint" value="http://localhost:11434" placeholder="Ollama服务地址">
+            <input type="text" id="model" value="deepseek-r1:1.5b" placeholder="模型名称">
+            <button onclick="testConnection()">测试连接</button>
+            <div id="connectionResult"></div>
+        </div>
+
+        <div class="test-box">
+            <h3>🧪 基础响应测试</h3>
+            <p>先测试最简单的对话，验证模型基本功能</p>
+            <button onclick="testBasicResponse()">测试基础对话</button>
+            <button onclick="testAlternativeModels()" style="background: linear-gradient(45deg, #4CAF50, #45a049); margin-top: 10px;">测试替代模型</button>
+            <div id="basicResult"></div>
+        </div>
+
+        <div class="test-box">
+            <h3>✍️ 写作能力测试</h3>
+            <textarea id="testPrompt" rows="4" placeholder="输入测试题目，例如：变形记">变形记</textarea>
+            <button onclick="testWritingAbility()">测试写作分析</button>
+            <div id="writingResult"></div>
+        </div>
+
+        <div class="test-box">
+            <h3>🎯 角度生成测试</h3>
+            <button onclick="testAngleGeneration()">测试多角度分析</button>
+            <div id="angleResult"></div>
+        </div>
+
+        <div class="test-box">
+            <h3>📝 大纲生成测试</h3>
+            <input type="text" id="selectedAngle" value="小虫子变成蝴蝶" placeholder="选择的写作角度">
+            <button onclick="testOutlineGeneration()">测试大纲生成</button>
+            <div id="outlineResult"></div>
+        </div>
+    </div>
+
+    <script>
+        const endpoint = () => document.getElementById('endpoint').value;
+        const model = () => document.getElementById('model').value;
+
+        function showStatus(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function showResult(elementId, content) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="result">${content}</div>`;
+        }
+
+        async function testConnection() {
+            showStatus('connectionResult', '🔄 正在测试连接...', 'loading');
+            
+            try {
+                const response = await fetch(`${endpoint()}/api/tags`);
+                if (response.ok) {
+                    const data = await response.json();
+                    const models = data.models.map(m => m.name).join(', ');
+                    showStatus('connectionResult', '✅ 连接成功！', 'success');
+                    showResult('connectionResult', `可用模型：${models}`);
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                showStatus('connectionResult', `❌ 连接失败：${error.message}`, 'error');
+                showResult('connectionResult', '请确保Ollama正在运行，并且服务地址正确');
+            }
+        }
+
+        async function callOllama(prompt, systemPrompt = '', options = {}) {
+            const requestBody = {
+                model: model(),
+                prompt: prompt,
+                stream: false,
+                options: {
+                    temperature: options.temperature || 0.7,
+                    top_p: options.top_p || 0.9,
+                    num_predict: options.num_predict || 100,
+                    num_ctx: options.num_ctx || 1024,
+                    num_thread: options.num_thread || 4,
+                    ...options
+                }
+            };
+            
+            if (systemPrompt) {
+                requestBody.system = systemPrompt;
+            }
+
+            const response = await fetch(`${endpoint()}/api/generate`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            return data.response;
+        }
+
+        async function testBasicResponse() {
+            showStatus('basicResult', '🔄 正在测试基础对话...', 'loading');
+            const startTime = Date.now();
+
+            try {
+                // 最简单的测试
+                const result = await callOllama('你好', '', {
+                    num_predict: 20,  // 只生成20个token
+                    temperature: 0.3   // 降低随机性
+                });
+                
+                const endTime = Date.now();
+                const duration = ((endTime - startTime) / 1000).toFixed(2);
+                
+                showStatus('basicResult', `✅ 基础测试成功！耗时：${duration}秒`, 'success');
+                showResult('basicResult', `AI回复：${result}`);
+            } catch (error) {
+                const endTime = Date.now();
+                const duration = ((endTime - startTime) / 1000).toFixed(2);
+                showStatus('basicResult', `❌ 基础测试失败（${duration}秒）：${error.message}`, 'error');
+                
+                // 提供诊断建议
+                if (error.message.includes('timeout') || duration > 30) {
+                    showResult('basicResult', '诊断：模型响应超时，可能原因：\n1. 模型首次加载需要时间\n2. 系统资源不足\n3. 建议尝试更轻量的模型');
+                } else if (error.message.includes('500')) {
+                    showResult('basicResult', '诊断：服务器内部错误，可能原因：\n1. Ollama服务异常\n2. 模型文件损坏\n3. 内存不足');
+                } else {
+                    showResult('basicResult', `诊断：${error.message}\n建议检查Ollama服务状态`);
+                }
+            }
+        }
+
+        async function testWritingAbility() {
+            const topic = document.getElementById('testPrompt').value;
+            showStatus('writingResult', '🔄 正在分析题目...', 'loading');
+
+            try {
+                const systemPrompt = '你是一位专业的语文写作指导老师，请分析给定的作文题目，给出改进建议。';
+                const prompt = `请分析这个作文题目："${topic}"
+                
+请从以下几个方面进行分析：
+1. 题目的优点和特色
+2. 可能存在的问题或改进空间
+3. 写作建议和注意事项
+
+请用简洁明了的中文回答。`;
+
+                const result = await callOllama(prompt, systemPrompt);
+                showStatus('writingResult', '✅ 分析完成！', 'success');
+                showResult('writingResult', result);
+            } catch (error) {
+                showStatus('writingResult', `❌ 分析失败：${error.message}`, 'error');
+            }
+        }
+
+        async function testAngleGeneration() {
+            const topic = document.getElementById('testPrompt').value;
+            showStatus('angleResult', '🔄 正在生成写作角度...', 'loading');
+
+            try {
+                const systemPrompt = '你是一位创意写作指导老师，擅长从多个角度分析作文题目。';
+                const prompt = `针对作文题目"${topic}"，请提供5个不同的写作角度，每个角度要新颖有趣。
+
+格式要求：
+1. [角度名称]：简要描述
+2. [角度名称]：简要描述
+3. [角度名称]：简要描述
+4. [角度名称]：简要描述
+5. [角度名称]：简要描述
+
+请确保角度具有创意性和可写性。`;
+
+                const result = await callOllama(prompt, systemPrompt);
+                showStatus('angleResult', '✅ 角度生成完成！', 'success');
+                showResult('angleResult', result);
+            } catch (error) {
+                showStatus('angleResult', `❌ 生成失败：${error.message}`, 'error');
+            }
+        }
+
+        async function testOutlineGeneration() {
+            const angle = document.getElementById('selectedAngle').value;
+            const topic = document.getElementById('testPrompt').value;
+            showStatus('outlineResult', '🔄 正在生成大纲...', 'loading');
+
+            try {
+                const systemPrompt = '你是一位专业的作文大纲规划师，擅长设计清晰的文章结构。';
+                const prompt = `请为作文题目"${topic}"，写作角度"${angle}"设计一个详细的大纲。
+
+大纲结构：
+## 开头段
+- 主要内容
+- 写作要点
+
+## 中间段（2-3段）
+### 第一段
+- 主要内容
+- 写作要点
+
+### 第二段
+- 主要内容
+- 写作要点
+
+### 第三段（可选）
+- 主要内容
+- 写作要点
+
+## 结尾段
+- 主要内容
+- 写作要点
+
+请确保大纲逻辑清晰，内容具体。`;
+
+                const result = await callOllama(prompt, systemPrompt);
+                showStatus('outlineResult', '✅ 大纲生成完成！', 'success');
+                showResult('outlineResult', result);
+            } catch (error) {
+                showStatus('outlineResult', `❌ 生成失败：${error.message}`, 'error');
+            }
+        }
+
+        async function testAlternativeModels() {
+            showStatus('basicResult', '🔄 正在测试替代模型...', 'loading');
+            
+            // 推荐的轻量模型列表
+            const lightModels = [
+                'qwen2.5:0.5b',
+                'llama3.2:1b',
+                'gemma2:2b',
+                'phi3.5:3.8b'
+            ];
+            
+            let results = '📋 轻量级模型建议：\n\n';
+            
+            for (const testModel of lightModels) {
+                try {
+                    const response = await fetch(`${endpoint()}/api/tags`);
+                    const data = await response.json();
+                    const available = data.models.some(m => m.name === testModel);
+                    
+                    if (available) {
+                        results += `✅ ${testModel} - 已安装，可直接使用\n`;
+                        // 快速测试
+                        const originalModel = document.getElementById('model').value;
+                        document.getElementById('model').value = testModel;
+                        
+                        try {
+                            const testResult = await callOllama('你好', '', { num_predict: 10 });
+                            results += `   测试响应：${testResult.substring(0, 50)}...\n`;
+                        } catch (e) {
+                            results += `   测试失败：${e.message}\n`;
+                        }
+                        
+                        document.getElementById('model').value = originalModel;
+                    } else {
+                        results += `⚪ ${testModel} - 未安装，可执行：ollama pull ${testModel}\n`;
+                    }
+                } catch (error) {
+                    results += `❌ ${testModel} - 检查失败\n`;
+                }
+            }
+            
+            results += '\n💡 建议：如果 DeepSeek 太慢，可以尝试安装上述轻量模型';
+            
+            showStatus('basicResult', '✅ 替代模型检查完成', 'success');
+            showResult('basicResult', results);
+        }
+
+        // 页面加载时自动测试连接
+        window.addEventListener('load', () => {
+            setTimeout(testConnection, 1000);
+        });
+    </script>
+</body>
+</html>

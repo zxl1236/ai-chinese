@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>记叙文写作训练</title>
     <link rel="stylesheet" href="writing.css">
+    <link rel="stylesheet" href="smart-ai-assistant.css">
+    <style>
+        /* 确保页面正常显示的基础样式 */
+        body { margin: 0; padding: 0; font-family: 'Microsoft YaHei', sans-serif; }
+        .writing-layout { display: flex; min-height: 100vh; }
+    </style>
 </head>
 <body>
     <div class="writing-layout">
@@ -18,7 +24,8 @@
                 
                 <!-- 文体选择 -->
                 <div class="category-selector">
-                    <select id="writing-category" class="category-select">
+                    <label for="writing-category" class="sr-only">选择文体类型</label>
+                    <select id="writing-category" class="category-select" aria-label="选择文体类型">
                         <option value="全命题作文">📋 全命题作文</option>
                         <option value="半命题作文">📝 半命题作文</option>
                         <option value="话题作文">💭 话题作文</option>
@@ -77,11 +84,12 @@
             <div class="writing-area" id="writing-area" style="display: none;">
                 <!-- 标题输入 -->
                 <div class="title-section">
-                    <input type="text" id="article-title" placeholder="请输入文章标题..." class="title-input">
+                    <label for="article-title" class="sr-only">文章标题</label>
+                    <input type="text" id="article-title" placeholder="请输入文章标题..." class="title-input" aria-label="文章标题">
                 </div>
 
                 <!-- 工具栏 -->
-                <div class="toolbar">
+        <div class="toolbar">
                     <div class="format-tools">
                         <button class="tool-btn" id="bold" title="加粗">B</button>
                         <button class="tool-btn" id="italic" title="斜体">I</button>
@@ -102,12 +110,12 @@
 
                 <!-- 操作按钮 -->
                 <div class="action-buttons">
-                    <button class="help-btn" id="show-guide">💡 写作指导</button>
-                    <button class="save-btn" id="save-draft">💾 保存草稿</button>
-                    <button class="secondary-btn" id="clear-btn">🗑️ 清空</button>
-                    <button class="secondary-btn" id="export-md">📄 导出MD</button>
-                    <button class="secondary-btn" id="export-pdf">📑 导出PDF</button>
-                    <button class="primary-btn" id="submit-btn">✅ 完成写作</button>
+                        <button class="help-btn" id="show-guide">💡 写作指导</button>
+                        <button class="save-btn" id="save-draft">💾 保存草稿</button>
+                        <button class="secondary-btn" id="clear-btn">🗑️ 清空</button>
+                        <button class="secondary-btn" id="export-md">📄 导出MD</button>
+                        <button class="secondary-btn" id="export-pdf">📑 导出PDF</button>
+                        <button class="primary-btn" id="submit-btn">✅ 完成写作</button>
                 </div>
             </div>
 
@@ -177,7 +185,7 @@
 
     <!-- 草稿详情弹窗 -->
     <div class="draft-modal" id="draft-modal" style="display: none;">
-        <div class="modal-content">
+            <div class="modal-content">
             <div class="modal-header">
                 <h3>草稿详情</h3>
                 <button class="close-modal" id="close-draft-modal">×</button>
@@ -192,8 +200,13 @@
         </div>
     </div>
 
+
+
+
+
     <!-- 加载数据文件 -->
-    <script src="../data/writing-prompts.js"></script>
+    <script src="../../src/data/writing-prompts.js"></script>
     <script src="writing.js"></script>
+    <script src="smart-ai-assistant.js"></script>
 </body>
 </html>

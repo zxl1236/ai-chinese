@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI集成测试</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        button {
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            transform: scale(1.02);
+        }
+        .result {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .success { background: rgba(76, 175, 80, 0.3); }
+        .error { background: rgba(244, 67, 54, 0.3); }
+        .loading { background: rgba(255, 193, 7, 0.3); }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 AI写作助手集成测试</h1>
+        
+        <div class="test-section">
+            <h3>📋 配置状态</h3>
+            <div id="config-status">检查中...</div>
+            <button onclick="checkConfiguration()">检查配置</button>
+            <button onclick="resetConfiguration()">重置配置</button>
+        </div>
+
+        <div class="test-section">
+            <h3>🔌 连接测试</h3>
+            <div id="connection-status">未测试</div>
+            <button onclick="testConnection()">测试连接</button>
+        </div>
+
+        <div class="test-section">
+            <h3>📝 题目分析测试</h3>
+            <input type="text" id="test-topic" value="变形记" placeholder="输入作文题目">
+            <button onclick="testTopicAnalysis()">分析题目</button>
+            <div id="analysis-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>🎯 角度生成测试</h3>
+            <button onclick="testAngleGeneration()">生成写作角度</button>
+            <div id="angles-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>📋 大纲生成测试</h3>
+            <button onclick="testOutlineGeneration()">生成大纲</button>
+            <div id="outline-result"></div>
+        </div>
+    </div>
+
+    <!-- 加载AI助手 -->
+    <script src="src/components/AIWritingAssistant/AIWritingAssistant.js"></script>
+    
+    <script>
+        let aiAssistant = null;
+
+        // 页面加载时初始化
+        window.addEventListener('load', async () => {
+            try {
+                // 初始化AI助手
+                aiAssistant = new AIWritingAssistant();
+                
+                // 设置默认DeepSeek配置
+                const defaultConfig = {
+                    provider: 'local',
+                    model: 'deepseek-r1:1.5b',
+                    endpoint: 'http://localhost:11434',
+                    temperature: 0.7,
+                    maxTokens: 2000
+                };
+                
+                // 应用配置
+                aiAssistant.configureAI('local', null, 'deepseek-r1:1.5b');
+                
+                // 保存配置
+                localStorage.setItem('ai-writing-config', JSON.stringify(defaultConfig));
+                
+                showStatus('config-status', '✅ AI助手已初始化', 'success');
+                
+                // 自动检查配置
+                setTimeout(checkConfiguration, 1000);
+            } catch (error) {
+                showStatus('config-status', `❌ 初始化失败: ${error.message}`, 'error');
+            }
+        });
+
+        function showStatus(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function showResult(elementId, content) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="result">${content}</div>`;
+        }
+
+        function checkConfiguration() {
+            const config = localStorage.getItem('ai-writing-config');
+            if (config) {
+                const parsed = JSON.parse(config);
+                const info = `
+配置信息：
+- 提供商: ${parsed.provider}
+- 模型: ${parsed.model}
+- 端点: ${parsed.endpoint}
+- 温度: ${parsed.temperature}
+- 最大令牌: ${parsed.maxTokens}
+
+AI助手状态: ${aiAssistant ? '已加载' : '未加载'}
+当前提供商: ${aiAssistant ? aiAssistant.currentProvider : '未知'}
+当前模型: ${aiAssistant ? aiAssistant.model : '未知'}`;
+                
+                showResult('config-status', info);
+            } else {
+                showStatus('config-status', '❌ 未找到配置', 'error');
+            }
+        }
+
+        function resetConfiguration() {
+            localStorage.removeItem('ai-writing-config');
+            location.reload();
+        }
+
+        async function testConnection() {
+            if (!aiAssistant) {
+                showStatus('connection-status', '❌ AI助手未初始化', 'error');
+                return;
+            }
+
+            showStatus('connection-status', '🔄 测试连接中...', 'loading');
+            
+            try {
+                const isAvailable = await aiAssistant.checkServiceAvailability();
+                if (isAvailable) {
+                    showStatus('connection-status', '✅ 连接成功！', 'success');
+                } else {
+                    showStatus('connection-status', '❌ 连接失败', 'error');
+                }
+            } catch (error) {
+                showStatus('connection-status', `❌ 连接错误: ${error.message}`, 'error');
+                showResult('connection-status', `详细错误信息：${error.stack}`);
+            }
+        }
+
+        async function testTopicAnalysis() {
+            if (!aiAssistant) {
+                showStatus('analysis-result', '❌ AI助手未初始化', 'error');
+                return;
+            }
+
+            const topic = document.getElementById('test-topic').value;
+            if (!topic.trim()) {
+                showStatus('analysis-result', '❌ 请输入题目', 'error');
+                return;
+            }
+
+            showStatus('analysis-result', '🔄 分析中...', 'loading');
+            
+            try {
+                const result = await aiAssistant.evaluateTopic(topic);
+                showStatus('analysis-result', '✅ 分析完成', 'success');
+                showResult('analysis-result', JSON.stringify(result, null, 2));
+            } catch (error) {
+                showStatus('analysis-result', `❌ 分析失败: ${error.message}`, 'error');
+                showResult('analysis-result', `详细错误：${error.stack}`);
+            }
+        }
+
+        async function testAngleGeneration() {
+            if (!aiAssistant) {
+                showStatus('angles-result', '❌ AI助手未初始化', 'error');
+                return;
+            }
+
+            const topic = document.getElementById('test-topic').value || '变形记';
+            showStatus('angles-result', '🔄 生成角度中...', 'loading');
+            
+            try {
+                const result = await aiAssistant.generateAngles(topic);
+                showStatus('angles-result', '✅ 角度生成完成', 'success');
+                showResult('angles-result', JSON.stringify(result, null, 2));
+            } catch (error) {
+                showStatus('angles-result', `❌ 生成失败: ${error.message}`, 'error');
+                showResult('angles-result', `详细错误：${error.stack}`);
+            }
+        }
+
+        async function testOutlineGeneration() {
+            if (!aiAssistant) {
+                showStatus('outline-result', '❌ AI助手未初始化', 'error');
+                return;
+            }
+
+            const topic = document.getElementById('test-topic').value || '变形记';
+            const mockAngle = {
+                title: '小虫变蝴蝶',
+                description: '以小虫蜕变成美丽蝴蝶的过程，象征成长和蜕变'
+            };
+            
+            showStatus('outline-result', '🔄 生成大纲中...', 'loading');
+            
+            try {
+                const result = await aiAssistant.generateOutline(topic, mockAngle);
+                showStatus('outline-result', '✅ 大纲生成完成', 'success');
+                showResult('outline-result', JSON.stringify(result, null, 2));
+            } catch (error) {
+                showStatus('outline-result', `❌ 生成失败: ${error.message}`, 'error');
+                showResult('outline-result', `详细错误：${error.stack}`);
+            }
+        }
+    </script>
+</body>
+</html>

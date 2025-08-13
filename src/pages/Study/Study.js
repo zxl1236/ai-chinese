@@ -141,7 +141,7 @@ class StudyPage {
       else if (course.includes('material')) category = '材料作文';
       else if (course.includes('practical')) category = '应用文';
       
-      window.location.href = `src/writing-module/writing.html?category=${encodeURIComponent(category)}`;
+      window.location.href = `writing-module/writing.html?category=${encodeURIComponent(category)}`;
       return;
     }
 

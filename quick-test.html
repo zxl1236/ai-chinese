@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快速连接测试</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        button {
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            margin: 10px 0;
+        }
+        .result {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            white-space: pre-wrap;
+            font-family: monospace;
+            min-height: 50px;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .success { background: rgba(76, 175, 80, 0.5); }
+        .error { background: rgba(244, 67, 54, 0.5); }
+        .loading { background: rgba(255, 193, 7, 0.5); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 快速连接测试</h1>
+        
+        <button onclick="testBasicConnection()">1. 测试基础连接</button>
+        <div id="basic-result"></div>
+        
+        <button onclick="testModelList()">2. 获取模型列表</button>
+        <div id="models-result"></div>
+        
+        <button onclick="testSimpleChat()">3. 测试简单对话</button>
+        <div id="chat-result"></div>
+        
+        <button onclick="testWithSystemPrompt()">4. 测试系统提示</button>
+        <div id="system-result"></div>
+    </div>
+
+    <script>
+        function showStatus(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function showResult(elementId, content) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="result">${content}</div>`;
+        }
+
+        async function testBasicConnection() {
+            showStatus('basic-result', '🔄 测试基础连接...', 'loading');
+            
+            try {
+                const response = await fetch('http://localhost:11434/api/tags');
+                if (response.ok) {
+                    const data = await response.json();
+                    showStatus('basic-result', '✅ 基础连接成功！', 'success');
+                    showResult('basic-result', `Ollama服务运行正常\n响应状态: ${response.status}\n数据: ${JSON.stringify(data, null, 2)}`);
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                showStatus('basic-result', '❌ 基础连接失败', 'error');
+                showResult('basic-result', `错误: ${error.message}\n\n请确保：\n1. Ollama正在运行\n2. 端口11434可访问\n3. 没有防火墙阻止`);
+            }
+        }
+
+        async function testModelList() {
+            showStatus('models-result', '🔄 获取模型列表...', 'loading');
+            
+            try {
+                const response = await fetch('http://localhost:11434/api/tags');
+                const data = await response.json();
+                
+                const models = data.models || [];
+                const deepseekModels = models.filter(m => m.name.includes('deepseek'));
+                
+                showStatus('models-result', '✅ 模型列表获取成功！', 'success');
+                showResult('models-result', `总模型数: ${models.length}\nDeepSeek模型: ${deepseekModels.length}\n\n所有模型:\n${models.map(m => `- ${m.name} (${m.size})`).join('\n')}\n\nDeepSeek模型:\n${deepseekModels.map(m => `- ${m.name} (${m.size})`).join('\n')}`);
+            } catch (error) {
+                showStatus('models-result', '❌ 获取模型列表失败', 'error');
+                showResult('models-result', `错误: ${error.message}`);
+            }
+        }
+
+        async function testSimpleChat() {
+            showStatus('chat-result', '🔄 测试简单对话...', 'loading');
+            
+            try {
+                const response = await fetch('http://localhost:11434/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        model: 'deepseek-r1:1.5b',
+                        prompt: '你好，请用中文回复：你是谁？',
+                        stream: false,
+                        options: {
+                            temperature: 0.7,
+                            top_p: 0.9
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                showStatus('chat-result', '✅ 对话测试成功！', 'success');
+                showResult('chat-result', `模型响应:\n${data.response}\n\n耗时: ${data.total_duration ? Math.round(data.total_duration / 1000000) + 'ms' : '未知'}\n提示令牌: ${data.prompt_eval_count || '未知'}\n响应令牌: ${data.eval_count || '未知'}`);
+            } catch (error) {
+                showStatus('chat-result', '❌ 对话测试失败', 'error');
+                showResult('chat-result', `错误: ${error.message}\n\n可能原因:\n1. 模型名称错误\n2. 模型未启动\n3. 网络连接问题`);
+            }
+        }
+
+        async function testWithSystemPrompt() {
+            showStatus('system-result', '🔄 测试写作分析...', 'loading');
+            
+            try {
+                const response = await fetch('http://localhost:11434/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        model: 'deepseek-r1:1.5b',
+                        prompt: '请分析作文题目"变形记"，从以下角度：1.题目优点 2.可能问题 3.写作建议。请简洁回答。',
+                        system: '你是一位专业的中学语文老师，擅长作文指导。',
+                        stream: false,
+                        options: {
+                            temperature: 0.7,
+                            top_p: 0.9,
+                            max_tokens: 1000
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                showStatus('system-result', '✅ 写作分析测试成功！', 'success');
+                showResult('system-result', `AI分析结果:\n${data.response}\n\n这证明DeepSeek可以用于写作辅导！`);
+            } catch (error) {
+                showStatus('system-result', '❌ 写作分析测试失败', 'error');
+                showResult('system-result', `错误: ${error.message}`);
+            }
+        }
+
+        // 页面加载时自动测试基础连接
+        window.addEventListener('load', () => {
+            setTimeout(testBasicConnection, 1000);
+        });
+    </script>
+</body>
+</html>

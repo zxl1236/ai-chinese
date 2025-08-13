@@ -23,6 +23,9 @@ class App {
       // 初始化组件
       this.initComponents();
       
+      // 创建页面容器
+      this.createPageContainers();
+      
       // 初始化页面
       this.initPages();
       
@@ -30,7 +33,7 @@ class App {
       this.setupRouting();
       
       // 显示初始页面
-      this.showPage('home');
+      this.showPage('home', false);
       
       // 隐藏加载动画
       const loading = document.getElementById('loading');
@@ -83,57 +86,51 @@ class App {
   }
 
   initPages() {
-    // 创建页面容器
-    this.createPageContainers();
-
-    // 等待容器创建完成后再初始化页面
-    setTimeout(() => {
-      // 初始化首页
-      this.pages['home'] = new HomePage({
-        container: document.getElementById('home-section'),
-        onRecommendationClick: (type) => {
-          console.log('推荐点击:', type);
-          if (type === 'reading') {
-            this.showPage('modern-reading');
-          }
-        },
-        onQuickActionClick: (action) => {
-          console.log('快捷功能点击:', action);
-          this.handleQuickAction(action);
+    // 初始化首页
+    this.pages['home'] = new HomePage({
+      container: document.getElementById('home-section'),
+      onRecommendationClick: (type) => {
+        console.log('推荐点击:', type);
+        if (type === 'reading') {
+          this.showPage('modern-reading');
         }
-      });
+      },
+      onQuickActionClick: (action) => {
+        console.log('快捷功能点击:', action);
+        this.handleQuickAction(action);
+      }
+    });
 
-      // 初始化学习中心页面
-      this.pages['study'] = new StudyPage({
-        container: document.getElementById('study-section'),
-        onCourseSelect: (course) => {
-          console.log('课程选择:', course);
-          if (course === 'modern-reading') {
-            this.showPage('modern-reading');
-          } else if (course === 'classical-chinese') {
-            this.showPage('classical-chinese');
-          }
+    // 初始化学习中心页面
+    this.pages['study'] = new StudyPage({
+      container: document.getElementById('study-section'),
+      onCourseSelect: (course) => {
+        console.log('课程选择:', course);
+        if (course === 'modern-reading') {
+          this.showPage('modern-reading');
+        } else if (course === 'classical-chinese') {
+          this.showPage('classical-chinese');
         }
-      });
+      }
+    });
 
-      // 初始化现代文阅读页面
-      this.pages['modern-reading'] = new ModernReadingPage({
-        container: document.getElementById('modern-reading-section'),
-        onBack: () => {
-          this.showPage('study');
-        }
-      });
+    // 初始化现代文阅读页面
+    this.pages['modern-reading'] = new ModernReadingPage({
+      container: document.getElementById('modern-reading-section'),
+      onBack: () => {
+        this.showPage('study');
+      }
+    });
 
-      // 初始化文言文阅读页面
-      this.pages['classical-chinese'] = new ClassicalChinesePage({
-        container: document.getElementById('classical-chinese-section'),
-        onBack: () => {
-          this.showPage('study');
-        }
-      });
+    // 初始化文言文阅读页面
+    this.pages['classical-chinese'] = new ClassicalChinesePage({
+      container: document.getElementById('classical-chinese-section'),
+      onBack: () => {
+        this.showPage('study');
+      }
+    });
 
-      console.log('📄 所有页面初始化完成', Object.keys(this.pages));
-    }, 0);
+    console.log('📄 所有页面初始化完成', Object.keys(this.pages));
   }
 
   createPageContainers() {
@@ -223,10 +220,14 @@ class App {
     // 更新头部
     this.updateHeader(pageName);
 
-    // 更新浏览器历史
-    if (pushState) {
-      const url = pageName === 'home' ? '/' : `#${pageName}`;
-      history.pushState({ page: pageName }, '', url);
+    // 更新浏览器历史（仅在非file协议时启用）
+    if (pushState && window.location.protocol !== 'file:') {
+      try {
+        const url = pageName === 'home' ? '/' : `#${pageName}`;
+        history.pushState({ page: pageName }, '', url);
+      } catch (error) {
+        console.warn('无法更新URL:', error);
+      }
     }
 
     this.currentPage = pageName;

@@ -13,7 +13,7 @@ const AppConfig = {
 
   // API配置
   api: {
-    baseUrl: process.env.NODE_ENV === 'production' 
+    baseUrl: typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'production' 
       ? 'https://api.ai-yuwen.com' 
       : 'http://localhost:3000',
     timeout: 10000,
