@@ -8,7 +8,7 @@
     
     <!-- SEO和PWA相关 -->
     <meta name="description" content="AI语文学习助手 - 智能化语文学习平台，提供个性化学习方案">
-    <meta name="keywords" content="语文学习,AI教育,在线学习,现代文阅读,写作训练">
+    <meta name="keywords" content="语文学习,AI教育,在线学习,现代文阅读,陪练训练">
     
     <!-- CSS样式引用 -->
     <link rel="stylesheet" href="src/styles/base/reset.css">
@@ -20,7 +20,10 @@
     <link rel="stylesheet" href="src/styles/pages/home.css">
     <link rel="stylesheet" href="src/styles/pages/modern-reading.css">
     <link rel="stylesheet" href="src/styles/pages/classical-chinese.css">
+    <link rel="stylesheet" href="src/styles/pages/tutor.css">
+    <link rel="stylesheet" href="src/styles/pages/stats.css">
     <link rel="stylesheet" href="src/styles/components/text-marker.css">
+    <link rel="stylesheet" href="src/styles/components/reading-guidance.css">
     
     <!-- 写作模块样式 -->
     <link rel="stylesheet" href="src/writing-module/writing.css">
@@ -41,6 +44,7 @@
     <script src="src/scripts/utils/helpers.js"></script>
     <script src="src/scripts/utils/storage.js"></script>
     <script src="src/scripts/utils/TextMarker.js"></script>
+    <script src="src/scripts/utils/ReadingGuidanceSystem.js"></script>
     
     <!-- 组件脚本 -->
     <script src="src/components/Header/Header.js"></script>
@@ -53,10 +57,9 @@
     <script src="src/pages/ClassicalChinese/ClassicalChinese.js"></script>
     
     <!-- 写作模块脚本 -->
-    <script src="src/writing-module/writing.js"></script>
     <script src="src/writing-module/smart-ai-assistant.js"></script>
     
-    <!-- 主应用脚本 -->
+    <!-- 主应用脚本（必须在最后加载） -->
     <script src="src/main.js"></script>
 </body>
 </html>
