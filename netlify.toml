@@ -14,17 +14,18 @@
   to = "/app.html"
   status = 200
 
-[[redirects]]
-  # 单页应用支持
-  from = "/*"
-  to = "/app.html"
-  status = 200
-
 # 允许直接访问写作模块的独立页面与资源
 [[redirects]]
   from = "/src/writing-module/*"
   to = "/src/writing-module/:splat"
   status = 200
+
+[[redirects]]
+  # 单页应用支持 - 最后匹配，避免拦截静态资源
+  from = "/*"
+  to = "/app.html"
+  status = 200
+  force = false
   
 # 头部设置
 [[headers]]
@@ -37,18 +38,18 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     
     # 缓存控制
-    Cache-Control = "public, max-age=31536000"
+    Cache-Control = "public, max-age=3600"
     
 # 静态文件缓存
 [[headers]]
   for = "*.css"
   [headers.values]
-    Cache-Control = "public, max-age=31536000"
+    Cache-Control = "public, max-age=3600"
     
 [[headers]]
   for = "*.js"
   [headers.values]
-    Cache-Control = "public, max-age=31536000"
+    Cache-Control = "public, max-age=3600"
     
 [[headers]]
   for = "*.html"
