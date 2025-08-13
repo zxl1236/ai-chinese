@@ -106,50 +106,21 @@ def get_models():
 
 @app.route('/api/generate', methods=['POST'])
 def generate_text():
-    """AI文本生成接口（本地Ollama）"""
+    """AI文本生成接口 - 支持多提供商（Ollama/DeepSeek/Qwen）"""
     try:
         data = request.get_json() or {}
         prompt = (data.get('prompt') or '').strip()
         if not prompt:
             return jsonify({"success": False, "error": "prompt参数不能为空"}), 400
 
-        ollama_request = {
-            "model": data.get('model', DEFAULT_MODEL),
-            "prompt": prompt,
-            "stream": False,
-            "options": {
-                "temperature": data.get('temperature', 0.7),
-                "top_p": data.get('top_p', 0.9),
-                "max_tokens": data.get('max_tokens', 1000),
-                "num_predict": 1000,
-                "num_ctx": 2048,
-                "num_thread": 4
-            }
-        }
-        logger.info(f"处理AI请求 - 模型: {ollama_request['model']}, 提示长度: {len(prompt)}")
-        response = requests.post(f"{OLLAMA_BASE_URL}/api/generate", json=ollama_request, timeout=120)
-        if response.status_code == 200:
-            ollama_data = response.json()
-            ai_response = ollama_data.get('response', '')
-            logger.info(f"AI响应成功 - 响应长度: {len(ai_response)}")
-            return jsonify({
-                "success": True,
-                "response": ai_response,
-                "model": ollama_request['model'],
-                "prompt_tokens": len(prompt.split()),
-                "response_tokens": len(ai_response.split()) if ai_response else 0
-            })
-        else:
-            error_msg = f"Ollama API错误: {response.status_code}"
-            logger.error(error_msg)
-            return jsonify({"success": False, "error": error_msg, "details": response.text}), 500
+        model = data.get('model', DEFAULT_MODEL)
+        provider = data.get('provider') or detect_provider(model)
+        
+        logger.info(f"处理AI请求 - 提供商: {provider}, 模型: {model}, 提示长度: {len(prompt)}")
+        
+        # 使用通用AI响应生成函数
+        return generate_ai_response(prompt, model=model)
 
-    except requests.exceptions.Timeout:
-        logger.error("AI请求超时")
-        return jsonify({"success": False, "error": "AI响应超时，请稍后重试"}), 504
-    except requests.exceptions.RequestException as e:
-        logger.error(f"请求Ollama服务失败: {str(e)}")
-        return jsonify({"success": False, "error": "无法连接到AI服务", "details": str(e)}), 500
     except Exception as e:
         logger.error(f"处理AI请求时发生错误: {str(e)}")
         return jsonify({"success": False, "error": "服务器内部错误", "details": str(e)}), 500

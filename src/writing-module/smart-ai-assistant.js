@@ -99,7 +99,7 @@ class SmartAIAssistant {
 
     async init() {
         await this.ensureBaseUrl();   // << 确保第一次请求前 baseUrl 有效
-        this.loadHTML();
+        this.createHTML(); // 直接使用内置HTML，避免加载延迟
         this.startMonitoring();
         this.checkConnection();
     }
@@ -992,13 +992,14 @@ class SmartAIAssistant {
 
 // 初始化智能AI助手
 document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        if (window.smartAI) {
-            const oldElement = document.getElementById('smart-ai-assistant');
-            if (oldElement) oldElement.remove();
-        }
-        window.smartAI = new SmartAIAssistant();
-    }, 1000);
+    console.log('[AI] DOM加载完成，准备初始化AI助手...');
+    // 立即初始化，不等待1秒
+    if (window.smartAI) {
+        const oldElement = document.getElementById('smart-ai-assistant');
+        if (oldElement) oldElement.remove();
+    }
+    window.smartAI = new SmartAIAssistant();
+    console.log('[AI] AI助手初始化完成');
 });
 
 // 提供手动初始化方法
