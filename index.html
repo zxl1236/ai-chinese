@@ -4,133 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI语文学习助手</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Microsoft YaHei', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: white;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .header {
-            text-align: center;
-            padding: 40px 0;
-        }
-        
-        .header h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin: 50px 0;
-        }
-        
-        .feature-card {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .feature-card h3 {
-            font-size: 1.5em;
-            margin-bottom: 15px;
-            color: #ffd700;
-        }
-        
-        .feature-card p {
-            line-height: 1.6;
-            opacity: 0.9;
-        }
-        
-        .cta-buttons {
-            text-align: center;
-            margin: 50px 0;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 15px 30px;
-            margin: 10px;
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
-            font-size: 1.1em;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .btn.secondary {
-            background: linear-gradient(45deg, #4ecdc4, #44a08d);
-        }
-        
-        .status {
-            text-align: center;
-            background: rgba(76, 175, 80, 0.2);
-            padding: 20px;
-            border-radius: 15px;
-            margin: 30px 0;
-            border: 1px solid rgba(76, 175, 80, 0.3);
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 30px 0;
-            opacity: 0.7;
-            font-size: 0.9em;
-        }
-        
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2em;
-            }
-            
-            .features {
-                grid-template-columns: 1fr;
-            }
-            
-            .btn {
-                display: block;
-                margin: 10px auto;
-                max-width: 250px;
-            }
-        }
-    </style>
+    
+    <!-- SEO和PWA相关 -->
+    <meta name="description" content="AI语文学习助手 - 智能化语文学习平台，提供个性化学习方案">
+    <meta name="keywords" content="语文学习,AI教育,在线学习,现代文阅读,写作训练">
+    
+    <!-- CSS样式引用 -->
+    <link rel="stylesheet" href="src/styles/base/reset.css">
+    <link rel="stylesheet" href="src/styles/base/variables.css">
+    <link rel="stylesheet" href="src/styles/base/utilities.css">
+    <link rel="stylesheet" href="src/styles/components/header.css">
+    <link rel="stylesheet" href="src/styles/components/navigation.css">
+    <link rel="stylesheet" href="src/styles/components/card.css">
+    <link rel="stylesheet" href="src/styles/pages/home.css">
 </head>
 <body>
     <div class="container">
@@ -176,8 +62,7 @@
         </div>
         
         <div class="cta-buttons">
-            <a href="test-ai-functions.html" class="btn">🧪 测试AI功能</a>
-            <a href="test-deploy.html" class="btn secondary">📋 查看部署状态</a>
+            <a href="app.html" class="btn">🚀 开始学习</a>
         </div>
         
         <div class="footer">
@@ -186,5 +71,39 @@
             <p>🚀 技术栈：HTML5 + CSS3 + JavaScript + Netlify</p>
         </div>
     </div>
+
+    <!-- JavaScript脚本引用 -->
+    <script src="src/data/config.js"></script>
+    <script src="src/scripts/utils/helpers.js"></script>
+    <script src="src/scripts/utils/storage.js"></script>
+    
+    <!-- 首页特有的脚本 -->
+    <script>
+        // 简单的页面交互
+        document.addEventListener('DOMContentLoaded', function() {
+            // 添加卡片悬停效果
+            const cards = document.querySelectorAll('.feature-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(-5px) scale(1)';
+                });
+            });
+            
+            // 按钮点击反馈
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+        });
+    </script>
 </body>
 </html>

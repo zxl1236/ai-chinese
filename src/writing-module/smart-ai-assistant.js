@@ -547,7 +547,7 @@ class SmartAIAssistant {
         console.log('[AI] startMonitoring 开始执行');
         
         // 监听题目输入
-        const titleSelectors = ['#article-title', '#test-title', '#current-title'];
+        const titleSelectors = ['#article-title', '#current-title'];
         for (const selector of titleSelectors) {
             const titleInput = document.querySelector(selector);
             if (titleInput) {
@@ -560,7 +560,7 @@ class SmartAIAssistant {
         }
 
         // 监听内容输入
-        const contentSelectors = ['#content-editor', '#test-content', 'textarea[name="content"]'];
+        const contentSelectors = ['#content-editor', 'textarea[name="content"]'];
         for (const selector of contentSelectors) {
             const contentEditor = document.querySelector(selector);
             if (contentEditor) {

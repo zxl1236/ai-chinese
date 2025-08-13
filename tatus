@@ -1,0 +1,5 @@
+[33m509b3bb[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m 修复部署问题：创建自包含的index.html
+[33me7864c9[m 添加部署测试页面
+[33m07e11dd[m 解决合并冲突：保留本地README和.gitignore版本
+[33me0d1456[m Initial commit
+[33mf68f374[m 更新AI助手功能：修复点击事件、内容检测和UI抖动问题

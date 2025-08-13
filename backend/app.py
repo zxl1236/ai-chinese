@@ -102,29 +102,7 @@ def get_models():
             "details": str(e)
         }), 500
 
-@app.route('/api/test', methods=['POST'])
-def test_ai():
-    """测试AI响应的简单接口"""
-    try:
-        ollama_request = {
-            "model": DEFAULT_MODEL,
-            "prompt": "你好",
-            "stream": False,
-            "options": {
-                "temperature": 0.7,
-                "num_predict": 50,
-                "num_ctx": 1024,
-                "num_thread": 4
-            }
-        }
-        response = requests.post(f"{OLLAMA_BASE_URL}/api/generate", json=ollama_request, timeout=120)
-        if response.status_code == 200:
-            data = response.json()
-            return jsonify({"success": True, "response": data.get('response', ''), "model": DEFAULT_MODEL})
-        else:
-            return jsonify({"success": False, "error": f"Ollama错误: {response.status_code}"}), 500
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
+ 
 
 @app.route('/api/generate', methods=['POST'])
 def generate_text():
