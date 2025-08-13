@@ -4,7 +4,7 @@
  */
 class App {
   constructor() {
-    this.currentPage = 'home';
+    this.currentPage = 'study';
     this.components = {};
     this.pages = {};
     
@@ -33,7 +33,7 @@ class App {
       this.setupRouting();
       
       // 显示初始页面
-      this.showPage('home', false);
+      this.showPage('study', false);
       
       // 隐藏加载动画
       const loading = document.getElementById('loading');
