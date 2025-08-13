@@ -7,36 +7,7 @@ class WritingModule {
         this.drafts = this.loadDrafts();
         this.autoSaveTimer = null;
         
-        this.elements = {
-            sidebar: document.getElementById('sidebar'),
-            sidebarOverlay: document.getElementById('sidebar-overlay'),
-            mainContent: document.getElementById('main-content'),
-            sidebarToggle: document.getElementById('sidebar-toggle'),
-            toggleIcon: document.getElementById('toggle-icon'),
-            categoryTitle: document.getElementById('current-category-title'),
-            categorySelect: document.getElementById('writing-category'),
-            difficultyTabs: document.getElementById('difficulty-tabs'),
-            topicsList: document.getElementById('topics-list'),
-            topicHeader: document.getElementById('topic-header'),
-            writingArea: document.getElementById('writing-area'),
-            welcomePage: document.getElementById('welcome-page'),
-            helpSidebar: document.getElementById('help-sidebar'),
-            currentTitle: document.getElementById('current-title'),
-            currentDescription: document.getElementById('current-description'),
-            difficultyBadge: document.getElementById('difficulty-badge'),
-            requirements: document.getElementById('requirements'),
-            articleTitle: document.getElementById('article-title'),
-            contentEditor: document.getElementById('content-editor'),
-            wordCount: document.getElementById('word-count'),
-            saveStatus: document.getElementById('save-status'),
-            tipsContent: document.getElementById('tips-content'),
-            outlineContent: document.getElementById('outline-content'),
-            draftsList: document.getElementById('drafts-list'),
-            draftsCount: document.getElementById('drafts-count'),
-            imageInput: document.getElementById('image-input'),
-            // AI助手相关元素
-            
-        };
+        this.elements = this.initializeElements();
 
         this.sidebarCollapsed = false;
 
@@ -65,6 +36,50 @@ class WritingModule {
         };
 
         this.init();
+    }
+
+    initializeElements() {
+        const elements = {
+            sidebar: document.getElementById('sidebar'),
+            sidebarOverlay: document.getElementById('sidebar-overlay'),
+            mainContent: document.getElementById('main-content'),
+            sidebarToggle: document.getElementById('sidebar-toggle'),
+            toggleIcon: document.getElementById('toggle-icon'),
+            categoryTitle: document.getElementById('current-category-title'),
+            categorySelect: document.getElementById('writing-category'),
+            difficultyTabs: document.getElementById('difficulty-tabs'),
+            topicsList: document.getElementById('topics-list'),
+            topicHeader: document.getElementById('topic-header'),
+            writingArea: document.getElementById('writing-area'),
+            welcomePage: document.getElementById('welcome-page'),
+            helpSidebar: document.getElementById('help-sidebar'),
+            currentTitle: document.getElementById('current-title'),
+            currentDescription: document.getElementById('current-description'),
+            difficultyBadge: document.getElementById('difficulty-badge'),
+            requirements: document.getElementById('requirements'),
+            articleTitle: document.getElementById('article-title'),
+            contentEditor: document.getElementById('content-editor'),
+            wordCount: document.getElementById('word-count'),
+            saveStatus: document.getElementById('save-status'),
+            tipsContent: document.getElementById('tips-content'),
+            outlineContent: document.getElementById('outline-content'),
+            draftsList: document.getElementById('drafts-list'),
+            draftsCount: document.getElementById('drafts-count'),
+            imageInput: document.getElementById('image-input')
+        };
+
+        // 验证关键元素是否存在
+        const criticalElements = [
+            'sidebar', 'mainContent', 'difficultyTabs', 'topicsList', 
+            'articleTitle', 'contentEditor'
+        ];
+        
+        const missingElements = criticalElements.filter(key => !elements[key]);
+        if (missingElements.length > 0) {
+            console.warn('⚠️ 以下关键元素未找到:', missingElements);
+        }
+
+        return elements;
     }
 
     init() {
@@ -149,14 +164,16 @@ class WritingModule {
         }
 
         // 子分类标签切换
-        this.elements.difficultyTabs.addEventListener('click', (e) => {
-            if (e.target.classList.contains('difficulty-tab')) {
-                document.querySelectorAll('.difficulty-tab').forEach(t => t.classList.remove('active'));
-                e.target.classList.add('active');
-                this.currentSubCategory = e.target.dataset.difficulty;
-                this.renderTopics();
-            }
-        });
+        if (this.elements.difficultyTabs) {
+            this.elements.difficultyTabs.addEventListener('click', (e) => {
+                if (e.target.classList.contains('difficulty-tab')) {
+                    document.querySelectorAll('.difficulty-tab').forEach(t => t.classList.remove('active'));
+                    e.target.classList.add('active');
+                    this.currentSubCategory = e.target.dataset.difficulty;
+                    this.renderTopics();
+                }
+            });
+        }
 
         // 侧边栏切换
         if (this.elements.sidebarToggle) {
@@ -294,23 +311,25 @@ class WritingModule {
         this.elements.topicsList.innerHTML = topicsHTML;
 
         // 绑定题目点击事件
-        this.elements.topicsList.querySelectorAll('.topic-card').forEach(item => {
-            item.addEventListener('click', (e) => {
-                // 阻止事件冒泡，避免触发侧边栏切换
-                e.stopPropagation();
-                
-                // 移除其他项目的选中状态
-                this.elements.topicsList.querySelectorAll('.topic-card').forEach(i => i.classList.remove('active'));
-                // 添加当前项目的选中状态
-                item.classList.add('active');
-                
-                const topicId = item.dataset.topicId;
-                const topic = topics.find(t => t.id === topicId);
-                if (topic) {
-                    this.selectTopic(topic);
-                }
+        if (this.elements.topicsList) {
+            this.elements.topicsList.querySelectorAll('.topic-card').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    // 阻止事件冒泡，避免触发侧边栏切换
+                    e.stopPropagation();
+                    
+                    // 移除其他项目的选中状态
+                    this.elements.topicsList.querySelectorAll('.topic-card').forEach(i => i.classList.remove('active'));
+                    // 添加当前项目的选中状态
+                    item.classList.add('active');
+                    
+                    const topicId = item.dataset.topicId;
+                    const topic = topics.find(t => t.id === topicId);
+                    if (topic) {
+                        this.selectTopic(topic);
+                    }
+                });
             });
-        });
+        }
     }
 
     getDifficultyClass(difficulty) {
