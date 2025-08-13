@@ -65,17 +65,18 @@ class App {
       ],
       onItemClick: (index, item) => {
         const pageMap = {
-          0: 'home',
+          0: 'study',
           1: 'study',
           2: 'writing',
           3: 'stats',
           4: 'profile'
         };
-        
         const page = pageMap[index];
-        if (page) {
-          this.showPage(page);
+        if (page === 'writing') {
+          window.location.href = 'src/writing-module/writing.html';
+          return;
         }
+        if (page) this.showPage(page);
       },
       container: document.body
     });

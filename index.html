@@ -19,91 +19,9 @@
     <link rel="stylesheet" href="src/styles/pages/home.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🎓 AI语文学习助手</h1>
-            <p>智能化语文学习平台，提供个性化学习方案和全面的语文能力训练</p>
-        </div>
-        
-        <div class="status">
-            ✅ <strong>部署成功！</strong> 网站已成功部署到Netlify
-        </div>
-        
-        <div class="features">
-            <div class="feature-card">
-                <h3>🤖 AI智能推荐</h3>
-                <p>基于学习数据的个性化推荐系统，为你量身定制学习计划</p>
-            </div>
-            
-            <div class="feature-card">
-                <h3>📊 能力分析</h3>
-                <p>全方位的学习能力评估和可视化展示，清晰了解学习进度</p>
-            </div>
-            
-            <div class="feature-card">
-                <h3>📚 模块化学习</h3>
-                <p>现代文阅读、文言文学习、写作训练等完整学习体系</p>
-            </div>
-            
-            <div class="feature-card">
-                <h3>📱 响应式设计</h3>
-                <p>完美适配移动端和桌面端，随时随地学习</p>
-            </div>
-            
-            <div class="feature-card">
-                <h3>⚡ 高性能</h3>
-                <p>优化的加载速度和流畅的用户体验</p>
-            </div>
-            
-            <div class="feature-card">
-                <h3>🎯 智能写作助手</h3>
-                <p>AI辅助写作，提供写作建议和内容优化</p>
-            </div>
-        </div>
-        
-        <div class="cta-buttons">
-            <a href="app.html" class="btn">🚀 开始学习</a>
-        </div>
-        
-        <div class="footer">
-            <p>🌐 网站地址：ai-chinese.netlify.app</p>
-            <p>📅 部署时间：2025年1月</p>
-            <p>🚀 技术栈：HTML5 + CSS3 + JavaScript + Netlify</p>
-        </div>
-    </div>
-
-    <!-- JavaScript脚本引用 -->
-    <script src="src/data/config.js"></script>
-    <script src="src/scripts/utils/helpers.js"></script>
-    <script src="src/scripts/utils/storage.js"></script>
-    
-    <!-- 首页特有的脚本 -->
     <script>
-        // 简单的页面交互
-        document.addEventListener('DOMContentLoaded', function() {
-            // 添加卡片悬停效果
-            const cards = document.querySelectorAll('.feature-card');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-10px) scale(1.02)';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(-5px) scale(1)';
-                });
-            });
-            
-            // 按钮点击反馈
-            const buttons = document.querySelectorAll('.btn');
-            buttons.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    this.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 150);
-                });
-            });
-        });
+      // 立即重定向到应用主页
+      window.location.replace('app.html');
     </script>
 </body>
 </html>

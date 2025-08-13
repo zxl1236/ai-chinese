@@ -19,6 +19,12 @@
   from = "/*"
   to = "/app.html"
   status = 200
+
+# 允许直接访问写作模块的独立页面与资源
+[[redirects]]
+  from = "/src/writing-module/*"
+  to = "/src/writing-module/:splat"
+  status = 200
   
 # 头部设置
 [[headers]]
