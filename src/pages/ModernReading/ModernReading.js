@@ -232,18 +232,20 @@ class ModernReadingPage {
   }
 
   initTextMarker() {
-    // 销毁之前的标记工具
-    if (this.textMarker) {
-      const oldToolbar = this.container.querySelector('.text-marker-toolbar');
-      if (oldToolbar) {
-        oldToolbar.remove();
-      }
-    }
+    // 销毁之前的标记工具和定时器
+    this.destroyTextMarker();
 
     // 为整个练习区域创建标记工具（包括文章和题目）
     const markableContainer = this.container.querySelector('#modern-tab-practice');
     if (markableContainer && window.TextMarker) {
       this.textMarker = new TextMarker(markableContainer);
+      
+      // 设置标记工具的配置
+      this.textMarker.config = {
+        enableAutoSave: true,
+        saveInterval: 10000, // 10秒自动保存
+        showTooltips: true
+      };
       
       // 尝试恢复之前的标记
       const article = this.articles[this.currentArticle];
@@ -252,31 +254,83 @@ class ModernReadingPage {
       
       // 自动保存标记
       this.autoSaveMarkings();
+      
+      // 绑定标记工具事件
+      this.bindMarkerEvents();
+      
+      console.log('✅ TextMarker初始化完成');
+    } else {
+      console.warn('⚠️ TextMarker类未找到或容器不存在');
+    }
+  }
+
+  destroyTextMarker() {
+    if (this.textMarker) {
+      // 保存当前标记
+      const article = this.articles[this.currentArticle];
+      const storageKey = `${article.title}_q${this.currentQuestion}`;
+      this.textMarker.saveMarkings(storageKey);
+      
+      // 清理工具栏
+      const oldToolbar = this.container.querySelector('.text-marker-toolbar');
+      if (oldToolbar) {
+        oldToolbar.remove();
+      }
+      
+      this.textMarker = null;
+    }
+    
+    // 清理定时器
+    if (this.markingSaveTimer) {
+      clearInterval(this.markingSaveTimer);
+      this.markingSaveTimer = null;
     }
   }
 
   autoSaveMarkings() {
     if (!this.textMarker) return;
     
-    // 每30秒自动保存一次
+    // 清理之前的定时器
     if (this.markingSaveTimer) {
       clearInterval(this.markingSaveTimer);
     }
     
+    // 每10秒自动保存一次
     this.markingSaveTimer = setInterval(() => {
-      const article = this.articles[this.currentArticle];
-      const storageKey = `${article.title}_q${this.currentQuestion}`;
-      this.textMarker.saveMarkings(storageKey);
-    }, 30000);
+      if (this.textMarker) {
+        const article = this.articles[this.currentArticle];
+        const storageKey = `${article.title}_q${this.currentQuestion}`;
+        this.textMarker.saveMarkings(storageKey);
+      }
+    }, 10000);
+  }
+
+  bindMarkerEvents() {
+    if (!this.textMarker) return;
+    
+    // 监听标记模式切换
+    this.textMarker.addEventListener('markingToggled', (event) => {
+      const readingTip = this.container.querySelector('.reading-tip');
+      if (readingTip) {
+        if (event.detail.isMarking) {
+          readingTip.classList.add('active-marking');
+          readingTip.querySelector('.tip-text').textContent = '标记模式开启';
+        } else {
+          readingTip.classList.remove('active-marking');
+          readingTip.querySelector('.tip-text').textContent = '圈点读题';
+        }
+      }
+    });
   }
 
   renderQuestion(question, index) {
     const baseHTML = `
       <div class="question-header">
         <div class="practice-question">${question.stem}</div>
-        <div class="reading-tip">
+        <div class="reading-tip" onclick="this.closest('.modern-reading-content').querySelector('.text-marker-toolbar .toggle-btn')?.click()">
           <span class="tip-icon">👁️</span>
           <span class="tip-text">圈点读题</span>
+          <span class="tip-action">点击启动</span>
         </div>
       </div>
       ${this.renderQuestionContent(question)}
@@ -576,6 +630,9 @@ class ModernReadingPage {
   }
 
   destroy() {
+    // 清理标记工具
+    this.destroyTextMarker();
+    
     if (this.container) {
       this.container.innerHTML = '';
     }

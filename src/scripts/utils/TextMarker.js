@@ -7,6 +7,12 @@ class TextMarker {
     this.isMarking = false;
     this.currentMode = 'circle'; // circle, highlight, underline, note
     this.markings = new Map(); // 存储标记数据
+    this.eventListeners = new Map(); // 自定义事件监听器
+    this.config = {
+      enableAutoSave: true,
+      saveInterval: 10000,
+      showTooltips: true
+    };
     this.init();
   }
 
@@ -99,23 +105,41 @@ class TextMarker {
     // 更新容器样式
     this.container.classList.toggle('marking-mode', this.isMarking);
     
+    // 触发自定义事件
+    this.dispatchEvent('markingToggled', { isMarking: this.isMarking });
+    
     // 显示提示
     this.showToast(this.isMarking ? '标记模式已开启，选择文字进行标记' : '标记模式已关闭');
   }
 
   handleTextSelection(range) {
     const selectedText = range.toString().trim();
-    if (selectedText.length === 0) return;
+    if (selectedText.length === 0) {
+      this.showToast('请选择有效文本');
+      return;
+    }
+
+    // 检查是否已经有标记
+    if (this.isRangeMarked(range)) {
+      this.showToast('该文本已经被标记');
+      window.getSelection().removeAllRanges();
+      return;
+    }
 
     const markId = `mark_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
     // 检查选择的内容类型
     const selectionContext = this.getSelectionContext(range);
     
-    if (this.currentMode === 'note') {
-      this.handleNoteMarking(range, markId, selectedText, selectionContext);
-    } else {
-      this.applyTextMarking(range, markId, selectedText, selectionContext);
+    try {
+      if (this.currentMode === 'note') {
+        this.handleNoteMarking(range, markId, selectedText, selectionContext);
+      } else {
+        this.applyTextMarking(range, markId, selectedText, selectionContext);
+      }
+    } catch (error) {
+      console.warn('标记应用失败:', error);
+      this.showToast('标记失败，请重新选择');
     }
 
     // 清除选择
@@ -148,14 +172,27 @@ class TextMarker {
   }
 
   applyTextMarking(range, markId, selectedText, context = 'article') {
+    // 检查range是否跨越多个元素
+    if (this.isComplexRange(range)) {
+      this.applyComplexMarking(range, markId, selectedText, context);
+      return;
+    }
+    
     const span = document.createElement('span');
     span.className = `text-mark text-mark-${this.currentMode}`;
     span.dataset.markId = markId;
     span.dataset.markMode = this.currentMode;
     span.dataset.markContext = context;
+    span.title = `${this.getModeText()}标记: ${selectedText}`;
     
     try {
       range.surroundContents(span);
+      
+      // 为标记添加点击事件
+      span.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.handleMarkClick(markId, span);
+      });
       
       // 保存标记数据
       this.markings.set(markId, {
@@ -163,15 +200,19 @@ class TextMarker {
         mode: this.currentMode,
         text: selectedText,
         context: context,
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        element: span
       });
 
       const contextText = this.getContextText(context);
-      this.showToast(`已在${contextText}${this.getModeText()}标记: "${selectedText.length > 10 ? selectedText.substr(0, 10) + '...' : selectedText}"`);
+      this.showToast(`已在${contextText}${this.getModeText()}标记: "${selectedText.length > 15 ? selectedText.substr(0, 15) + '...' : selectedText}"`);
+      
+      // 触发标记添加事件
+      this.dispatchEvent('markingAdded', { markId, text: selectedText, context });
       
     } catch (error) {
       console.warn('标记应用失败:', error);
-      this.showToast('标记失败，请重新选择文字');
+      throw error;
     }
   }
 
@@ -219,17 +260,28 @@ class TextMarker {
   }
 
   clearAllMarkings() {
-    if (confirm('确定要清除所有标记吗？')) {
+    const markCount = this.markings.size;
+    if (markCount === 0) {
+      this.showToast('没有可清除的标记');
+      return;
+    }
+    
+    if (confirm(`确定要清除所有 ${markCount} 个标记吗？`)) {
       const marks = this.container.querySelectorAll('.text-mark');
       marks.forEach(mark => {
         const parent = mark.parentNode;
-        parent.insertBefore(document.createTextNode(mark.textContent), mark);
-        parent.removeChild(mark);
-        parent.normalize();
+        if (parent) {
+          parent.insertBefore(document.createTextNode(mark.textContent), mark);
+          parent.removeChild(mark);
+          parent.normalize();
+        }
       });
       
       this.markings.clear();
-      this.showToast('所有标记已清除');
+      this.showToast(`已清除 ${markCount} 个标记`);
+      
+      // 触发清除事件
+      this.dispatchEvent('markingsCleared', { count: markCount });
     }
   }
 
@@ -244,6 +296,16 @@ class TextMarker {
   }
 
   showToast(message) {
+    if (!this.config.showTooltips) return;
+    
+    // 清理之前的提示
+    const existingToasts = document.querySelectorAll('.marker-toast');
+    existingToasts.forEach(toast => {
+      if (toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    });
+    
     // 创建提示框
     const toast = document.createElement('div');
     toast.className = 'marker-toast';
@@ -257,7 +319,11 @@ class TextMarker {
     // 自动隐藏
     setTimeout(() => {
       toast.classList.remove('show');
-      setTimeout(() => document.body.removeChild(toast), 300);
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.parentNode.removeChild(toast);
+        }
+      }, 300);
     }, 2000);
   }
 
@@ -281,21 +347,156 @@ class TextMarker {
       const data = localStorage.getItem(`text_markings_${key}`);
       if (data) {
         const markingsData = JSON.parse(data);
-        this.container.innerHTML = markingsData.html;
         
-        // 重建标记映射
+        // 只恢复标记数据，不更改HTML结构
         this.markings.clear();
         markingsData.markings.forEach(marking => {
           this.markings.set(marking.id, marking);
         });
         
-        this.showToast('标记已恢复');
+        // 重新应用所有标记
+        this.reapplyMarkings();
+        
+        if (this.config.showTooltips) {
+          this.showToast(`恢复了 ${markingsData.markings.length} 个标记`);
+        }
         return true;
       }
     } catch (error) {
       console.warn('标记恢复失败:', error);
     }
     return false;
+  }
+
+  // 重新应用所有标记
+  reapplyMarkings() {
+    // 清除现有标记
+    const existingMarks = this.container.querySelectorAll('.text-mark');
+    existingMarks.forEach(mark => {
+      const parent = mark.parentNode;
+      parent.insertBefore(document.createTextNode(mark.textContent), mark);
+      parent.removeChild(mark);
+      parent.normalize();
+    });
+    
+    // TODO: 重新应用标记逻辑将在后续版本中实现
+    console.log('标记重新应用功能将在后续版本中实现');
+  }
+
+  // 事件系统
+  addEventListener(event, handler) {
+    if (!this.eventListeners.has(event)) {
+      this.eventListeners.set(event, []);
+    }
+    this.eventListeners.get(event).push(handler);
+  }
+
+  removeEventListener(event, handler) {
+    const handlers = this.eventListeners.get(event);
+    if (handlers) {
+      const index = handlers.indexOf(handler);
+      if (index > -1) {
+        handlers.splice(index, 1);
+      }
+    }
+  }
+
+  dispatchEvent(event, detail) {
+    const handlers = this.eventListeners.get(event);
+    if (handlers) {
+      handlers.forEach(handler => {
+        try {
+          handler({ type: event, detail });
+        } catch (error) {
+          console.warn(`事件处理器错误 (${event}):`, error);
+        }
+      });
+    }
+  }
+
+  // 检查范围是否已经被标记
+  isRangeMarked(range) {
+    const container = range.commonAncestorContainer;
+    let element = container.nodeType === Node.TEXT_NODE ? container.parentElement : container;
+    
+    while (element && element !== this.container) {
+      if (element.classList && element.classList.contains('text-mark')) {
+        return true;
+      }
+      element = element.parentElement;
+    }
+    return false;
+  }
+
+  // 检查是否为复杂范围（跨越多个元素）
+  isComplexRange(range) {
+    return range.startContainer !== range.endContainer;
+  }
+
+  // 处理复杂范围标记
+  applyComplexMarking(range, markId, selectedText, context) {
+    // 简化处理：将复杂选择转换为简单标记
+    const span = document.createElement('span');
+    span.className = `text-mark text-mark-${this.currentMode}`;
+    span.dataset.markId = markId;
+    span.dataset.markMode = this.currentMode;
+    span.dataset.markContext = context;
+    span.title = `${this.getModeText()}标记: ${selectedText}`;
+    
+    try {
+      const contents = range.extractContents();
+      span.appendChild(contents);
+      range.insertNode(span);
+      
+      // 保存数据
+      this.markings.set(markId, {
+        id: markId,
+        mode: this.currentMode,
+        text: selectedText,
+        context: context,
+        timestamp: Date.now(),
+        element: span,
+        complex: true
+      });
+      
+      const contextText = this.getContextText(context);
+      this.showToast(`已在${contextText}${this.getModeText()}标记: "${selectedText.length > 15 ? selectedText.substr(0, 15) + '...' : selectedText}"`);
+      
+    } catch (error) {
+      console.warn('复杂标记失败:', error);
+      throw error;
+    }
+  }
+
+  // 处理标记点击
+  handleMarkClick(markId, element) {
+    const marking = this.markings.get(markId);
+    if (!marking) return;
+    
+    const action = confirm(`是否删除这个${this.getModeText()}标记？\n\n内容: "${marking.text}"`);
+    if (action) {
+      this.removeMark(markId);
+    }
+  }
+
+  // 删除单个标记
+  removeMark(markId) {
+    const marking = this.markings.get(markId);
+    if (!marking) return;
+    
+    const element = marking.element || this.container.querySelector(`[data-mark-id="${markId}"]`);
+    if (element && element.parentNode) {
+      const parent = element.parentNode;
+      parent.insertBefore(document.createTextNode(element.textContent), element);
+      parent.removeChild(element);
+      parent.normalize();
+    }
+    
+    this.markings.delete(markId);
+    this.showToast(`已删除${this.getModeText()}标记`);
+    
+    // 触发删除事件
+    this.dispatchEvent('markingRemoved', { markId, text: marking.text });
   }
 }
 

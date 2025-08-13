@@ -299,6 +299,10 @@
   border: 1px solid #c8e6c9;
   white-space: nowrap;
   animation: tipPulse 2s ease-in-out infinite;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .tip-icon {
@@ -309,6 +313,16 @@
   font-size: var(--font-xs);
   color: #2e7d32;
   font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.tip-action {
+  font-size: 10px;
+  color: #66bb6a;
+  font-weight: normal;
+  opacity: 0.8;
+  margin-left: var(--space-xs);
+  transition: all 0.3s ease;
 }
 
 @keyframes tipPulse {
@@ -318,6 +332,51 @@
   50% { 
     box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
   }
+}
+
+/* 圈点读题提示交互效果 */
+.reading-tip:hover {
+  background: linear-gradient(135deg, #c8e6c9 0%, #e8f5e8 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.reading-tip:hover .tip-action {
+  opacity: 1;
+  color: #2e7d32;
+}
+
+/* 标记模式激活状态 */
+.reading-tip.active-marking {
+  background: linear-gradient(135deg, #bbdefb 0%, #e3f2fd 100%);
+  border-color: #90caf9;
+  animation: markingActive 1.5s ease-in-out infinite;
+}
+
+.reading-tip.active-marking .tip-icon {
+  animation: rotate 2s linear infinite;
+}
+
+.reading-tip.active-marking .tip-text {
+  color: #1976d2;
+}
+
+.reading-tip.active-marking .tip-action {
+  color: #42a5f5;
+}
+
+@keyframes markingActive {
+  0%, 100% { 
+    box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.4);
+  }
+  50% { 
+    box-shadow: 0 0 0 6px rgba(33, 150, 243, 0.1);
+  }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* 选择题选项 */
@@ -583,6 +642,11 @@
   
   .reading-tip {
     align-self: flex-end;
+    flex-shrink: 0;
+  }
+  
+  .reading-tip .tip-action {
+    display: none;
   }
   
   .modern-tab-nav {
