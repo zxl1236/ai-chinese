@@ -158,8 +158,8 @@ class SmartAIAssistant {
                         <span>AI写作助手</span>
                     </div>
                     <div class="ai-controls">
-                        <button class="ai-minimize" id="ai-minimize" title="最小化">−</button>
-                        <button class="ai-close" id="ai-close" title="关闭">×</button>
+                        <button type="button" class="ai-minimize" id="ai-minimize" title="最小化" aria-label="最小化AI助手">−</button>
+                        <button type="button" class="ai-close" id="ai-close" title="关闭" aria-label="关闭AI助手">×</button>
                     </div>
                 </div>
 

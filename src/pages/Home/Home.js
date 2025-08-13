@@ -26,7 +26,7 @@ class HomePage {
                 <div class="rec-main">现代文阅读理解</div>
                 <div class="rec-sub">基于你的薄弱点分析</div>
               </div>
-              <button class="rec-btn" data-type="reading">开始</button>
+              <button type="button" class="rec-btn" data-type="reading" aria-label="开始现代文阅读训练">开始</button>
             </div>
             <div class="rec-item">
               <span class="rec-icon">✍️</span>
@@ -34,7 +34,7 @@ class HomePage {
                 <div class="rec-main">议论文写作练习</div>
                 <div class="rec-sub">提升论证逻辑能力</div>
               </div>
-              <button class="rec-btn" data-type="writing">开始</button>
+              <button type="button" class="rec-btn" data-type="writing" aria-label="开始议论文写作练习">开始</button>
             </div>
           </div>
         </div>

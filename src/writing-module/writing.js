@@ -101,24 +101,38 @@ class WritingModule {
 
     loadWritingData() {
         // 检查全局写作题目数据是否已加载
-        if (typeof writingPrompts !== 'undefined') {
+        if (typeof writingPrompts !== 'undefined' && writingPrompts) {
             this.writingData = writingPrompts;
             this.updateCategoryDisplay();
             this.renderSubCategories();
             this.renderTopics();
+            console.log('✅ 写作题目数据加载成功');
         } else {
-            console.error('写作题目数据未加载，尝试延迟加载...');
-            // 延迟重试加载
-            setTimeout(() => {
-                if (typeof writingPrompts !== 'undefined') {
-                    this.writingData = writingPrompts;
-                    this.updateCategoryDisplay();
-                    this.renderSubCategories();
-                    this.renderTopics();
-                } else {
-                    this.showError('写作题目数据加载失败，请检查网络连接或刷新页面重试');
-                }
-            }, 1000);
+            console.warn('⚠️ 写作题目数据未加载，尝试延迟加载...');
+            // 延迟重试加载，增加重试次数
+            let retryCount = 0;
+            const maxRetries = 3;
+            
+            const retryLoad = () => {
+                retryCount++;
+                setTimeout(() => {
+                    if (typeof writingPrompts !== 'undefined' && writingPrompts) {
+                        this.writingData = writingPrompts;
+                        this.updateCategoryDisplay();
+                        this.renderSubCategories();
+                        this.renderTopics();
+                        console.log('✅ 写作题目数据延迟加载成功');
+                    } else if (retryCount < maxRetries) {
+                        console.warn(`⚠️ 第${retryCount}次重试失败，继续重试...`);
+                        retryLoad();
+                    } else {
+                        console.error('❌ 写作题目数据加载失败，已达到最大重试次数');
+                        this.showError('写作题目数据加载失败，请刷新页面重试或检查网络连接');
+                    }
+                }, 1000 * retryCount); // 递增延迟时间
+            };
+            
+            retryLoad();
         }
     }
 

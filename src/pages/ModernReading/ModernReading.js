@@ -110,10 +110,10 @@ class ModernReadingPage {
       <div class="modern-reading-content">
         <!-- Tab导航 -->
         <div class="modern-tab-nav">
-          <button class="modern-tab ${this.currentTab === 'practice' ? 'active' : ''}" data-tab="practice">题目练习</button>
-          <button class="modern-tab ${this.currentTab === 'article' ? 'active' : ''}" data-tab="article">文章阅读与解析</button>
-          <button class="modern-tab ${this.currentTab === 'record' ? 'active' : ''}" data-tab="record">训练记录/进度</button>
-          <button class="modern-tab ${this.currentTab === 'bank' ? 'active' : ''}" data-tab="bank">题库管理</button>
+          <button type="button" class="modern-tab ${this.currentTab === 'practice' ? 'active' : ''}" data-tab="practice" aria-label="切换到题目练习模块">题目练习</button>
+          <button type="button" class="modern-tab ${this.currentTab === 'article' ? 'active' : ''}" data-tab="article" aria-label="切换到文章阅读与解析模块">文章阅读与解析</button>
+          <button type="button" class="modern-tab ${this.currentTab === 'record' ? 'active' : ''}" data-tab="record" aria-label="切换到训练记录进度模块">训练记录/进度</button>
+          <button type="button" class="modern-tab ${this.currentTab === 'bank' ? 'active' : ''}" data-tab="bank" aria-label="切换到题库管理模块">题库管理</button>
         </div>
 
         <!-- 题目练习内容 -->
@@ -179,7 +179,7 @@ class ModernReadingPage {
     return `
       <!-- 文章选择区 -->
       <div class="article-selector">
-        <button class="practice-article-tab active" data-article="0">《江上》</button>
+        <button type="button" class="practice-article-tab active" data-article="0" aria-label="选择江上文章">《江上》</button>
       </div>
 
       <!-- 当前文章内容 -->
@@ -187,7 +187,7 @@ class ModernReadingPage {
         <div class="practice-article-header">
           <div class="practice-article-title">${article.title}</div>
           <div class="practice-article-author">作者：${article.author}</div>
-          <button class="ai-summary-toggle" id="ai-summary-toggle">
+          <button type="button" class="ai-summary-toggle" id="ai-summary-toggle" aria-label="切换阅读模式">
             ${this.showAISummary ? '📖 专注阅读' : '📋 六分阅读法'}
           </button>
         </div>
@@ -213,7 +213,7 @@ class ModernReadingPage {
       <!-- 题号Tab -->
       <div class="question-nav">
         ${article.questions.map((q, index) => 
-          `<button class="practice-q-tab ${index === this.currentQuestion ? 'active' : ''}" data-q="${index}">${index + 1}</button>`
+          `<button type="button" class="practice-q-tab ${index === this.currentQuestion ? 'active' : ''}" data-q="${index}" aria-label="选择第${index + 1}题">${index + 1}</button>`
         ).join('')}
       </div>
 
@@ -284,14 +284,14 @@ class ModernReadingPage {
         ${question.aiTip ? `<div class="ai-tip">${question.aiTip}</div>` : ''}
       </div>
       <div class="question-actions">
-        <button class="practice-submit-btn">🚀 AI智能评分</button>
-        <button class="practice-explain-btn">🎯 查看AI解析</button>
+        <button type="button" class="practice-submit-btn" aria-label="提交答案进行AI智能评分">🚀 AI智能评分</button>
+        <button type="button" class="practice-explain-btn" aria-label="查看题目AI解析">🎯 查看AI解析</button>
       </div>
       <div class="practice-feedback" style="display:none;"></div>
       <div class="practice-explain" style="display:none;">
         <div class="ai-explanation">${question.explanation}</div>
       </div>
-      <button class="practice-reset-btn" style="display:none;">🔄 重新作答</button>
+      <button type="button" class="practice-reset-btn" style="display:none;" aria-label="重新作答当前题目">🔄 重新作答</button>
     `;
     return baseHTML;
   }
