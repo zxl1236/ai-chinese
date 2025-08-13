@@ -113,7 +113,7 @@ class SmartAIAssistant {
 
         const htmlPath = window.location.pathname.includes('writing-module') 
             ? 'smart-ai-assistant.html' 
-            : 'src/writing-module/smart-ai-assistant.html';
+            : './smart-ai-assistant.html';
             
         fetch(htmlPath)
             .then(response => {
