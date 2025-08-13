@@ -970,43 +970,103 @@ class WritingModule {
 
 }
 
+// 动态加载写作题目数据
+async function loadWritingData() {
+    try {
+        // 如果已经有数据，直接返回
+        if (typeof writingPrompts !== 'undefined') {
+            return writingPrompts;
+        }
+        
+        // 尝试多个可能的路径
+        const possiblePaths = [
+            '../data/writing-prompts.js',
+            './data/writing-prompts.js', 
+            '/src/data/writing-prompts.js',
+            'src/data/writing-prompts.js'
+        ];
+        
+        for (const path of possiblePaths) {
+            try {
+                console.log(`🔍 尝试从路径加载数据: ${path}`);
+                const script = document.createElement('script');
+                script.src = path;
+                
+                // 返回一个Promise来等待脚本加载
+                await new Promise((resolve, reject) => {
+                    script.onload = () => {
+                        if (typeof writingPrompts !== 'undefined') {
+                            console.log(`✅ 成功从 ${path} 加载数据`);
+                            resolve();
+                        } else {
+                            reject(new Error('数据未定义'));
+                        }
+                    };
+                    script.onerror = () => reject(new Error('脚本加载失败'));
+                    document.head.appendChild(script);
+                    
+                    // 设置超时
+                    setTimeout(() => reject(new Error('加载超时')), 3000);
+                });
+                
+                return writingPrompts;
+            } catch (error) {
+                console.log(`❌ 从 ${path} 加载失败:`, error.message);
+                continue;
+            }
+        }
+        
+        throw new Error('所有路径都加载失败');
+    } catch (error) {
+        console.error('❌ 写作题目数据加载失败:', error);
+        throw error;
+    }
+}
+
 // 页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     console.log('🚀 开始初始化写作模块...');
     
-    // 延迟初始化，确保所有脚本都已加载
-    setTimeout(() => {
-        if (typeof writingPrompts !== 'undefined') {
-            window.writingModule = new WritingModule();
-            console.log('✅ 写作模块已加载，AI助手将自动启动');
-        } else {
-            console.error('❌ 写作题目数据未加载，请检查writing-prompts.js文件');
-            // 显示错误信息给用户
-            const errorDiv = document.createElement('div');
-            errorDiv.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: #f8d7da;
-                color: #721c24;
-                padding: 20px;
-                border-radius: 8px;
-                border: 1px solid #f5c6cb;
-                z-index: 10000;
-                text-align: center;
-            `;
-            errorDiv.innerHTML = `
-                <h3>⚠️ 加载失败</h3>
-                <p>写作题目数据加载失败，请检查：</p>
-                <ul style="text-align: left;">
-                    <li>网络连接是否正常</li>
-                    <li>是否从正确的路径访问页面</li>
-                    <li>浏览器控制台是否有错误信息</li>
-                </ul>
-                <button onclick="location.reload()" style="margin-top: 10px; padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">刷新页面</button>
-            `;
-            document.body.appendChild(errorDiv);
-        }
-    }, 500);
+    try {
+        // 先尝试加载数据
+        await loadWritingData();
+        
+        // 数据加载成功后初始化模块
+        window.writingModule = new WritingModule();
+        console.log('✅ 写作模块已加载，AI助手将自动启动');
+        
+    } catch (error) {
+        console.error('❌ 初始化失败:', error);
+        
+        // 显示错误信息给用户
+        const errorDiv = document.createElement('div');
+        errorDiv.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #f5c6cb;
+            z-index: 10000;
+            text-align: center;
+            max-width: 400px;
+        `;
+        errorDiv.innerHTML = `
+            <h3>⚠️ 数据加载失败</h3>
+            <p>写作题目数据无法加载，可能的原因：</p>
+            <ul style="text-align: left; margin: 10px 0;">
+                <li>网络连接异常</li>
+                <li>文件路径问题</li>
+                <li>浏览器安全限制</li>
+            </ul>
+            <div style="margin-top: 15px;">
+                <button onclick="location.reload()" style="margin-right: 10px; padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">重新加载</button>
+                <button onclick="this.parentElement.parentElement.remove()" style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">关闭</button>
+            </div>
+        `;
+        document.body.appendChild(errorDiv);
+    }
 });

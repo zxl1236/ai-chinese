@@ -205,8 +205,27 @@
 
 
     <!-- 加载数据文件 -->
-    <script src="../data/writing-prompts.js"></script>
+    <script src="../data/writing-prompts.js" onerror="console.warn('主数据文件加载失败，将尝试动态加载')"></script>
     <script src="./writing.js"></script>
     <script src="./smart-ai-assistant.js"></script>
+    
+    <!-- 错误处理脚本 -->
+    <script>
+        // 全局错误处理
+        window.addEventListener('error', function(event) {
+            if (event.filename && event.filename.includes('writing-prompts.js')) {
+                console.warn('⚠️ 数据文件加载出现问题，写作模块将尝试动态加载');
+            }
+        });
+        
+        // 检查数据是否成功加载
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                if (typeof writingPrompts === 'undefined') {
+                    console.warn('⚠️ 写作题目数据未在预期时间内加载，稍后将尝试动态加载');
+                }
+            }, 1000);
+        });
+    </script>
 </body>
 </html>
