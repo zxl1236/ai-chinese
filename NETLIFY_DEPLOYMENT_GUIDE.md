@@ -1,122 +1,125 @@
 # 🚀 Netlify 部署指南
 
-## 📋 问题说明
+## 📋 部署前检查清单
 
-由于项目重构，原有的Netlify配置被删除，导致部署失败。本指南将帮助你重新配置Netlify部署。
+### ✅ 必需文件
+- [x] `netlify.toml` - Netlify 配置文件
+- [x] `frontend/package.json` - 前端依赖配置
+- [x] `frontend/craco.config.js` - Craco 配置文件
+- [x] `frontend/src/` - 前端源代码
+- [x] `frontend/public/` - 静态资源
 
-## 🔧 重新配置步骤
+### 🔧 关键配置说明
 
-### 1. 本地构建测试
+#### 1. 构建命令修复
+**问题**: 原始构建命令使用了 Windows 语法 `SET NODE_OPTIONS=...`
+**解决方案**: 使用 Linux 兼容语法 `NODE_OPTIONS=...`
 
-首先在本地测试构建是否正常：
+```toml
+# ✅ 正确的构建命令
+command = "cd frontend && npm install && NODE_OPTIONS=--openssl-legacy-provider npm run build"
+
+# ❌ 错误的构建命令 (Windows 语法)
+command = "cd frontend && SET NODE_OPTIONS=--openssl-legacy-provider && craco build"
+```
+
+#### 2. 环境变量设置
+```toml
+[build.environment]
+  NODE_VERSION = "18"
+  NODE_OPTIONS = "--openssl-legacy-provider"
+```
+
+#### 3. 发布目录
+```toml
+[build]
+  publish = "frontend/build"
+```
+
+## 🚀 部署步骤
+
+### 方法 1: Netlify Dashboard (推荐)
+
+1. **登录 [Netlify Dashboard](https://app.netlify.com/)**
+2. **选择你的项目**
+3. **进入 "Site settings" → "Build & deploy"**
+4. **更新构建设置**:
+   - Build command: `cd frontend && npm install && NODE_OPTIONS=--openssl-legacy-provider npm run build`
+   - Publish directory: `frontend/build`
+   - Node version: `18`
+5. **点击 "Trigger deploy"**
+
+### 方法 2: Netlify CLI
 
 ```bash
-# 进入前端目录
-cd frontend
+# 安装 Netlify CLI
+npm install -g netlify-cli
 
-# 安装依赖
-npm install
+# 登录
+netlify login
 
-# 构建生产版本
-npm run build
+# 部署
+netlify deploy --prod
 ```
 
-### 2. 检查构建结果
+## 🔍 常见问题解决
 
-构建成功后，应该生成 `frontend/build/` 目录，包含：
-- `index.html` - 主页面
-- `static/` - 静态资源
-- 其他构建文件
+### 问题 1: 构建命令失败
+**错误**: `SET NODE_OPTIONS=--openssl-legacy-provider && craco build`
+**原因**: Windows 语法在 Linux 环境中不适用
+**解决**: 使用 `NODE_OPTIONS=--openssl-legacy-provider npm run build`
 
-### 3. Netlify重新配置
+### 问题 2: Craco 未找到
+**错误**: `craco: command not found`
+**原因**: 直接调用 craco 而不是通过 npm script
+**解决**: 使用 `npm run build` 而不是 `craco build`
 
-#### 方法一：通过Netlify Dashboard
+### 问题 3: 依赖安装失败
+**错误**: `npm install` 失败
+**解决**: 确保 `package.json` 和 `package-lock.json` 已提交
 
-1. 登录 [Netlify Dashboard](https://app.netlify.com/)
-2. 选择你的项目
-3. 进入 "Site settings" → "Build & deploy"
-4. 更新以下设置：
-   - **Build command**: `cd frontend && npm run build`
-   - **Publish directory**: `frontend/build`
-   - **Node version**: `18`
+### 问题 4: 构建目录不存在
+**错误**: `publish directory does not exist`
+**解决**: 确保构建命令正确生成 `frontend/build` 目录
 
-#### 方法二：通过GitHub集成
-
-1. 在Netlify Dashboard中重新连接GitHub仓库
-2. 选择 `main` 分支
-3. 设置构建命令：`cd frontend && npm run build`
-4. 设置发布目录：`frontend/build`
-
-### 4. 环境变量配置
-
-在Netlify Dashboard中添加环境变量：
+## 📁 项目结构
 
 ```
-NODE_VERSION=18
-REACT_APP_API_URL=https://your-backend-domain.com
+AI语文/
+├── netlify.toml          # Netlify 配置
+├── deploy-netlify.bat    # Windows 部署脚本
+├── frontend/
+│   ├── package.json      # 前端依赖
+│   ├── craco.config.js   # Craco 配置
+│   ├── src/              # 源代码
+│   ├── public/           # 静态资源
+│   └── build/            # 构建输出 (部署后生成)
+└── NETLIFY_DEPLOYMENT_GUIDE.md
 ```
 
-### 5. 重定向规则
+## 🎯 验证部署
 
-确保以下重定向规则已配置（通过 `netlify.toml` 或Dashboard）：
+1. **检查构建日志**: 确保没有错误
+2. **验证路由**: 测试 React Router 是否工作
+3. **检查 API**: 确认 API 重定向配置正确
+4. **性能测试**: 检查加载速度和缓存
 
-```
-/*    /index.html   200
-/api/*    https://your-backend-domain.com/api/:splat    200
-```
+## 🔄 更新部署
 
-## 🚨 常见问题解决
-
-### 问题1：构建失败
-- 检查Node.js版本是否为18+
-- 确保所有依赖已安装
-- 查看构建日志中的错误信息
-
-### 问题2：页面404错误
-- 检查重定向规则是否正确
-- 确保 `/*` 重定向到 `/index.html`
-- 验证发布目录设置
-
-### 问题3：API请求失败
-- 检查后端API地址是否正确
-- 确认CORS配置
-- 验证重定向规则
-
-## 📁 文件结构
-
-```
-项目根目录/
-├── netlify.toml          # Netlify配置文件
-├── deploy-netlify.bat    # 部署脚本
-├── frontend/             # 前端代码
-│   ├── build/           # 构建输出（部署时使用）
-│   ├── src/             # 源代码
-│   └── package.json     # 依赖配置
-└── backend/              # 后端代码
-```
-
-## 🔄 自动部署
-
-配置完成后，每次推送到 `main` 分支，Netlify将自动：
-1. 拉取最新代码
-2. 安装依赖
-3. 构建前端
-4. 部署到CDN
+每次推送代码到 GitHub 后，Netlify 将自动：
+1. 检测代码变更
+2. 运行构建命令
+3. 部署新版本
+4. 更新网站
 
 ## 📞 技术支持
 
-如果仍有问题，请：
-1. 检查Netlify构建日志
-2. 验证本地构建是否成功
-3. 确认配置文件语法正确
-4. 联系Netlify支持团队
+如果遇到问题：
+1. 检查 Netlify 构建日志
+2. 验证配置文件语法
+3. 确认所有必需文件已提交
+4. 参考本指南的常见问题部分
 
-## ✅ 部署检查清单
+---
 
-- [ ] 本地构建成功
-- [ ] Netlify配置更新
-- [ ] 构建命令设置正确
-- [ ] 发布目录设置正确
-- [ ] 重定向规则配置
-- [ ] 环境变量设置
-- [ ] 自动部署测试
+**最后更新**: 2024年12月 - 修复构建命令语法问题
