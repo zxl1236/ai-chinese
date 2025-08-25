@@ -2,12 +2,12 @@
   # 指定前端构建目录
   publish = "frontend/build"
   # 构建命令 - 使用正确的Linux语法
-  command = "cd frontend && npm install && NODE_OPTIONS=--openssl-legacy-provider npm run build"
+  command = "cd frontend && npm install && npm run build"
 
 [build.environment]
   # Node.js版本
   NODE_VERSION = "18"
-  # 设置环境变量
+  # 设置环境变量 - 使用正确的语法
   NODE_OPTIONS = "--openssl-legacy-provider"
 
 # 重定向规则 - 支持React Router

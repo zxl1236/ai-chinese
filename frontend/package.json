@@ -21,11 +21,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "SET NODE_OPTIONS=--openssl-legacy-provider && SET FAST_REFRESH=true && craco start",
-    "build": "SET NODE_OPTIONS=--openssl-legacy-provider && craco build",
+    "start": "craco start",
+    "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
-    "dev": "SET NODE_OPTIONS=--openssl-legacy-provider && SET FAST_REFRESH=true && SET CHOKIDAR_USEPOLLING=true && craco start"
+    "dev": "craco start"
   },
   "eslintConfig": {
     "extends": [
