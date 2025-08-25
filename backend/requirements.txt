@@ -1,11 +1,10 @@
-# AI语文学习助手后端依赖
-
-# Web框架
 Flask==2.3.3
-flask-cors==4.0.0
-
-# HTTP请求库
-requests==2.31.0
-
-# 日志和工具
+Flask-SQLAlchemy==3.0.5
+Flask-CORS==4.0.0
 Werkzeug==2.3.7
+requests==2.31.0
+gunicorn==21.2.0
+psycopg2-binary==2.9.7
+python-dotenv==1.0.0
+PyMySQL==1.1.0
+cryptography==41.0.7

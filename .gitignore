@@ -1,40 +1,54 @@
-# 依赖
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# 运行时数据
-pids
-*.pid
-*.seed
-*.pid.lock
+# Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
 
-# 覆盖率目录
-coverage/
-.coverage
+# Database
+*.db
+*.sqlite
+*.sqlite3
+instance/
 
-# nyc测试覆盖率
-.nyc_output
-
-# 本地环境变量
+# Environment variables
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# 日志文件
-logs
-*.log
-
-# IDE配置
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
 
-# 操作系统生成的文件
+# OS
 .DS_Store
 .DS_Store?
 ._*
@@ -43,13 +57,68 @@ logs
 ehthumbs.db
 Thumbs.db
 
-# 临时文件
-*.tmp
-*.temp
+# Logs
+*.log
+logs/
 
-# 构建输出（如果有）
-build/
-dist/
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
 
-# 缓存
-.cache/
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# next.js build output
+.next
+
+# nuxt.js build output
+.nuxt
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Backup files
+backup/
+backup-old-code/
+
+# Test files
+test_*.py
+test_*.html
+test_*.js

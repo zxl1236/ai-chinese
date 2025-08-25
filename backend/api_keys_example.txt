@@ -20,4 +20,4 @@ set QWEN_API_KEY=your_qwen_key
 
 ## 重启后端服务以使环境变量生效
 cd backend
-python app.py
+python app_refactored.py

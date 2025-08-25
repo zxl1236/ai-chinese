@@ -1,0 +1,507 @@
+/* ===========================================
+   智能AI写作助手样式
+   =========================================== */
+
+.smart-ai-assistant {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    font-family: 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* AI触发按钮 */
+.ai-trigger {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.ai-trigger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+}
+
+.ai-trigger.active {
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+}
+
+.ai-avatar {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ai-icon {
+    font-size: 16px;
+    z-index: 2;
+}
+
+.ai-pulse {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+}
+
+.ai-status {
+    display: flex;
+    flex-direction: column;
+}
+
+.status-text {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.status-hint {
+    font-size: 11px;
+    opacity: 0.8;
+    line-height: 1.2;
+}
+
+/* AI主面板 */
+.ai-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 380px;
+    max-height: 80vh;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ai-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.ai-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.ai-emoji {
+    font-size: 18px;
+}
+
+.ai-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.ai-minimize,
+.ai-close {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.ai-minimize:hover,
+.ai-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.ai-close:hover {
+    background: rgba(239, 68, 68, 0.8);
+}
+
+/* AI内容区域 */
+.ai-content {
+    padding: 20px;
+    max-height: calc(80vh - 120px);
+    overflow-y: auto;
+}
+
+/* 写作状态 */
+.writing-status {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.status-item:last-child {
+    margin-bottom: 0;
+}
+
+.status-label {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.status-value {
+    font-size: 13px;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+/* 智能建议 */
+.ai-suggestions {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.suggestion-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4f46e5;
+}
+
+.suggestion-icon {
+    font-size: 16px;
+}
+
+.suggestion-content {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #374151;
+}
+
+.suggestion-placeholder {
+    color: #9ca3af;
+    font-style: italic;
+    margin: 0;
+}
+
+/* 快速操作按钮 */
+.ai-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.ai-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    background: white;
+    color: #374151;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    min-height: 44px;
+}
+
+.ai-action-btn:hover:not(:disabled) {
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.05);
+    color: #667eea;
+    transform: translateY(-1px);
+}
+
+.ai-action-btn:disabled {
+    background: #f8fafc;
+    color: #94a3b8;
+    cursor: not-allowed;
+    border-color: #e2e8f0;
+}
+
+.ai-action-btn.loading {
+    pointer-events: none;
+    position: relative;
+}
+
+.ai-action-btn.loading .btn-text {
+    opacity: 0.7;
+}
+
+.ai-action-btn.loading::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.btn-icon {
+    font-size: 14px;
+}
+
+.btn-text {
+    flex: 1;
+    text-align: center;
+}
+
+/* AI响应区域 */
+.ai-response {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.response-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.response-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.response-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.response-action {
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.response-action:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+.response-content {
+    padding: 16px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #374151;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.response-content h4 {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.response-content p {
+    margin: 8px 0;
+}
+
+.response-content ul {
+    margin: 8px 0;
+    padding-left: 16px;
+}
+
+.response-content li {
+    margin-bottom: 4px;
+}
+
+/* 连接状态 */
+.ai-footer {
+    padding: 12px 20px;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    animation: pulse-dot 2s infinite;
+}
+
+.status-dot.error {
+    background: #ef4444;
+    animation: none;
+}
+
+@keyframes pulse-dot {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .smart-ai-assistant {
+        top: 10px;
+        right: 10px;
+    }
+    
+    .ai-panel {
+        width: calc(100vw - 20px);
+        max-width: 380px;
+    }
+    
+    .ai-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 滚动条样式 */
+.ai-content::-webkit-scrollbar,
+.response-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ai-content::-webkit-scrollbar-track,
+.response-content::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+}
+
+.ai-content::-webkit-scrollbar-thumb,
+.response-content::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.ai-content::-webkit-scrollbar-thumb:hover,
+.response-content::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* 成功状态 */
+.ai-response.success {
+    border-color: rgba(16, 185, 129, 0.2);
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.ai-response.success .response-header {
+    background: rgba(16, 185, 129, 0.1);
+}
+
+/* 错误状态 */
+.ai-response.error {
+    border-color: rgba(239, 68, 68, 0.2);
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.ai-response.error .response-header {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+/* 特殊效果 */
+.ai-trigger.thinking {
+    animation: thinking 1.5s infinite;
+}
+
+@keyframes thinking {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}

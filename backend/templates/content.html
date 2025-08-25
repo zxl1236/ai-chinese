@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}{{ module.title }} - 内容管理{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <div>
+        <h1>📄 {{ module.title }} - 内容管理</h1>
+        <p style="color: #666; margin-top: 0.5rem;">{{ module.description }}</p>
+    </div>
+    <div style="display: flex; gap: 1rem;">
+        <a href="{{ url_for('content_page.add_content', module_id=module.module_id) }}" class="btn btn-success">➕ 添加内容</a>
+        <a href="{{ url_for('content_page.list_modules') }}" class="btn">← 返回模块列表</a>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom: 1rem;">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+        <span style="font-size: 2rem;">{{ module.icon }}</span>
+        <div>
+            <h3>{{ module.title }}</h3>
+            <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                {% if module.category == 'basic' %}
+                    <span class="badge badge-info">基础训练</span>
+                {% elif module.category == 'reading' %}
+                    <span class="badge badge-success">阅读理解</span>
+                {% elif module.category == 'writing' %}
+                    <span class="badge badge-warning">写作表达</span>
+                {% endif %}
+                
+                <span class="badge" style="background-color: #6f42c1; color: white;">
+                    {% for i in range(module.difficulty) %}⭐{% endfor %} 难度
+                </span>
+                
+                {% if module.is_active %}
+                    <span class="badge badge-success">已启用</span>
+                {% else %}
+                    <span class="badge" style="background-color: #6c757d; color: white;">已禁用</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    {% if contents %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>顺序</th>
+                    <th>标题</th>
+                    <th>类型</th>
+                    <th>内容预览</th>
+                    <th>状态</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for content in contents %}
+                <tr>
+                    <td><strong>{{ content.order_index }}</strong></td>
+                    <td>{{ content.title }}</td>
+                    <td>
+                        {% if content.content_type == 'text' %}
+                            <span class="badge badge-info">📝 文本</span>
+                        {% elif content.content_type == 'image' %}
+                            <span class="badge badge-success">🖼️ 图片</span>
+                        {% elif content.content_type == 'video' %}
+                            <span class="badge badge-warning">🎥 视频</span>
+                        {% elif content.content_type == 'exercise' %}
+                            <span class="badge" style="background-color: #6f42c1; color: white;">🎯 练习</span>
+                        {% else %}
+                            <span class="badge" style="background-color: #6c757d; color: white;">📄 其他</span>
+                        {% endif %}
+                    </td>
+                    <td style="max-width: 300px;">
+                        <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            {{ content.content[:100] }}{% if content.content|length > 100 %}...{% endif %}
+                        </div>
+                    </td>
+                    <td>
+                        {% if content.is_active %}
+                            <span class="badge badge-success">活跃</span>
+                        {% else %}
+                            <span class="badge" style="background-color: #6c757d; color: white;">禁用</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ content.created_at.strftime('%m-%d %H:%M') }}</td>
+                    <td>
+                        <div class="actions">
+                            <a href="{{ url_for('content_page.edit_content', content_id=content.id) }}" class="btn btn-small">✏️ 编辑</a>
+                            <form method="POST" action="{{ url_for('content_page.delete_content', content_id=content.id) }}" style="display: inline;" onsubmit="return confirm('确定要删除这个内容吗？')">
+                                <button type="submit" class="btn btn-danger btn-small">🗑️ 删除</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div style="text-align: center; padding: 3rem;">
+            <h3>📝 该模块还没有任何内容</h3>
+            <p>点击"添加内容"按钮开始为这个模块添加学习内容</p>
+            <br>
+            <a href="{{ url_for('content_page.add_content', module_id=module.module_id) }}" class="btn btn-success">➕ 添加内容</a>
+        </div>
+    {% endif %}
+</div>
+
+{% if contents %}
+<div class="card">
+    <h3>💡 内容管理提示</h3>
+    <ul style="line-height: 1.6; padding-left: 2rem;">
+        <li><strong>内容顺序：</strong>通过"顺序"字段控制内容的显示顺序，数字越小越靠前</li>
+        <li><strong>内容类型：</strong>
+            <ul style="margin-top: 0.5rem;">
+                <li><strong>文本：</strong>普通的文字内容、说明等</li>
+                <li><strong>图片：</strong>图片URL或Base64编码的图片</li>
+                <li><strong>视频：</strong>视频URL或嵌入代码</li>
+                <li><strong>练习：</strong>互动练习题、测试等</li>
+            </ul>
+        </li>
+        <li><strong>状态控制：</strong>禁用的内容不会在API中返回给前端</li>
+    </ul>
+</div>
+{% endif %}
+{% endblock %}

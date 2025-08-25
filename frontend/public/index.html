@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#667eea" />
+    <meta name="description" content="AI语文学习助手 - 智能个性化语文学习平台" />
+    <title>AI语文学习助手</title>
+    <script>
+        // 在所有脚本加载前就提供 process 对象
+        (function() {
+            if (typeof global === 'undefined') {
+                window.global = window;
+            }
+            if (typeof process === 'undefined') {
+                window.process = { 
+                    env: { NODE_ENV: 'production' },
+                    browser: true
+                };
+            }
+        })();
+    </script>
+</head>
+<body>
+    <noscript>您需要启用JavaScript才能运行此应用程序。</noscript>
+    <div id="root"></div>
+</body>
+</html>

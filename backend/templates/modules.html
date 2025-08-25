@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}模块管理 - AI语文学习助手{% endblock %}
+
+{% block content %}
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1>📚 学习模块管理</h1>
+        <a href="{{ url_for('content_page.add_module') }}" class="btn btn-success">➕ 添加新模块</a>
+    </div>
+
+<div class="card">
+    {% if modules %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>模块ID</th>
+                    <th>标题</th>
+                    <th>类别</th>
+                    <th>难度</th>
+                    <th>图标</th>
+                    <th>状态</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for module in modules %}
+                <tr>
+                    <td><code>{{ module.module_id }}</code></td>
+                    <td>{{ module.title }}</td>
+                    <td>
+                        {% if module.category == 'basic' %}
+                            <span class="badge badge-info">基础训练</span>
+                        {% elif module.category == 'reading' %}
+                            <span class="badge badge-success">阅读理解</span>
+                        {% elif module.category == 'writing' %}
+                            <span class="badge badge-warning">写作表达</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% for i in range(module.difficulty) %}⭐{% endfor %}
+                    </td>
+                    <td style="font-size: 1.5rem;">{{ module.icon }}</td>
+                    <td>
+                        {% if module.is_active %}
+                            <span class="badge badge-success">活跃</span>
+                        {% else %}
+                            <span class="badge" style="background-color: #6c757d; color: white;">禁用</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ module.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>
+                        <div class="actions">
+                            <a href="{{ url_for('content_page.list_content', module_id=module.module_id) }}" class="btn btn-small">📄 内容</a>
+                            <a href="{{ url_for('content_page.edit_module', module_id=module.module_id) }}" class="btn btn-small">✏️ 编辑</a>
+                            <form method="POST" action="{{ url_for('content_page.delete_module', module_id=module.module_id) }}" style="display: inline;" onsubmit="return confirm('确定要删除这个模块吗？这将同时删除所有相关内容。')">
+                                <button type="submit" class="btn btn-danger btn-small">🗑️ 删除</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div style="text-align: center; padding: 3rem;">
+            <h3>📝 还没有任何学习模块</h3>
+            <p>点击上方的"添加新模块"按钮开始创建您的第一个学习模块</p>
+            <br>
+            <a href="{{ url_for('content_page.add_module') }}" class="btn btn-success">➕ 添加新模块</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

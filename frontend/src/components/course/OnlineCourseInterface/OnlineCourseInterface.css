@@ -1,0 +1,520 @@
+.online-course-interface {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 无课程状态 */
+.online-course-interface.no-course {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 500px;
+}
+
+.no-course-content {
+  text-align: center;
+  color: #666;
+}
+
+.no-course-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.no-course-content h3 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 20px;
+}
+
+.no-course-content p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* 界面头部 */
+.interface-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.header-left {
+  flex: 1;
+  min-width: 300px;
+}
+
+.course-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.course-type-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.type-icon {
+  font-size: 16px;
+}
+
+.course-title h2 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.course-title p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.course-status {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-icon {
+  font-size: 14px;
+}
+
+.time-display {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.current-time,
+.course-time {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.time-label {
+  font-size: 11px;
+  opacity: 0.8;
+  text-transform: uppercase;
+}
+
+.time-value {
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+}
+
+/* 导航标签 */
+.interface-tabs {
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: #666;
+  padding: 16px 24px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+}
+
+.tab-btn:hover {
+  color: #333;
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.tab-btn.active {
+  color: #667eea;
+  border-bottom-color: #667eea;
+  background: rgba(102, 126, 234, 0.05);
+}
+
+/* 主要内容区域 */
+.interface-content {
+  min-height: 500px;
+  position: relative;
+}
+
+/* 标签页内容 */
+.content-tab,
+.chat-tab,
+.files-tab {
+  padding: 40px;
+  text-align: center;
+  color: #666;
+}
+
+.content-header,
+.chat-header,
+.files-header {
+  margin-bottom: 32px;
+}
+
+.content-header h3,
+.chat-header h3,
+.files-header h3 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.content-header p,
+.chat-header p,
+.files-header p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.content-placeholder,
+.chat-placeholder,
+.files-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.placeholder-icon {
+  font-size: 48px;
+  opacity: 0.6;
+}
+
+.content-placeholder h4,
+.chat-placeholder h4,
+.files-placeholder h4 {
+  margin: 0;
+  color: #333;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.content-placeholder p,
+.chat-placeholder p,
+.files-placeholder p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  max-width: 400px;
+}
+
+/* 快速操作面板 */
+.quick-actions-panel {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 100;
+}
+
+.toggle-actions-btn {
+  background: #667eea;
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+}
+
+.toggle-actions-btn:hover {
+  background: #5a6fd8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.quick-actions-content {
+  position: absolute;
+  bottom: 60px;
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  min-width: 280px;
+  border: 1px solid #e9ecef;
+}
+
+.actions-header {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.actions-header h4 {
+  margin: 0;
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.actions-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quick-action-btn {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  color: #333;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.quick-action-btn:hover {
+  background: #e9ecef;
+  transform: translateX(4px);
+}
+
+.start-btn {
+  background: #4CAF50;
+  color: white;
+  border-color: #4CAF50;
+}
+
+.start-btn:hover {
+  background: #45a049;
+}
+
+.pause-btn {
+  background: #FF9800;
+  color: white;
+  border-color: #FF9800;
+}
+
+.pause-btn:hover {
+  background: #F57C00;
+}
+
+.complete-btn {
+  background: #4CAF50;
+  color: white;
+  border-color: #4CAF50;
+}
+
+.complete-btn:hover {
+  background: #45a049;
+}
+
+.resume-btn {
+  background: #2196F3;
+  color: white;
+  border-color: #2196F3;
+}
+
+.resume-btn:hover {
+  background: #1976D2;
+}
+
+.record-btn {
+  background: #9C27B0;
+  color: white;
+  border-color: #9C27B0;
+}
+
+.record-btn:hover {
+  background: #7B1FA2;
+}
+
+/* 底部状态栏 */
+.interface-footer {
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #666;
+}
+
+.user-info,
+.course-progress,
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+  .interface-header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  
+  .header-right {
+    align-items: center;
+  }
+  
+  .course-info {
+    justify-content: center;
+  }
+  
+  .interface-tabs {
+    justify-content: center;
+  }
+  
+  .quick-actions-panel {
+    right: 10px;
+    bottom: 10px;
+  }
+  
+  .quick-actions-content {
+    right: -10px;
+    min-width: 260px;
+  }
+}
+
+@media (max-width: 768px) {
+  .online-course-interface {
+    margin: 10px;
+  }
+  
+  .interface-header {
+    padding: 20px 16px;
+  }
+  
+  .course-title h2 {
+    font-size: 20px;
+  }
+  
+  .interface-tabs {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  
+  .tab-btn {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+  
+  .content-tab,
+  .chat-tab,
+  .files-tab {
+    padding: 24px 16px;
+  }
+  
+  .quick-actions-content {
+    min-width: 240px;
+    right: -20px;
+  }
+  
+  .interface-footer {
+    padding: 12px 16px;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .interface-header {
+    padding: 16px 12px;
+  }
+  
+  .course-title h2 {
+    font-size: 18px;
+  }
+  
+  .course-type-badge {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  .tab-btn {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  
+  .content-tab,
+  .chat-tab,
+  .files-tab {
+    padding: 20px 12px;
+  }
+  
+  .placeholder-icon {
+    font-size: 36px;
+  }
+  
+  .quick-actions-panel {
+    right: 5px;
+    bottom: 5px;
+  }
+  
+  .quick-actions-content {
+    min-width: 220px;
+    right: -30px;
+    padding: 16px;
+  }
+  
+  .toggle-actions-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+}

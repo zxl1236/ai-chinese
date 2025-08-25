@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+
+{% block title %}添加阅读文章 - AI语文学习助手{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1>➕ 添加阅读文章</h1>
+    <a href="{{ url_for('content_page.list_reading_articles') }}" class="btn">← 返回列表</a>
+</div>
+
+<form method="POST" class="form">
+    <div class="card">
+        <h2>📖 基本信息</h2>
+        
+        <div class="form-group">
+            <label for="title">文章标题 *</label>
+            <input type="text" id="title" name="title" required 
+                   placeholder="请输入文章标题，如：《春》">
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="author">作者</label>
+                <input type="text" id="author" name="author" 
+                       placeholder="如：朱自清">
+            </div>
+            
+            <div class="form-group">
+                <label for="category">类别 *</label>
+                <select id="category" name="category" required>
+                    <option value="literature">📖 现代文学</option>
+                    <option value="classical">📜 文言文</option>
+                    <option value="poetry">🎭 诗歌</option>
+                    <option value="prose">✍️ 散文</option>
+                    <option value="novel">📚 小说</option>
+                    <option value="other">📰 其他</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="difficulty">难度等级 *</label>
+                <select id="difficulty" name="difficulty" required>
+                    <option value="1">⭐ 初级</option>
+                    <option value="2">⭐⭐ 初中级</option>
+                    <option value="3">⭐⭐⭐ 中级</option>
+                    <option value="4">⭐⭐⭐⭐ 中高级</option>
+                    <option value="5">⭐⭐⭐⭐⭐ 高级</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="reading_time">预计阅读时间（分钟）</label>
+                <input type="number" id="reading_time" name="reading_time" 
+                       min="1" max="60" placeholder="如：5">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="tags">标签</label>
+            <input type="text" id="tags" name="tags" 
+                   placeholder="用逗号分隔，如：散文,春天,自然">
+        </div>
+    </div>
+    
+    <div class="card">
+        <h2>📝 文章内容</h2>
+        
+        <div class="form-group">
+            <label for="content">文章正文 *</label>
+            <textarea id="content" name="content" required 
+                      rows="15" placeholder="请粘贴文章内容..."
+                      style="font-family: 'Microsoft YaHei', serif; line-height: 1.8;"></textarea>
+            <small class="form-hint">支持段落换行，系统会自动计算字数</small>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h2>❓ 阅读题目</h2>
+        <p style="color: #666; margin-bottom: 1rem;">
+            📝 <strong>提示：</strong>暂时通过表单添加基础信息，题目可在文章创建后通过编辑功能添加
+        </p>
+        
+        <div id="questions-container">
+            <div class="question-item">
+                <h4>题目 1</h4>
+                
+                <div class="form-group">
+                    <label>题目类型</label>
+                    <select name="questions[0][type]">
+                        <option value="single">单选题</option>
+                        <option value="multiple">多选题</option>
+                        <option value="subjective">主观题</option>
+                        <option value="ai-analysis">AI分析题</option>
+                        <option value="creative">创意表达题</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>题目内容</label>
+                    <textarea name="questions[0][stem]" rows="3" 
+                              placeholder="请输入题目内容..."></textarea>
+                </div>
+                
+                <div class="form-group options-group">
+                    <label>选项（单选/多选题）</label>
+                    <input type="text" name="questions[0][options][0]" placeholder="A. 选项A">
+                    <input type="text" name="questions[0][options][1]" placeholder="B. 选项B">
+                    <input type="text" name="questions[0][options][2]" placeholder="C. 选项C">
+                    <input type="text" name="questions[0][options][3]" placeholder="D. 选项D">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>正确答案</label>
+                        <input type="text" name="questions[0][answer]" 
+                               placeholder="如：A 或 主观题答案要点">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>分值</label>
+                        <input type="number" name="questions[0][score]" 
+                               value="3" min="1" max="20">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>答案解析</label>
+                    <textarea name="questions[0][explanation]" rows="2" 
+                              placeholder="请输入答案解析..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>AI提示</label>
+                    <input type="text" name="questions[0][ai_tip]" 
+                           placeholder="💡 AI提示：...">
+                </div>
+            </div>
+        </div>
+        
+        <button type="button" onclick="addQuestion()" class="btn">➕ 添加题目</button>
+    </div>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-success">💾 保存文章</button>
+        <a href="{{ url_for('content_page.list_reading_articles') }}" class="btn">取消</a>
+    </div>
+</form>
+
+<style>
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.question-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: #f9f9f9;
+}
+
+.question-item h4 {
+    margin: 0 0 1rem 0;
+    color: #333;
+}
+
+.options-group input {
+    margin-bottom: 0.5rem;
+}
+
+.form-hint {
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #ddd;
+}
+</style>
+
+<script>
+let questionCount = 1;
+
+function addQuestion() {
+    const container = document.getElementById('questions-container');
+    const questionHtml = `
+        <div class="question-item">
+            <h4>题目 ${questionCount + 1} <button type="button" onclick="removeQuestion(this)" class="btn btn-sm" style="background: #f44336; color: white;">删除</button></h4>
+            
+            <div class="form-group">
+                <label>题目类型</label>
+                <select name="questions[${questionCount}][type]">
+                    <option value="single">单选题</option>
+                    <option value="multiple">多选题</option>
+                    <option value="subjective">主观题</option>
+                    <option value="ai-analysis">AI分析题</option>
+                    <option value="creative">创意表达题</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>题目内容</label>
+                <textarea name="questions[${questionCount}][stem]" rows="3" placeholder="请输入题目内容..."></textarea>
+            </div>
+            
+            <div class="form-group options-group">
+                <label>选项（单选/多选题）</label>
+                <input type="text" name="questions[${questionCount}][options][0]" placeholder="A. 选项A">
+                <input type="text" name="questions[${questionCount}][options][1]" placeholder="B. 选项B">
+                <input type="text" name="questions[${questionCount}][options][2]" placeholder="C. 选项C">
+                <input type="text" name="questions[${questionCount}][options][3]" placeholder="D. 选项D">
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>正确答案</label>
+                    <input type="text" name="questions[${questionCount}][answer]" placeholder="如：A 或 主观题答案要点">
+                </div>
+                
+                <div class="form-group">
+                    <label>分值</label>
+                    <input type="number" name="questions[${questionCount}][score]" value="3" min="1" max="20">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>答案解析</label>
+                <textarea name="questions[${questionCount}][explanation]" rows="2" placeholder="请输入答案解析..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>AI提示</label>
+                <input type="text" name="questions[${questionCount}][ai_tip]" placeholder="💡 AI提示：...">
+            </div>
+        </div>
+    `;
+    
+    container.insertAdjacentHTML('beforeend', questionHtml);
+    questionCount++;
+}
+
+function removeQuestion(button) {
+    button.closest('.question-item').remove();
+}
+
+// 自动计算字数
+document.getElementById('content').addEventListener('input', function() {
+    const content = this.value;
+    const wordCount = content.replace(/\s/g, '').length;
+    
+    // 更新字数显示
+    let hint = this.nextElementSibling;
+    if (hint && hint.classList.contains('form-hint')) {
+        hint.textContent = `支持段落换行，当前字数：${wordCount} 字`;
+    }
+    
+    // 估算阅读时间（平均每分钟150字）
+    const readingTime = Math.ceil(wordCount / 150);
+    const readingTimeInput = document.getElementById('reading_time');
+    if (readingTimeInput.value === '' || readingTimeInput.value === '0') {
+        readingTimeInput.value = readingTime;
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}添加模块 - AI语文学习助手{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1>➕ 添加新学习模块</h1>
+    <a href="{{ url_for('content_page.list_modules') }}" class="btn">← 返回模块列表</a>
+</div>
+
+<div class="card">
+    <form method="POST">
+        <div class="form-group">
+            <label for="module_id">模块ID</label>
+            <input type="text" id="module_id" name="module_id" class="form-control" required
+                   placeholder="例如: advanced-reading" 
+                   pattern="[a-z0-9-]+" 
+                   title="只能包含小写字母、数字和连字符">
+            <small style="color: #666; margin-top: 0.25rem; display: block;">
+                用于API调用的唯一标识符，只能包含小写字母、数字和连字符
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label for="title">模块标题</label>
+            <input type="text" id="title" name="title" class="form-control" required
+                   placeholder="例如: 高级阅读理解">
+        </div>
+
+        <div class="form-group">
+            <label for="description">模块描述</label>
+            <textarea id="description" name="description" class="form-control" required
+                      placeholder="描述这个模块的学习目标和内容..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="icon">图标 (Emoji)</label>
+            <input type="text" id="icon" name="icon" class="form-control" 
+                   placeholder="例如: 📚" maxlength="4">
+            <small style="color: #666; margin-top: 0.25rem; display: block;">
+                选择一个代表性的emoji图标，留空则使用默认图标
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label for="category">模块类别</label>
+            <select id="category" name="category" class="form-control" required>
+                <option value="">请选择类别</option>
+                <option value="basic">基础能力训练</option>
+                <option value="reading">阅读理解训练</option>
+                <option value="writing">写作表达训练</option>
+                <option value="speaking">语音交流训练</option>
+                <option value="knowledge">文学常识</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="difficulty">难度等级</label>
+            <select id="difficulty" name="difficulty" class="form-control" required>
+                <option value="">请选择难度</option>
+                <option value="1">⭐ 入门 (1星)</option>
+                <option value="2">⭐⭐ 初级 (2星)</option>
+                <option value="3">⭐⭐⭐ 中级 (3星)</option>
+                <option value="4">⭐⭐⭐⭐ 高级 (4星)</option>
+                <option value="5">⭐⭐⭐⭐⭐ 专家 (5星)</option>
+            </select>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <button type="submit" class="btn btn-success">💾 保存模块</button>
+            <a href="{{ url_for('content_page.list_modules') }}" class="btn" style="margin-left: 1rem;">取消</a>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <h3>💡 创建提示</h3>
+    <ul style="line-height: 1.6; padding-left: 2rem;">
+        <li><strong>模块ID：</strong>必须唯一，建议使用英文描述，如 "ancient-poetry"</li>
+        <li><strong>类别选择：</strong>
+            <ul style="margin-top: 0.5rem;">
+                <li><strong>基础能力训练：</strong>拼音、汉字、词汇等基础技能</li>
+                <li><strong>阅读理解训练：</strong>文章理解、阅读分析等</li>
+                <li><strong>写作表达训练：</strong>作文、写作技巧等</li>
+                <li><strong>语音交流训练：</strong>口语表达、语音规范等</li>
+                <li><strong>文学常识：</strong>文学史、作家作品、文化知识等</li>
+            </ul>
+        </li>
+        <li><strong>难度设置：</strong>根据目标学习者的水平选择合适的难度等级</li>
+    </ul>
+</div>
+{% endblock %}

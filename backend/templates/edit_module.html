@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}编辑模块 - AI语文学习助手{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1>✏️ 编辑学习模块</h1>
+    <a href="{{ url_for('content_page.list_modules') }}" class="btn">← 返回模块列表</a>
+</div>
+
+<div class="card">
+    <form method="POST">
+        <div class="form-group">
+            <label for="module_id">模块ID</label>
+            <input type="text" id="module_id" name="module_id" class="form-control" 
+                   value="{{ module.module_id }}" readonly 
+                   style="background-color: #f8f9fa; cursor: not-allowed;">
+            <small style="color: #666; margin-top: 0.25rem; display: block;">
+                模块ID创建后不可修改
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label for="title">模块标题</label>
+            <input type="text" id="title" name="title" class="form-control" required
+                   value="{{ module.title }}" placeholder="例如: 高级阅读理解">
+        </div>
+
+        <div class="form-group">
+            <label for="description">模块描述</label>
+            <textarea id="description" name="description" class="form-control" required
+                      placeholder="描述这个模块的学习目标和内容...">{{ module.description }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="icon">图标 (Emoji)</label>
+            <input type="text" id="icon" name="icon" class="form-control" 
+                   value="{{ module.icon }}" placeholder="例如: 📚" maxlength="4">
+            <small style="color: #666; margin-top: 0.25rem; display: block;">
+                选择一个代表性的emoji图标
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label for="category">模块类别</label>
+            <select id="category" name="category" class="form-control" required>
+                <option value="basic" {% if module.category == 'basic' %}selected{% endif %}>基础能力训练</option>
+                <option value="reading" {% if module.category == 'reading' %}selected{% endif %}>阅读理解训练</option>
+                <option value="writing" {% if module.category == 'writing' %}selected{% endif %}>写作表达训练</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="difficulty">难度等级</label>
+            <select id="difficulty" name="difficulty" class="form-control" required>
+                <option value="1" {% if module.difficulty == 1 %}selected{% endif %}>⭐ 入门 (1星)</option>
+                <option value="2" {% if module.difficulty == 2 %}selected{% endif %}>⭐⭐ 初级 (2星)</option>
+                <option value="3" {% if module.difficulty == 3 %}selected{% endif %}>⭐⭐⭐ 中级 (3星)</option>
+                <option value="4" {% if module.difficulty == 4 %}selected{% endif %}>⭐⭐⭐⭐ 高级 (4星)</option>
+                <option value="5" {% if module.difficulty == 5 %}selected{% endif %}>⭐⭐⭐⭐⭐ 专家 (5星)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label style="display: flex; align-items: center;">
+                <input type="checkbox" name="is_active" {% if module.is_active %}checked{% endif %} style="margin-right: 0.5rem;">
+                模块启用状态
+            </label>
+            <small style="color: #666; margin-top: 0.25rem; display: block;">
+                禁用的模块不会在前端显示
+            </small>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <button type="submit" class="btn btn-success">💾 保存修改</button>
+            <a href="{{ url_for('content_page.list_content', module_id=module.module_id) }}" class="btn" style="margin-left: 1rem;">📄 管理内容</a>
+<a href="{{ url_for('content_page.list_modules') }}" class="btn" style="margin-left: 1rem;">取消</a>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <h3>📊 模块信息</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <div>
+            <strong>创建时间：</strong><br>
+            {{ module.created_at.strftime('%Y-%m-%d %H:%M:%S') }}
+        </div>
+        <div>
+            <strong>最后更新：</strong><br>
+            {{ module.updated_at.strftime('%Y-%m-%d %H:%M:%S') }}
+        </div>
+        <div>
+            <strong>当前状态：</strong><br>
+            {% if module.is_active %}
+                <span class="badge badge-success">活跃</span>
+            {% else %}
+                <span class="badge" style="background-color: #6c757d; color: white;">禁用</span>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

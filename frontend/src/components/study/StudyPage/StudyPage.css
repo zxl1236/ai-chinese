@@ -1,0 +1,500 @@
+/* 学习页面整体样式 */
+.study-page {
+  padding: 20px 16px 80px; /* 为底部导航留出空间 */
+  background: #f5f7fa;
+  min-height: calc(100vh - 140px);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 欢迎区域 */
+.study-welcome {
+  padding: 2rem 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  margin-bottom: 2rem;
+  border-radius: 16px;
+}
+
+.welcome-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.welcome-text {
+  text-align: center;
+  flex: 1;
+}
+
+.study-welcome h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.study-welcome p {
+  color: white;
+  font-size: 1.1rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.ai-chat-trigger {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ai-chat-trigger:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.ai-chat-trigger:active {
+  transform: translateY(0);
+}
+
+/* 学习内容区域 */
+.study-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 主要模块区域 */
+.main-modules-section {
+  margin-bottom: 32px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.section-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+/* AI功能特性展示样式 */
+.writing-features-info {
+  margin-top: 16px;
+  padding: 16px;
+  background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+  border-radius: 12px;
+  border: 1px solid #b3d9ff;
+}
+
+.feature-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.badge-icon {
+  font-size: 20px;
+  animation: aiPulse 2s infinite;
+}
+
+@keyframes aiPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.badge-text {
+  font-weight: 600;
+  color: #1a73e8;
+  font-size: 16px;
+}
+
+.features-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.feature-item {
+  background: rgba(26, 115, 232, 0.1);
+  color: #1a73e8;
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid rgba(26, 115, 232, 0.2);
+  transition: all 0.2s ease;
+}
+
+.feature-item:hover {
+  background: rgba(26, 115, 232, 0.2);
+  transform: translateY(-1px);
+}
+
+.section-header p {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* 主要模块网格 */
+.main-modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.main-module-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.main-module-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  border-color: #667eea;
+}
+
+.main-module-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+}
+
+.module-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.module-icon {
+  font-size: 48px;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 20px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.module-difficulty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.difficulty-level {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  color: white;
+}
+
+.difficulty-level.basic {
+  background: #4CAF50;
+}
+
+.difficulty-level.intermediate {
+  background: #FF9800;
+}
+
+.difficulty-level.advanced {
+  background: #F44336;
+}
+
+.module-content h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.module-content p {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.module-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.progress-label {
+  font-size: 12px;
+  color: #666;
+  min-width: 40px;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background: #e1e5e9;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+}
+
+.module-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #666;
+}
+
+/* 传统模块区域 */
+.training-section {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.training-section.basic-training {
+  border-left: 4px solid #4CAF50;
+}
+
+.training-section.reading-training {
+  border-left: 4px solid #2196F3;
+}
+
+.training-section.writing-training {
+  border-left: 4px solid #FF9800;
+}
+
+.training-section .section-header {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.training-section .section-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.training-section .section-header p {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* 模块网格 */
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.module-card, .study-module-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid #e9ecef;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.module-card:hover, .study-module-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: white;
+  border-color: #667eea;
+}
+
+.module-card .module-icon, .study-module-card .module-icon {
+  font-size: 32px;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 12px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.module-card h4, .study-module-card .module-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.module-card p, .study-module-card .module-description {
+  color: #666;
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.study-module-card .module-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.study-module-card .module-arrow {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #667eea;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.study-module-card:hover .module-arrow {
+  opacity: 1;
+}
+
+/* 加载状态 */
+.study-page-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  color: #666;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e1e5e9;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .study-page {
+    padding: 16px 12px 80px;
+  }
+  
+  .main-modules-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .main-module-card {
+    padding: 20px;
+  }
+  
+  .module-icon {
+    font-size: 40px !important;
+    width: 60px !important;
+    height: 60px !important;
+  }
+  
+  .modules-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+  }
+  
+  .training-section {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .study-welcome h2 {
+    font-size: 1.5rem;
+  }
+  
+  .welcome-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .ai-chat-trigger {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  
+  .main-module-card {
+    padding: 16px;
+  }
+  
+  .module-content h3 {
+    font-size: 18px;
+  }
+  
+  .modules-grid {
+    grid-template-columns: 1fr;
+  }
+}

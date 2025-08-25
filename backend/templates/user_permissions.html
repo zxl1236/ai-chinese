@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}权限管理 - {{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header d-flex align-items-center">
+                    <h5 class="mb-0">🔑 权限管理</h5>
+                    <span class="ms-auto badge bg-primary">{{ user.username }}</span>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6>用户信息</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>用户名：</strong>{{ user.username }}</li>
+                            <li><strong>昵称：</strong>{{ user.nickname or '未设置' }}</li>
+                            <li><strong>类型：</strong>
+                                {% if user.user_type == 'admin' %}
+                                    <span class="badge bg-danger">管理员</span>
+                                {% elif user.user_type == 'teacher' %}
+                                    <span class="badge bg-warning">教师</span>
+                                {% else %}
+                                    <span class="badge bg-info">学生</span>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+
+                    <hr>
+
+                    <form method="POST">
+                        <h6 class="mb-3">学习模块权限</h6>
+                        <p class="text-muted">选择该用户可以访问的学习模块：</p>
+                        
+                        {% if all_modules %}
+                            <div class="row">
+                                {% for module in all_modules %}
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" 
+                                                       value="{{ module.module_id }}" 
+                                                       id="module_{{ module.module_id }}"
+                                                       name="modules"
+                                                       {% if module.module_id in permitted_module_ids %}checked{% endif %}>
+                                                <label class="form-check-label" for="module_{{ module.module_id }}">
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="me-2">{{ module.icon }}</span>
+                                                        <div>
+                                                            <h6 class="mb-1">{{ module.title }}</h6>
+                                                            <small class="text-muted">{{ module.description }}</small>
+                                                            <div class="mt-1">
+                                                                <span class="badge bg-secondary">{{ module.category }}</span>
+                                                                <span class="badge bg-info">难度 {{ module.difficulty }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="alert alert-warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                暂无可用的学习模块。请先在模块管理中添加学习模块。
+                            </div>
+                        {% endif %}
+
+                        <div class="mt-4 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> 保存权限
+                            </button>
+                            <a href="{{ url_for('content_page.list_users') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> 返回用户列表
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">📊 权限统计</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <h3 class="text-primary">{{ permitted_module_ids|length }}</h3>
+                            <small class="text-muted">已授权模块</small>
+                        </div>
+                        <div class="col-6">
+                            <h3 class="text-info">{{ all_modules|length }}</h3>
+                            <small class="text-muted">总模块数</small>
+                        </div>
+                    </div>
+                    
+                    {% if permitted_module_ids %}
+                    <hr>
+                    <h6>当前权限：</h6>
+                    <div class="d-flex flex-wrap gap-1">
+                        {% for module in all_modules %}
+                            {% if module.module_id in permitted_module_ids %}
+                                <span class="badge bg-success">{{ module.icon }} {{ module.title }}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0">💡 API调用示例</h6>
+                </div>
+                <div class="card-body">
+                    <p class="small text-muted">用户专属学习内容API：</p>
+                    <code class="d-block bg-light p-2 rounded">
+                        GET /api/user/{{ user.username }}/study-content
+                    </code>
+                    <p class="small text-muted mt-2">
+                        此API将只返回该用户有权限访问的学习模块。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// 全选/取消全选功能
+document.addEventListener('DOMContentLoaded', function() {
+    // 可以添加全选按钮等交互功能
+});
+</script>
+{% endblock %}

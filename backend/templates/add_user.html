@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}添加用户{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">👤 添加新用户</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">用户名 <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="username" name="username" required 
+                                   placeholder="请输入用户名（英文字母、数字、下划线）">
+                            <div class="form-text">用户名将用于API调用和系统识别</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="nickname" class="form-label">昵称</label>
+                            <input type="text" class="form-control" id="nickname" name="nickname" 
+                                   placeholder="请输入用户昵称（可选）">
+                            <div class="form-text">显示用的友好名称</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="user_type" class="form-label">用户类型</label>
+                            <select class="form-select" id="user_type" name="user_type">
+                                <option value="student" selected>学生</option>
+                                <option value="teacher">教师</option>
+                                <option value="admin">管理员</option>
+                            </select>
+                            <div class="form-text">不同类型的用户有不同的系统权限</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i>
+                                <strong>提示：</strong>用户创建后默认为激活状态，但需要单独分配学习模块权限。
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> 创建用户
+                            </button>
+                            <a href="{{ url_for('content_page.list_users') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> 返回列表
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">💡 使用说明</h6>
+                </div>
+                <div class="card-body">
+                    <h6>用户类型说明：</h6>
+                    <ul class="list-unstyled">
+                        <li><span class="badge bg-info me-2">学生</span>普通学习用户</li>
+                        <li><span class="badge bg-warning me-2">教师</span>内容管理权限</li>
+                        <li><span class="badge bg-danger me-2">管理员</span>系统完全权限</li>
+                    </ul>
+                    
+                    <hr>
+                    
+                    <h6>权限分配：</h6>
+                    <p class="small text-muted">
+                        用户创建后，需要在用户列表中点击"权限"按钮为其分配可访问的学习模块。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

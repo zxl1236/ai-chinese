@@ -1,0 +1,643 @@
+/* EnhancedWritingInterface 组件样式 */
+.enhanced-writing-interface {
+  height: 100vh;
+  background: #f8f9fa;
+  position: relative;
+  overflow: hidden;
+}
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  padding: 8px 16px;
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background: #e9ecef;
+  transform: translateX(-2px);
+}
+
+.writing-layout {
+  display: flex;
+  height: 100vh;
+  padding-top: 60px;
+}
+
+/* 侧边栏切换按钮 */
+.sidebar-toggle {
+  position: fixed;
+  top: 80px;
+  left: 20px;
+  z-index: 1001;
+  width: 40px;
+  height: 40px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  display: none;
+}
+
+.sidebar-toggle:hover {
+  background: #5a67d8;
+  transform: scale(1.1);
+}
+
+/* 左侧边栏 */
+.sidebar {
+  width: 350px;
+  background: white;
+  border-right: 1px solid #e9ecef;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  overflow-y: auto;
+}
+
+.sidebar.collapsed {
+  width: 0;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  padding: 24px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.sidebar-header h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 16px;
+}
+
+.category-selector {
+  margin-bottom: 20px;
+}
+
+.category-select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+}
+
+.difficulty-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tab {
+  padding: 6px 12px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 16px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab:hover {
+  background: #e9ecef;
+}
+
+.tab.active {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+/* 题目列表 */
+.topics-list {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.topic-item {
+  padding: 16px;
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.topic-item:hover {
+  background: #f8f9fa;
+  border-color: #667eea;
+  transform: translateX(4px);
+}
+
+.topic-item.active {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.topic-title {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.topic-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* 草稿管理 */
+.drafts-section {
+  border-top: 1px solid #e9ecef;
+  padding: 16px;
+  background: #f8f9fa;
+}
+
+.drafts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.drafts-header h3 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.clear-drafts {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.clear-drafts:hover {
+  background: #e9ecef;
+}
+
+.drafts-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.draft-item {
+  padding: 8px 12px;
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.draft-item:hover {
+  background: #f8f9fa;
+  border-color: #667eea;
+}
+
+.draft-title {
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: #2c3e50;
+}
+
+.draft-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #6c757d;
+}
+
+/* 右侧写作区域 */
+.writing-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.topic-header {
+  margin-bottom: 24px;
+}
+
+.topic-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.topic-requirements {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+}
+
+.topic-requirements h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 12px;
+}
+
+.topic-requirements ul {
+  margin: 0 0 12px 20px;
+  padding: 0;
+}
+
+.topic-requirements li {
+  font-size: 14px;
+  color: #495057;
+  margin-bottom: 4px;
+}
+
+.time-info {
+  text-align: right;
+  font-size: 14px;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+/* 写作工具栏 */
+.writing-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.word-counter {
+  font-size: 14px;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.auto-save-indicator {
+  font-size: 12px;
+  color: #28a745;
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ai-assistant-btn {
+  padding: 8px 16px;
+  background: #f093fb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.ai-assistant-btn:hover {
+  background: #e084f0;
+  transform: translateY(-1px);
+}
+
+.submit-btn {
+  padding: 8px 20px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.submit-btn:hover {
+  background: #218838;
+  transform: translateY(-1px);
+}
+
+/* 写作编辑器 */
+.editor-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.writing-editor {
+  flex: 1;
+  padding: 20px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 1.6;
+  font-family: 'Microsoft YaHei', sans-serif;
+  resize: none;
+  outline: none;
+  background: white;
+}
+
+.writing-editor:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* 空状态 */
+.no-topic-selected {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #6c757d;
+}
+
+.no-topic-icon {
+  font-size: 4rem;
+  margin-bottom: 24px;
+}
+
+.no-topic-selected h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #2c3e50;
+}
+
+.no-topic-selected p {
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* AI助手面板 */
+.ai-assistant-panel {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  width: 300px;
+  height: calc(100vh - 100px);
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.ai-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.ai-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.close-ai {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.close-ai:hover {
+  background: #f8f9fa;
+}
+
+.ai-content {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+.ai-suggestions h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+.ai-suggestions ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.ai-suggestions li {
+  font-size: 12px;
+  color: #495057;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.ai-chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages {
+  flex: 1;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  overflow-y: auto;
+}
+
+.ai-message {
+  background: white;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #495057;
+}
+
+.chat-input {
+  display: flex;
+  gap: 8px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.chat-input button {
+  padding: 8px 12px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.2s ease;
+}
+
+.chat-input button:hover {
+  background: #5a67d8;
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+  .ai-assistant-panel {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100%;
+    height: 300px;
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar-toggle {
+    display: block;
+  }
+  
+  .sidebar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    height: calc(100vh - 60px);
+    z-index: 999;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sidebar.collapsed {
+    transform: translateX(-100%);
+  }
+  
+  .writing-area {
+    width: 100%;
+    padding: 16px;
+  }
+  
+  .topic-title {
+    font-size: 1.5rem;
+  }
+  
+  .writing-toolbar {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  
+  .toolbar-left,
+  .toolbar-right {
+    justify-content: center;
+  }
+  
+  .ai-assistant-panel {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px;
+    height: 70vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .enhanced-writing-interface {
+    padding-top: 50px;
+  }
+  
+  .back-button {
+    top: 10px;
+    left: 10px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  .writing-layout {
+    padding-top: 50px;
+  }
+  
+  .sidebar-toggle {
+    top: 60px;
+    left: 10px;
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+  
+  .writing-area {
+    padding: 12px;
+  }
+  
+  .topic-header {
+    margin-bottom: 16px;
+  }
+  
+  .topic-title {
+    font-size: 1.3rem;
+  }
+  
+  .topic-requirements {
+    padding: 16px;
+  }
+  
+  .writing-toolbar {
+    padding: 8px 12px;
+  }
+  
+  .writing-editor {
+    padding: 16px;
+    font-size: 14px;
+  }
+}

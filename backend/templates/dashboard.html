@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}仪表板 - AI语文学习助手{% endblock %}
+
+{% block content %}
+<h1>📊 管理仪表板</h1>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">{{ stats.total_modules }}</div>
+        <div class="stat-label">总模块数</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ stats.active_modules }}</div>
+        <div class="stat-label">活跃模块</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ stats.total_contents }}</div>
+        <div class="stat-label">总内容数</div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>🚀 快速操作</h2>
+    <p>欢迎来到AI语文学习助手后台管理系统！</p>
+    <br>
+    <div style="display: flex; gap: 1rem;">
+        <a href="{{ url_for('content_page.add_module') }}" class="btn btn-success">➕ 添加新模块</a>
+        <a href="{{ url_for('content_page.list_modules') }}" class="btn">📋 管理模块</a>
+        <a href="http://localhost:3000" target="_blank" class="btn">👀 预览前端</a>
+    </div>
+</div>
+
+<div class="card">
+    <h2>📋 系统说明</h2>
+    <ul style="line-height: 1.6; padding-left: 2rem;">
+        <li><strong>学习模块：</strong>支持6个主要学习模块（现代文阅读、文言文阅读、写作、语音交流、字词基础、文学常识）</li>
+        <li><strong>内容管理：</strong>为每个模块添加具体的学习内容</li>
+        <li><strong>API接口：</strong>前端通过API自动获取最新的学习内容</li>
+        <li><strong>实时更新：</strong>后台修改后，前端会自动显示最新内容</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h2>🔗 API接口</h2>
+    <p><strong>获取学习模块：</strong></p>
+    <code style="background: #f0f8ff; padding: 0.5rem; border-radius: 4px; display: block; margin: 0.5rem 0;">
+        GET http://localhost:5000/api/study-modules
+    </code>
+    
+    <p><strong>获取模块详细内容：</strong></p>
+    <code style="background: #f8f9fa; padding: 0.5rem; border-radius: 4px; display: block; margin: 0.5rem 0;">
+        GET http://localhost:5000/api/module/{module_id}/content
+    </code>
+</div>
+{% endblock %}

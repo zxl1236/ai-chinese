@@ -1,0 +1,708 @@
+/* 增强版圈点读题工具样式 */
+.enhanced-annotation-tool {
+  position: relative;
+  width: 100%;
+}
+
+/* 激活按钮 */
+.annotation-trigger {
+  position: sticky;
+  top: 10px;
+  z-index: 100;
+  margin-bottom: 20px;
+}
+
+.annotation-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+  border: 2px solid #4caf50;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #2e7d32;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+}
+
+.annotation-toggle:hover {
+  background: linear-gradient(135deg, #c8e6c9, #a5d6a7);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.annotation-toggle.active {
+  background: linear-gradient(135deg, #ffecb3, #ffe082);
+  border-color: #ffa000;
+  color: #e65100;
+  animation: pulse 2s infinite;
+}
+
+.toggle-icon {
+  font-size: 18px;
+}
+
+.toggle-text {
+  font-weight: 600;
+}
+
+.toggle-action {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* 工具栏 */
+.annotation-toolbar {
+  position: sticky;
+  top: 70px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  z-index: 99;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.toolbar-section {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.toolbar-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.toolbar-section h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 工具按钮 */
+.tool-buttons, .color-buttons, .analysis-modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tool-btn, .color-btn, .analysis-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+}
+
+.tool-btn:hover, .color-btn:hover, .analysis-btn:hover {
+  border-color: #2196f3;
+  background: #f3f8ff;
+  transform: translateY(-1px);
+}
+
+.tool-btn.active, .color-btn.active, .analysis-btn.active {
+  border-color: #2196f3;
+  background: #e3f2fd;
+  color: #1565c0;
+  font-weight: 600;
+}
+
+.tool-icon, .mode-icon {
+  font-size: 16px;
+}
+
+.tool-name, .color-name, .mode-name {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* 颜色按钮特殊样式 */
+.color-btn {
+  min-width: 100px;
+  justify-content: flex-start;
+}
+
+.color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* 智能工具 */
+.smart-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.suggestion-btn {
+  padding: 6px 12px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.suggestion-btn:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+}
+
+/* 操作按钮 */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background: #e9ecef;
+  transform: translateY(-1px);
+}
+
+/* 文章内容区域 */
+.article-content {
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  line-height: 1.8;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.article-content.annotation-active {
+  user-select: text;
+  background: #fafafa;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+}
+
+.article-content .paragraph {
+  margin-bottom: 1em;
+  text-indent: 2em;
+  transition: all 0.2s ease;
+}
+
+.article-content.annotation-active .paragraph:hover {
+  background: rgba(76, 175, 80, 0.05);
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 4px 0;
+}
+
+/* 标记样式 */
+.annotation {
+  position: relative;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.annotation:hover {
+  transform: scale(1.02);
+  z-index: 10;
+}
+
+/* 高亮标记 */
+.annotation-highlight {
+  padding: 2px 4px;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.annotation-highlight.annotation-yellow {
+  background: rgba(255, 235, 59, 0.4);
+  border-bottom: 2px solid #ffeb3b;
+}
+
+.annotation-highlight.annotation-green {
+  background: rgba(76, 175, 80, 0.4);
+  border-bottom: 2px solid #4caf50;
+}
+
+.annotation-highlight.annotation-blue {
+  background: rgba(33, 150, 243, 0.4);
+  border-bottom: 2px solid #2196f3;
+}
+
+.annotation-highlight.annotation-red {
+  background: rgba(244, 67, 54, 0.4);
+  border-bottom: 2px solid #f44336;
+}
+
+.annotation-highlight.annotation-purple {
+  background: rgba(156, 39, 176, 0.4);
+  border-bottom: 2px solid #9c27b0;
+}
+
+.annotation-highlight.annotation-orange {
+  background: rgba(255, 152, 0, 0.4);
+  border-bottom: 2px solid #ff9800;
+}
+
+/* 下划线标记 */
+.annotation-underline {
+  position: relative;
+}
+
+.annotation-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.annotation-underline.annotation-yellow::after {
+  background: #ffeb3b;
+}
+
+.annotation-underline.annotation-green::after {
+  background: #4caf50;
+}
+
+.annotation-underline.annotation-blue::after {
+  background: #2196f3;
+}
+
+.annotation-underline.annotation-red::after {
+  background: #f44336;
+}
+
+.annotation-underline.annotation-purple::after {
+  background: #9c27b0;
+}
+
+.annotation-underline.annotation-orange::after {
+  background: #ff9800;
+}
+
+/* 圈词标记 */
+.annotation-bracket {
+  border-radius: 6px;
+  padding: 2px 4px;
+  margin: 0 2px;
+  display: inline-block;
+  position: relative;
+}
+
+.annotation-bracket::before {
+  content: '⭕';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* 笔记模态框 */
+.note-modal {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  min-width: 300px;
+  max-width: 400px;
+  z-index: 1001;
+}
+
+.note-content {
+  overflow: hidden;
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  border-radius: 12px 12px 0 0;
+}
+
+.note-header h5 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.note-body {
+  padding: 16px;
+}
+
+.selected-text {
+  background: #f0f0f0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 12px;
+  border-left: 3px solid #2196f3;
+  color: #666;
+}
+
+.note-body textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.note-body textarea:focus {
+  outline: none;
+  border-color: #2196f3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+}
+
+.note-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.save-btn, .cancel-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.save-btn {
+  background: #2196f3;
+  color: white;
+  border: none;
+}
+
+.save-btn:hover {
+  background: #1976d2;
+}
+
+.cancel-btn {
+  background: #f8f9fa;
+  color: #666;
+  border: 1px solid #e0e0e0;
+}
+
+.cancel-btn:hover {
+  background: #e9ecef;
+}
+
+/* 笔记侧边栏 */
+.notes-sidebar {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 280px;
+  max-height: 60vh;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 98;
+}
+
+.notes-sidebar h4 {
+  margin: 0;
+  padding: 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.notes-list {
+  max-height: calc(60vh - 60px);
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.note-item {
+  padding: 12px;
+  margin-bottom: 8px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 3px solid #2196f3;
+}
+
+.note-text {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 6px;
+  font-style: italic;
+}
+
+.note-content {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.note-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: #999;
+}
+
+.note-mode {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+/* 统计面板 */
+.annotation-stats {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 20px;
+}
+
+.annotation-stats h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.stat-number {
+  display: block;
+  font-size: 24px;
+  font-weight: 700;
+  color: #2196f3;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #666;
+}
+
+/* 动画效果 */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.annotation-toolbar {
+  animation: slideIn 0.3s ease;
+}
+
+.note-modal {
+  animation: slideIn 0.2s ease;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .notes-sidebar {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-height: 300px;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .annotation-toolbar {
+    position: static;
+    padding: 16px;
+  }
+  
+  .toolbar-section {
+    margin-bottom: 16px;
+  }
+  
+  .tool-buttons, .color-buttons, .analysis-modes {
+    gap: 6px;
+  }
+  
+  .tool-btn, .color-btn, .analysis-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  
+  .tool-name, .color-name, .mode-name {
+    display: none;
+  }
+  
+  .note-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 350px;
+  }
+  
+  .article-content {
+    padding: 16px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .annotation-toggle {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+  
+  .toggle-text, .toggle-action {
+    display: none;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .toolbar-section h4 {
+    font-size: 13px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .annotation-toolbar {
+    background: rgba(30, 30, 30, 0.95);
+    border-color: #404040;
+    color: #e0e0e0;
+  }
+  
+  .article-content {
+    background: #1e1e1e;
+    color: #e0e0e0;
+    border-color: #404040;
+  }
+  
+  .note-modal {
+    background: #2d2d2d;
+    border-color: #404040;
+    color: #e0e0e0;
+  }
+  
+  .tool-btn, .color-btn, .analysis-btn {
+    background: #2d2d2d;
+    border-color: #404040;
+    color: #e0e0e0;
+  }
+  
+  .tool-btn:hover, .color-btn:hover, .analysis-btn:hover {
+    background: #3d3d3d;
+    border-color: #505050;
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .annotation-toolbar,
+  .notes-sidebar,
+  .annotation-stats,
+  .annotation-trigger {
+    display: none;
+  }
+  
+  .article-content {
+    border: none;
+    box-shadow: none;
+  }
+  
+  .annotation {
+    box-shadow: none;
+  }
+}

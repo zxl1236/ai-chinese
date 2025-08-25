@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}添加内容 - {{ module.title }}{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <div>
+        <h1>➕ 为 "{{ module.title }}" 添加内容</h1>
+        <p style="color: #666; margin-top: 0.5rem;">{{ module.description }}</p>
+    </div>
+    <a href="{{ url_for('content_page.list_content', module_id=module.module_id) }}" class="btn">← 返回内容列表</a>
+</div>
+
+<div class="card">
+    <form method="POST">
+        <div class="form-group">
+            <label for="title">内容标题</label>
+            <input type="text" id="title" name="title" class="form-control" required
+                   placeholder="例如: 第一课 - 认识汉字">
+        </div>
+
+        <div class="form-group">
+            <label for="content_type">内容类型</label>
+            <select id="content_type" name="content_type" class="form-control" required>
+                <option value="">请选择内容类型</option>
+                <option value="text">📝 文本内容</option>
+                <option value="image">🖼️ 图片</option>
+                <option value="video">🎥 视频</option>
+                <option value="exercise">🎯 练习题</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="content">内容</label>
+            <textarea id="content" name="content" class="form-control" required
+                      style="min-height: 200px;" 
+                      placeholder="输入具体的学习内容...&#10;&#10;支持的格式：&#10;- 文本：直接输入文字内容&#10;- 图片：输入图片URL或描述&#10;- 视频：输入视频URL或嵌入代码&#10;- 练习：输入题目和选项（可使用JSON格式）"></textarea>
+            <small style="color: #666; margin-top: 0.25rem; display: block;">
+                根据内容类型输入相应的内容。练习题可以使用JSON格式来定义题目结构。
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label for="order_index">显示顺序</label>
+            <input type="number" id="order_index" name="order_index" class="form-control" 
+                   value="0" min="0" placeholder="0">
+            <small style="color: #666; margin-top: 0.25rem; display: block;">
+                数字越小越靠前显示，0表示最前面
+            </small>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <button type="submit" class="btn btn-success">💾 保存内容</button>
+            <a href="{{ url_for('content_page.list_content', module_id=module.module_id) }}" class="btn" style="margin-left: 1rem;">取消</a>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <h3>💡 内容格式说明</h3>
+    
+    <h4 style="margin-top: 1.5rem;">📝 文本内容</h4>
+    <p>直接输入文字内容，支持多段落：</p>
+    <pre style="background: #f8f9fa; padding: 1rem; border-radius: 4px; font-size: 0.9rem;">汉字是中华文化的重要载体。
+每个汉字都有其独特的含义和文化内涵。
+
+学习汉字需要掌握：
+1. 字形结构
+2. 读音规律  
+3. 含义理解</pre>
+
+    <h4 style="margin-top: 1.5rem;">🖼️ 图片内容</h4>
+    <p>输入图片URL或描述：</p>
+    <pre style="background: #f8f9fa; padding: 1rem; border-radius: 4px; font-size: 0.9rem;">https://example.com/image.jpg
+
+或者描述：
+这是一幅展示汉字演变过程的图片，从甲骨文到现代简体字。</pre>
+
+    <h4 style="margin-top: 1.5rem;">🎯 练习题格式</h4>
+    <p>使用JSON格式定义练习题：</p>
+    <pre style="background: #f8f9fa; padding: 1rem; border-radius: 4px; font-size: 0.9rem;">{
+  "type": "multiple_choice",
+  "question": "下列哪个字的读音是正确的？",
+  "options": ["A. 读音一", "B. 读音二", "C. 读音三", "D. 读音四"],
+  "answer": "B",
+  "explanation": "正确答案的解释..."
+}</pre>
+</div>
+{% endblock %}

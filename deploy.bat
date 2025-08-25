@@ -1,94 +1,95 @@
 @echo off
-title AI语文助手自动部署
-
-echo 🚀 AI语文助手自动部署脚本
+chcp 65001 >nul
+echo.
+echo 🚀 AI语文学习助手 - 快速部署脚本
 echo ==================================
 echo.
 
-REM 检查Python环境
-python --version >nul 2>&1
+:: 检查Git是否安装
+git --version >nul 2>&1
 if errorlevel 1 (
-    echo ❌ Python未安装，请先安装Python
-    echo 下载地址: https://www.python.org/downloads/
+    echo ❌ Git未安装，请先安装Git
+    echo 下载地址: https://git-scm.com/downloads
     pause
     exit /b 1
 )
 
-echo ✅ Python环境检查通过
-
-REM 检查pip
-pip --version >nul 2>&1
-if errorlevel 1 (
-    echo ❌ pip未安装
+:: 检查是否在Git仓库中
+if not exist ".git" (
+    echo ❌ 当前目录不是Git仓库
+    echo 请先初始化Git仓库：
+    echo git init
+    echo git add .
+    echo git commit -m "Initial commit"
     pause
     exit /b 1
 )
 
-echo ✅ pip检查通过
+:: 检查是否有未提交的更改
+git diff-index --quiet HEAD --
+if errorlevel 1 (
+    echo ⚠️  检测到未提交的更改
+    echo 请先提交更改：
+    echo git add .
+    echo git commit -m "Prepare for deployment"
+    pause
+    exit /b 1
+)
 
-REM 安装后端依赖
+echo ✅ 代码检查通过
 echo.
-echo 📦 安装后端依赖...
-cd backend
-pip install -r requirements.txt
 
-if errorlevel 1 (
-    echo ❌ 后端依赖安装失败
-    pause
-    exit /b 1
-)
-
-echo ✅ 后端依赖安装完成
-
-REM 检查环境变量
+echo 📋 部署前检查清单：
+echo 1. ✅ 代码已提交到Git
+echo 2. ⏳ 请确保已注册以下服务：
+echo    - GitHub账号
+echo    - Vercel账号 (https://vercel.com)
+echo    - Railway账号 (https://railway.app)
 echo.
-echo 🔑 检查API密钥配置...
-if not defined QWEN_API_KEY if not defined DEEPSEEK_API_KEY (
-    echo ⚠️  警告: 未检测到API密钥，将使用默认模型
-    echo 💡 建议配置API密钥以获得更好的体验：
-    echo    set QWEN_API_KEY=your_key
-    echo    set DEEPSEEK_API_KEY=your_key
+
+echo 🔗 部署链接：
+echo 前端部署: https://vercel.com/new
+echo 后端部署: https://railway.app/new
+echo.
+
+echo 📖 详细部署步骤请查看: DEPLOYMENT_GUIDE.md
+echo.
+
+echo 🎯 快速部署步骤：
+echo 1. 推送代码到GitHub
+echo 2. 在Vercel导入项目 (选择frontend目录)
+echo 3. 在Railway导入项目 (选择backend目录)
+echo 4. 配置环境变量
+echo 5. 部署完成！
+echo.
+
+set /p choice="是否要推送代码到GitHub? (y/n): "
+if /i "%choice%"=="y" (
+    echo 📤 推送代码到GitHub...
+    
+    :: 检查远程仓库
+    git remote get-url origin >nul 2>&1
+    if errorlevel 1 (
+        echo 请先添加GitHub远程仓库：
+        echo git remote add origin https://github.com/yourusername/your-repo.git
+        pause
+        exit /b 1
+    )
+    
+    git push origin main
+    echo ✅ 代码已推送到GitHub
     echo.
+    echo 🎉 现在可以开始部署了！
+    echo 1. 访问 https://vercel.com/new 部署前端
+    echo 2. 访问 https://railway.app/new 部署后端
 ) else (
-    echo ✅ API密钥配置检查完成
-)
-
-REM 启动后端服务（后台运行）
-echo 🚀 启动后端服务...
-start "AI助手后端" cmd /k "python app.py"
-
-REM 等待后端启动
-echo ⏳ 等待后端服务启动...
-timeout /t 3 /nobreak >nul
-
-REM 回到项目根目录
-cd ..
-
-REM 检查后端健康状态
-echo 🔍 检查后端服务状态...
-curl -s http://localhost:5000/api/health >nul 2>&1
-if errorlevel 1 (
-    echo ⚠️  后端服务可能未完全启动，但继续启动前端...
-) else (
-    echo ✅ 后端服务健康检查通过
+    echo ⏸️  跳过GitHub推送
 )
 
 echo.
-echo 🌐 启动前端服务...
-echo 📖 访问地址: http://localhost:8080
-echo 📱 写作模块: http://localhost:8080/src/writing-module/writing.html
+echo 📚 更多帮助：
+echo - 部署指南: DEPLOYMENT_GUIDE.md
+echo - 项目文档: README.md
+echo - 问题反馈: 创建GitHub Issue
 echo.
-echo 💡 使用说明:
-echo 1. 点击"写作训练"进入写作模块
-echo 2. 选择题目开始写作  
-echo 3. 点击右下角AI助手按钮使用AI功能
-echo.
-echo 🛑 停止服务: 按 Ctrl+C 或关闭此窗口
-echo ==================================
-echo.
-
-REM 自动打开浏览器
-start http://localhost:8080
-
-REM 启动前端服务
-python -m http.server 8080
+pause

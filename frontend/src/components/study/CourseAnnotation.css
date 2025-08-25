@@ -1,0 +1,563 @@
+.course-annotation {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  margin: 20px 0;
+  position: relative;
+}
+
+.annotation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.annotation-header h3 {
+  margin: 0;
+  color: #212529;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.annotation-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.stat-icon {
+  font-size: 16px;
+}
+
+/* 标注表单样式 */
+.annotation-form-overlay {
+  position: absolute;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.annotation-form {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e9ecef;
+  min-width: 320px;
+  max-width: 400px;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e9ecef;
+  background: #f8f9fa;
+  border-radius: 8px 8px 0 0;
+}
+
+.form-header h4 {
+  margin: 0;
+  color: #212529;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.close-form-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.close-form-btn:hover {
+  background: #e9ecef;
+  color: #495057;
+}
+
+.form-body {
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #495057;
+  font-size: 14px;
+}
+
+.annotation-type-select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  background: white;
+  font-size: 14px;
+  color: #495057;
+  cursor: pointer;
+}
+
+.annotation-type-select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.annotation-content-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  background: white;
+  font-size: 14px;
+  color: #495057;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.annotation-content-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.color-picker {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.color-option {
+  width: 32px;
+  height: 32px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.color-option:hover {
+  transform: scale(1.1);
+}
+
+.color-option.selected {
+  border-color: #212529;
+  transform: scale(1.1);
+}
+
+.color-option.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.checkbox-label {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-bottom: 0 !important;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+.form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid #e9ecef;
+  background: #f8f9fa;
+  border-radius: 0 0 8px 8px;
+}
+
+.cancel-btn,
+.submit-btn {
+  padding: 8px 16px;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn {
+  background: white;
+  color: #6c757d;
+}
+
+.cancel-btn:hover {
+  background: #f8f9fa;
+  border-color: #dee2e6;
+}
+
+.submit-btn {
+  background: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+.submit-btn:hover {
+  background: #0056b3;
+  border-color: #0056b3;
+}
+
+/* 标注列表样式 */
+.annotations-list {
+  margin-bottom: 24px;
+}
+
+.annotation-item {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-left: 4px solid #007bff;
+}
+
+.annotation-item:last-child {
+  margin-bottom: 0;
+}
+
+.annotation-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.annotation-type {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.type-icon {
+  font-size: 16px;
+}
+
+.type-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #495057;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.annotation-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.annotation-user {
+  font-weight: 500;
+}
+
+.annotation-content {
+  margin-bottom: 12px;
+}
+
+.selected-text,
+.annotation-text {
+  margin-bottom: 8px;
+}
+
+.selected-text:last-child,
+.annotation-text:last-child {
+  margin-bottom: 0;
+}
+
+.text-label {
+  font-weight: 500;
+  color: #6c757d;
+  margin-right: 8px;
+  font-size: 13px;
+}
+
+.text-content {
+  color: #212529;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.annotation-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.annotation-visibility {
+  display: flex;
+  gap: 8px;
+}
+
+.visibility-badge {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: white;
+}
+
+.visibility-badge.public {
+  background: #28a745;
+}
+
+.visibility-badge.private {
+  background: #6c757d;
+}
+
+.annotation-color-indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 无标注状态 */
+.no-annotations {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6c757d;
+}
+
+.no-annotations-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.no-annotations p {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+}
+
+.annotation-tip {
+  font-size: 14px !important;
+  color: #adb5bd !important;
+}
+
+/* 使用说明 */
+.annotation-instructions {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  border-left: 4px solid #17a2b8;
+}
+
+.annotation-instructions h4 {
+  margin: 0 0 16px 0;
+  color: #212529;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.instruction-steps {
+  display: grid;
+  gap: 12px;
+}
+
+.instruction-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.step-number {
+  background: #17a2b8;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.step-text {
+  color: #495057;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* 加载状态 */
+.annotation-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #6c757d;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .course-annotation {
+    padding: 16px;
+    margin: 16px 0;
+  }
+  
+  .annotation-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .annotation-header h3 {
+    font-size: 18px;
+    text-align: center;
+  }
+  
+  .annotation-stats {
+    justify-content: center;
+  }
+  
+  .annotation-form {
+    min-width: 280px;
+    max-width: 320px;
+  }
+  
+  .form-body {
+    padding: 16px;
+  }
+  
+  .form-footer {
+    padding: 12px 16px;
+  }
+  
+  .annotation-item {
+    padding: 12px;
+  }
+  
+  .annotation-header-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .annotation-meta {
+    justify-content: center;
+  }
+  
+  .annotation-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .annotation-visibility {
+    justify-content: center;
+  }
+  
+  .annotation-color-indicator {
+    align-self: center;
+  }
+  
+  .instruction-steps {
+    gap: 8px;
+  }
+  
+  .step-text {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .course-annotation {
+    padding: 12px;
+    margin: 12px 0;
+  }
+  
+  .annotation-form {
+    min-width: 260px;
+    max-width: 300px;
+  }
+  
+  .form-body {
+    padding: 12px;
+  }
+  
+  .form-footer {
+    padding: 8px 12px;
+  }
+  
+  .annotation-item {
+    padding: 8px;
+  }
+  
+  .annotation-instructions {
+    padding: 16px;
+  }
+  
+  .step-number {
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+  }
+  
+  .step-text {
+    font-size: 12px;
+  }
+}

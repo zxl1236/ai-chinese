@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}用户管理{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>👥 用户管理</h2>
+        <a href="{{ url_for('content_page.add_user') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> 添加用户
+        </a>
+    </div>
+
+    {% if users %}
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">用户列表</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>用户名</th>
+                            <th>昵称</th>
+                            <th>用户类型</th>
+                            <th>状态</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.nickname or '-' }}</td>
+                            <td>
+                                {% if user.user_type == 'admin' %}
+                                    <span class="badge bg-danger">管理员</span>
+                                {% elif user.user_type == 'teacher' %}
+                                    <span class="badge bg-warning">教师</span>
+                                {% else %}
+                                    <span class="badge bg-info">学生</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if user.is_active %}
+                                    <span class="badge bg-success">激活</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">禁用</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ user.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a href="{{ url_for('content_page.manage_user_permissions', user_id=user.id) }}" 
+                                       class="btn btn-outline-primary" title="管理权限">
+                                        <i class="fas fa-key"></i> 权限
+                                    </a>
+                                    <button class="btn btn-outline-secondary" title="编辑用户" disabled>
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i>
+        暂无用户数据。<a href="{{ url_for('content_page.add_user') }}">立即添加第一个用户</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

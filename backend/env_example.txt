@@ -1,0 +1,47 @@
+# AI语文学习助手 - 环境变量配置模板
+# 复制此文件为 .env 并根据需要修改
+
+# ========================================
+# 数据库配置
+# ========================================
+# 本地开发使用SQLite
+DATABASE_URL=sqlite:///chinese_learning.db
+
+# MySQL配置 (推荐生产环境)
+# DATABASE_URL=mysql+pymysql://username:password@localhost:3306/chinese_learning?charset=utf8mb4
+
+# PostgreSQL配置 (Railway等)
+# DATABASE_URL=postgresql://username:password@host:port/database
+
+# ========================================
+# Flask配置
+# ========================================
+# 生产环境请使用强密钥
+SECRET_KEY=your-secret-key-change-in-production
+FLASK_ENV=development
+
+# ========================================
+# AI服务配置 (可选)
+# ========================================
+# DeepSeek API密钥
+# 获取地址: https://platform.deepseek.com
+DEEPSEEK_API_KEY=your-deepseek-api-key
+
+# 阿里云Qwen API密钥
+# 获取地址: https://dashscope.console.aliyun.com
+DASHSCOPE_API_KEY=your-qwen-api-key
+
+# ========================================
+# 生产环境配置
+# ========================================
+# 生产环境设置
+# FLASK_ENV=production
+# DEBUG=False
+
+# ========================================
+# 使用说明
+# ========================================
+# 1. 复制此文件为 .env
+# 2. 根据需要修改配置值
+# 3. 不要将 .env 文件提交到版本控制
+# 4. 生产环境请使用强密钥和HTTPS

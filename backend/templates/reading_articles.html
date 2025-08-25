@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}阅读文章管理 - AI语文学习助手{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1>📚 阅读文章管理</h1>
+    <a href="{{ url_for('content_page.add_reading_article') }}" class="btn btn-success">➕ 添加新文章</a>
+</div>
+
+<div class="card">
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>文章标题</th>
+                    <th>作者</th>
+                    <th>类别</th>
+                    <th>难度</th>
+                    <th>字数</th>
+                    <th>题目数</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for article in articles %}
+                <tr>
+                    <td>{{ article.id }}</td>
+                    <td>
+                        <strong>{{ article.title }}</strong>
+                        <br>
+                        <small style="color: #666;">{{ article.content[:50] }}{% if article.content|length > 50 %}...{% endif %}</small>
+                    </td>
+                    <td>{{ article.author or '未知' }}</td>
+                    <td>
+                        <span class="badge">
+                            {% if article.category == 'literature' %}📖 文学{% elif article.category == 'classical' %}📜 文言文{% else %}📰 其他{% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="difficulty">
+                            {% for i in range(article.difficulty) %}⭐{% endfor %}
+                        </div>
+                    </td>
+                    <td>{{ article.word_count or 0 }} 字</td>
+                    <td>{{ article.questions|length }} 题</td>
+                    <td>
+                        {% if article.is_active %}
+                            <span class="status-active">✅ 启用</span>
+                        {% else %}
+                            <span class="status-inactive">❌ 禁用</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{{ url_for('content_page.view_reading_article', article_id=article.id) }}" class="btn btn-sm">👀 查看</a>
+                            <a href="{{ url_for('content_page.edit_reading_article', article_id=article.id) }}" class="btn btn-sm">✏️ 编辑</a>
+                            <form method="POST" action="{{ url_for('content_page.toggle_reading_article', article_id=article.id) }}" style="display: inline;">
+                                <button type="submit" class="btn btn-sm">
+                                    {% if article.is_active %}❌ 禁用{% else %}✅ 启用{% endif %}
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+.badge {
+    padding: 0.25rem 0.5rem;
+    background: #e3f2fd;
+    color: #1976d2;
+    border-radius: 12px;
+    font-size: 0.85rem;
+}
+
+.difficulty {
+    font-size: 1.1rem;
+    color: #ff9800;
+}
+
+.status-active {
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.status-inactive {
+    color: #f44336;
+    font-weight: bold;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+    min-width: 80px;
+}
+</style>
+{% endblock %}
