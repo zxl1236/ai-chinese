@@ -1,0 +1,31 @@
+# 明确指定 JavaScript 文件的语言类型
+*.js linguist-language=JavaScript
+*.jsx linguist-language=JavaScript
+
+# 指定 React 相关文件
+frontend/src/**/*.js linguist-language=JavaScript
+frontend/src/**/*.jsx linguist-language=JavaScript
+
+# 指定配置文件
+*.json linguist-language=JSON
+*.toml linguist-language=TOML
+*.yml linguist-language=YAML
+*.yaml linguist-language=YAML
+
+# 指定文档文件
+*.md linguist-language=Markdown
+*.txt linguist-language=Text
+
+# 指定 Python 文件
+*.py linguist-language=Python
+
+# 指定 CSS 文件
+*.css linguist-language=CSS
+*.scss linguist-language=SCSS
+
+# 指定 HTML 文件
+*.html linguist-language=HTML
+
+# 指定 Shell 脚本
+*.sh linguist-language=Shell
+*.bat linguist-language=Batchfile
