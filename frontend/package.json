@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+    "build": "cross-env CI=false craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
     "dev": "craco start"
@@ -48,6 +48,7 @@
   "proxy": "http://localhost:5000",
   "devDependencies": {
     "@craco/craco": "^6.4.5",
+    "cross-env": "^10.0.0",
     "node-libs-browser": "^2.2.1"
   }
 }
