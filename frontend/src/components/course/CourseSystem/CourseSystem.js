@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CourseCalendar from '../CourseCalendar/CourseCalendar';
 import CourseManagement from '../CourseManagement/CourseManagement';
-import CourseAnnotation from '../CourseAnnotation/CourseAnnotation';
 import OnlineCourseInterface from '../OnlineCourseInterface/OnlineCourseInterface';
 import TeacherDataSync from '../../teacher/TeacherDataSync';
 import AdminCourseManagement from '../../admin/AdminCourseManagement/AdminCourseManagement';
