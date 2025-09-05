@@ -131,6 +131,64 @@ def ai_writing_assistant():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+@content_api_bp.route('/reading-articles', methods=['GET'])
+def api_get_reading_articles():
+    """获取阅读文章列表API"""
+    try:
+        import os
+        import json
+        from glob import glob
+        
+        # 获取articles目录路径
+        articles_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'articles')
+        
+        articles = []
+        
+        # 如果articles目录存在，读取其中的文章文件
+        if os.path.exists(articles_dir):
+            # 获取所有JSON文件
+            json_files = glob(os.path.join(articles_dir, 'article_*.json'))
+            
+            for file_path in json_files:
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        article_data = json.load(f)
+                    
+                    # 从文件名提取ID
+                    filename = os.path.basename(file_path)
+                    file_id = filename.replace('article_', '').replace('.json', '')
+                    
+                    # 转换为前端期望的格式
+                    article = {
+                        'id': len(articles) + 1,  # 简单的ID生成
+                        'title': article_data.get('title', '未命名文章'),
+                        'author': article_data.get('author', '未知作者'),
+                        'content': article_data.get('content', ''),
+                        'category': article_data.get('category', 'literature'),
+                        'difficulty': article_data.get('difficulty', 1),
+                        'word_count': article_data.get('word_count', 0),
+                        'reading_time': article_data.get('reading_time', 5),
+                        'tags': article_data.get('tags', []),
+                        'questions': article_data.get('questions', []),
+                        'created_at': article_data.get('created_at', ''),
+                        'status': article_data.get('status', 'active')
+                    }
+                    
+                    articles.append(article)
+                    
+                except Exception as e:
+                    print(f"读取文章文件 {file_path} 失败: {e}")
+                    continue
+        
+        # 按创建时间倒序排列（最新的在前）
+        articles.sort(key=lambda x: x.get('created_at', ''), reverse=True)
+        
+        return jsonify(articles)
+        
+    except Exception as e:
+        print(f"获取文章列表失败: {e}")
+        return jsonify({'error': str(e)}), 500
+
 # ==================== 页面路由 ====================
 
 @content_page_bp.route('/')
@@ -265,9 +323,116 @@ def manage_user_permissions(user_id):
     """管理用户权限页面"""
     return render_template('user_permissions.html')
 
-@content_page_bp.route('/add-reading-article')
+@content_page_bp.route('/add-reading-article', methods=['GET', 'POST'])
 def add_reading_article():
     """添加阅读文章页面"""
+    if request.method == 'POST':
+        try:
+            # 获取表单数据
+            title = request.form.get('title', '').strip()
+            author = request.form.get('author', '').strip()
+            category = request.form.get('category', '')
+            difficulty = int(request.form.get('difficulty', 1))
+            reading_time = request.form.get('reading_time', 0)
+            tags = request.form.get('tags', '').strip()
+            content = request.form.get('content', '').strip()
+            
+            # 处理题目数据
+            questions = []
+            form_data = request.form.to_dict(flat=False)
+            
+            # 解析题目数据
+            question_indices = set()
+            for key in form_data.keys():
+                if key.startswith('questions[') and '][' in key:
+                    index = key.split('[')[1].split(']')[0]
+                    if index.isdigit():
+                        question_indices.add(int(index))
+            
+            for i in sorted(question_indices):
+                question = {
+                    'type': request.form.get(f'questions[{i}][type]', 'single'),
+                    'stem': request.form.get(f'questions[{i}][stem]', '').strip(),
+                    'options': [],
+                    'answer': request.form.get(f'questions[{i}][answer]', '').strip(),
+                    'score': int(request.form.get(f'questions[{i}][score]', 3)),
+                    'explanation': request.form.get(f'questions[{i}][explanation]', '').strip(),
+                    'ai_tip': request.form.get(f'questions[{i}][ai_tip]', '').strip()
+                }
+                
+                # 获取选项
+                for j in range(4):  # A, B, C, D
+                    option = request.form.get(f'questions[{i}][options][{j}]', '').strip()
+                    if option:
+                        question['options'].append(option)
+                
+                # 只添加有题目内容的题目
+                if question['stem']:
+                    questions.append(question)
+            
+            # 基本验证
+            if not title:
+                flash('文章标题不能为空', 'error')
+                return render_template('add_reading_article.html')
+            
+            if not content:
+                flash('文章内容不能为空', 'error')
+                return render_template('add_reading_article.html')
+            
+            # 计算字数
+            word_count = len(content.replace(' ', '').replace('\n', '').replace('\r', ''))
+            
+            # 处理阅读时间
+            try:
+                reading_time = int(reading_time) if reading_time else None
+            except ValueError:
+                reading_time = None
+            
+            # 这里应该保存到数据库，暂时先模拟保存成功
+            # TODO: 实现数据库保存逻辑
+            import os
+            import json
+            from datetime import datetime
+            
+            # 确保articles目录存在
+            articles_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'articles')
+            os.makedirs(articles_dir, exist_ok=True)
+            
+            # 生成文件名
+            filename = f"article_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+            filepath = os.path.join(articles_dir, filename)
+            
+            # 保存文章数据
+            article_data = {
+                'title': title,
+                'author': author,
+                'category': category,
+                'difficulty': difficulty,
+                'reading_time': reading_time,
+                'tags': tags.split(',') if tags else [],
+                'content': content,
+                'word_count': word_count,
+                'questions': questions,
+                'question_count': len(questions),
+                'created_at': datetime.now().isoformat(),
+                'status': 'active'
+            }
+            
+            with open(filepath, 'w', encoding='utf-8') as f:
+                json.dump(article_data, f, ensure_ascii=False, indent=2)
+            
+            success_msg = f'阅读文章《{title}》添加成功！（共{word_count}字'
+            if questions:
+                success_msg += f'，{len(questions)}道题目'
+            success_msg += '）'
+            flash(success_msg, 'success')
+            return redirect(url_for('content_page.list_reading_articles'))
+            
+        except Exception as e:
+            flash(f'添加文章时出错：{str(e)}', 'error')
+            return render_template('add_reading_article.html')
+    
+    # GET 请求显示表单
     return render_template('add_reading_article.html')
 
 @content_page_bp.route('/view-reading-article/<int:article_id>')

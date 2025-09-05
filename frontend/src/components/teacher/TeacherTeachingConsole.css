@@ -1,0 +1,613 @@
+/* 陪练端教学控制台样式 */
+.teacher-teaching-console {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* 头部样式 */
+.console-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.header-left h2 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.header-left p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 16px;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-indicator {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-indicator.connected {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4CAF50;
+}
+
+.status-indicator.disconnected {
+  background: rgba(244, 67, 54, 0.2);
+  color: #F44336;
+}
+
+.current-time {
+  font-size: 18px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+/* 今日课程样式 */
+.today-courses {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 22px;
+  color: #333;
+}
+
+.refresh-btn {
+  background: #f0f0f0;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.refresh-btn:hover {
+  background: #e0e0e0;
+}
+
+.no-courses {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.courses-list {
+  display: grid;
+  gap: 16px;
+}
+
+.course-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.course-item:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.course-item.scheduled {
+  border-left: 4px solid #2196F3;
+}
+
+.course-item.active {
+  border-left: 4px solid #4CAF50;
+  background: #f8fff8;
+}
+
+.course-item.completed {
+  border-left: 4px solid #9E9E9E;
+  background: #f5f5f5;
+}
+
+.course-item.cancelled {
+  border-left: 4px solid #F44336;
+  background: #fff5f5;
+}
+
+.course-time {
+  text-align: center;
+  min-width: 80px;
+}
+
+.time-display {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+}
+
+.duration {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.course-info h4 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.course-info p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.course-actions {
+  display: flex;
+  align-items: center;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-primary {
+  background: #2196F3;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1976D2;
+  transform: translateY(-1px);
+}
+
+.btn-warning {
+  background: #FF9800;
+  color: white;
+}
+
+.btn-warning:hover {
+  background: #F57C00;
+}
+
+.btn-danger {
+  background: #F44336;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #D32F2F;
+}
+
+.btn-success {
+  background: #4CAF50;
+  color: white;
+}
+
+.btn-success:hover {
+  background: #388E3C;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #666;
+  border: 1px solid #ddd;
+}
+
+.btn-outline:hover {
+  background: #f5f5f5;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+}
+
+.status-badge.active {
+  background: #4CAF50;
+}
+
+.status-badge.completed {
+  background: #9E9E9E;
+}
+
+.status-badge.cancelled {
+  background: #F44336;
+}
+
+/* 当前课程会话样式 */
+.current-session {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.session-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.session-header h3 {
+  margin: 0;
+  font-size: 22px;
+  color: #333;
+}
+
+.session-info {
+  margin-bottom: 24px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.info-item .label {
+  font-weight: 500;
+  color: #666;
+}
+
+.info-item .value {
+  font-weight: 600;
+  color: #333;
+}
+
+/* 教学工具样式 */
+.teaching-tools {
+  margin-bottom: 24px;
+}
+
+.teaching-tools h4 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.tool-btn {
+  padding: 16px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.tool-btn:hover {
+  border-color: #2196F3;
+  background: #f8f9ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(33, 150, 243, 0.15);
+}
+
+/* 学生状态监控样式 */
+.student-monitor {
+  margin-bottom: 24px;
+}
+
+.student-monitor h4 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.monitor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.monitor-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #2196F3;
+}
+
+.monitor-item .label {
+  font-weight: 500;
+  color: #666;
+}
+
+.monitor-item .value {
+  font-weight: 600;
+  color: #333;
+}
+
+/* 课程笔记样式 */
+.session-notes {
+  margin-bottom: 24px;
+}
+
+.session-notes h4 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.session-notes textarea {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.session-notes textarea:focus {
+  outline: none;
+  border-color: #2196F3;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+/* 课程控制样式 */
+.session-controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* 快速操作样式 */
+.quick-actions {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.quick-actions h3 {
+  margin: 0 0 20px 0;
+  font-size: 22px;
+  color: #333;
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.action-btn {
+  padding: 16px 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.action-btn:hover {
+  border-color: #2196F3;
+  background: #f8f9ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(33, 150, 243, 0.15);
+}
+
+/* 工具面板样式 */
+.tool-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  min-width: 400px;
+  max-width: 80vw;
+  max-height: 80vh;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.tool-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tool-header h4 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.close-btn:hover {
+  background: #e0e0e0;
+}
+
+.tool-content {
+  padding: 24px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* 加载状态样式 */
+.loading-spinner {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 16px;
+}
+
+/* 通知样式 */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 16px 24px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  z-index: 1001;
+  animation: slideIn 0.3s ease-out;
+}
+
+.notification-success {
+  background: #4CAF50;
+}
+
+.notification-warning {
+  background: #FF9800;
+}
+
+.notification-error {
+  background: #F44336;
+}
+
+.notification-info {
+  background: #2196F3;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .teacher-teaching-console {
+    padding: 16px;
+  }
+  
+  .console-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+  
+  .header-right {
+    align-items: center;
+  }
+  
+  .course-item {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .course-time {
+    text-align: left;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .monitor-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tools-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .action-buttons {
+    grid-template-columns: 1fr;
+  }
+  
+  .session-controls {
+    flex-direction: column;
+  }
+  
+  .tool-panel {
+    min-width: 90vw;
+    margin: 20px;
+  }
+}

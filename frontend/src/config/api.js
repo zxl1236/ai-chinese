@@ -1,5 +1,25 @@
 // API配置文件
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+// 检查是否有运行时配置（从 public/config.js）
+const getRuntimeConfig = () => {
+  if (typeof window !== 'undefined' && window.REACT_APP_CONFIG) {
+    // 检查前端独立运行模式
+    if (window.REACT_APP_CONFIG.FRONTEND_ONLY_MODE) {
+      return null; // 前端独立运行，不连接后端
+    }
+    return window.REACT_APP_CONFIG.IS_PRODUCTION 
+      ? window.REACT_APP_CONFIG.PRODUCTION_API_URL 
+      : window.REACT_APP_CONFIG.DEVELOPMENT_API_URL;
+  }
+  return null;
+};
+
+// 检查是否为前端独立运行模式
+const isFrontendOnlyMode = () => {
+  return (typeof window !== 'undefined' && window.REACT_APP_CONFIG?.FRONTEND_ONLY_MODE) || 
+         process.env.REACT_APP_FRONTEND_ONLY === 'true';
+};
+
+const API_BASE_URL = getRuntimeConfig() || process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 export const API_ENDPOINTS = {
   // 基础端点
@@ -38,6 +58,24 @@ export const API_ENDPOINTS = {
 
 // API请求工具函数
 export const apiRequest = async (url, options = {}) => {
+  // 检查是否为前端独立运行模式或演示模式
+  const isDemoMode = localStorage.getItem('demo_mode') === 'true';
+  const isFrontendOnly = isFrontendOnlyMode();
+  
+  if (isDemoMode || isFrontendOnly) {
+    // 演示模式或前端独立运行模式：返回模拟响应
+    console.log(isFrontendOnly ? '前端独立运行模式：模拟API请求' : '演示模式：模拟API请求', url);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ 
+          success: true, 
+          message: isFrontendOnly ? '前端独立运行模式数据' : '演示模式数据',
+          data: {} // 提供空数据结构
+        });
+      }, 300); // 模拟网络延迟
+    });
+  }
+
   const defaultOptions = {
     headers: {
       'Content-Type': 'application/json',
@@ -95,6 +133,10 @@ export const getEnvironmentInfo = () => ({
   apiUrl: API_BASE_URL,
   isProduction: process.env.NODE_ENV === 'production',
   isDevelopment: process.env.NODE_ENV === 'development',
+  isFrontendOnlyMode: isFrontendOnlyMode(),
 });
+
+// 导出前端独立运行模式检查函数
+export { isFrontendOnlyMode };
 
 export default API_ENDPOINTS;

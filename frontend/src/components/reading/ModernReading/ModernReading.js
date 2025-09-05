@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './ModernReading.css';
 
-const ModernReading = ({ user, onBack }) => {
+const ModernReading = ({ user, onBack, selectedModule }) => {
+  console.log('ModernReading 组件渲染, selectedModule:', selectedModule);
   const [currentTab, setCurrentTab] = useState('practice');
   const [currentArticle, setCurrentArticle] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -427,6 +428,10 @@ const ModernReading = ({ user, onBack }) => {
   if (loading) {
     return (
       <div className="modern-reading">
+        {/* 返回按钮 */}
+        <button className="back-button" onClick={onBack}>
+          ← 返回
+        </button>
         <div className="loading-container">
           <div className="loading-spinner"></div>
           <p>正在加载阅读文章...</p>
@@ -439,6 +444,10 @@ const ModernReading = ({ user, onBack }) => {
   if (error && articles.length === 0) {
     return (
       <div className="modern-reading">
+        {/* 返回按钮 */}
+        <button className="back-button" onClick={onBack}>
+          ← 返回
+        </button>
         <div className="error-container">
           <h3>❌ 加载失败</h3>
           <p>{error}</p>
@@ -452,6 +461,10 @@ const ModernReading = ({ user, onBack }) => {
   if (articles.length === 0) {
     return (
       <div className="modern-reading">
+        {/* 返回按钮 */}
+        <button className="back-button" onClick={onBack}>
+          ← 返回
+        </button>
         <div className="empty-container">
           <h3>📚 暂无阅读文章</h3>
           <p>请先添加一些阅读文章和题目</p>
@@ -473,6 +486,7 @@ const ModernReading = ({ user, onBack }) => {
       {/* 标题和计时器 */}
       <div className="page-header">
         <h1>📖 现代文阅读训练</h1>
+        {selectedModule && <p>🎯 当前模块: {selectedModule}</p>}
         <p>⏱️ 学习时间: {formatTime(studyTime)}</p>
       </div>
 

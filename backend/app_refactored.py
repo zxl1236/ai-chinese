@@ -11,6 +11,9 @@ from extensions import init_extensions
 from routes.auth import auth_bp
 from routes.content import content_api_bp, content_page_bp
 from routes.ai import ai_bp
+from routes.teacher import teacher_bp
+from routes.student import student_bp
+from routes.admin import admin_bp
 
 def create_app(config_name=None):
     """应用工厂函数"""
@@ -33,6 +36,9 @@ def create_app(config_name=None):
     app.register_blueprint(content_api_bp)
     app.register_blueprint(content_page_bp)
     app.register_blueprint(ai_bp)
+    app.register_blueprint(teacher_bp)
+    app.register_blueprint(student_bp)
+    app.register_blueprint(admin_bp)
     
     # 注册其他蓝图（如果有的话）
     # app.register_blueprint(course_bp)

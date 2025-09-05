@@ -15,11 +15,12 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "^4.0.3",
-    "socket.io-client": "^4.8.1",
     "stream-browserify": "^3.0.0",
     "util": "^0.12.5",
     "vm-browserify": "^1.1.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "date-fns": "^2.29.3",
+    "socket.io-client": "^4.7.2"
   },
   "scripts": {
     "start": "set NODE_OPTIONS=--openssl-legacy-provider && craco start",

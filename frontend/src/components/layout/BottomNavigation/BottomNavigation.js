@@ -6,13 +6,48 @@ const BottomNavigation = ({ activeSection, onSectionChange, userType, theme = 'd
   const [ripplePosition, setRipplePosition] = useState({ x: 0, y: 0 });
   const longPressTimer = useRef(null);
   
-  const navItems = [
-    { id: 'home', icon: '🏠', text: '首页', longPressAction: () => console.log('长按首页') },
-    { id: 'study', icon: '📚', text: '学习', longPressAction: () => console.log('长按学习') },
-    { id: 'courses', icon: '📅', text: '课程', longPressAction: () => console.log('长按课程') },
-    { id: 'tutor', icon: '👨‍🏫', text: '陪练', longPressAction: () => console.log('长按陪练') },
-    { id: 'profile', icon: '👤', text: '我的', longPressAction: () => console.log('长按我的') }
-  ];
+  // 根据用户类型动态生成导航项
+  const getNavItems = () => {
+    // 学生端导航
+    if (userType === 'student') {
+      return [
+        { id: 'home', icon: '🏠', text: '首页', longPressAction: () => console.log('长按首页') },
+        { id: 'study', icon: '📚', text: '学习', longPressAction: () => console.log('长按学习') },
+        { id: 'courses', icon: '📅', text: '课程', longPressAction: () => console.log('长按课程') },
+        { id: 'profile', icon: '👤', text: '我的', longPressAction: () => console.log('长按我的') }
+      ];
+    }
+
+    // 教师端导航
+    if (userType === 'teacher') {
+      return [
+        { id: 'home', icon: '🏠', text: '首页', longPressAction: () => console.log('长按首页') },
+        { id: 'courses', icon: '📅', text: '课程', longPressAction: () => console.log('长按课程') },
+        { id: 'teaching', icon: '👨‍🏫', text: '教学', longPressAction: () => console.log('长按教学') },
+        { id: 'profile', icon: '👤', text: '我的', longPressAction: () => console.log('长按我的') }
+      ];
+    }
+
+    // 管理员导航
+    if (userType === 'admin') {
+      return [
+        { id: 'home', icon: '🏠', text: '首页', longPressAction: () => console.log('长按首页') },
+        { id: 'admin', icon: '⚙️', text: '管理', longPressAction: () => console.log('长按管理') },
+        { id: 'courses', icon: '📅', text: '课程', longPressAction: () => console.log('长按课程') },
+        { id: 'profile', icon: '👤', text: '我的', longPressAction: () => console.log('长按我的') }
+      ];
+    }
+
+    // 默认导航（兼容旧版本）
+    return [
+      { id: 'home', icon: '🏠', text: '首页', longPressAction: () => console.log('长按首页') },
+      { id: 'study', icon: '📚', text: '学习', longPressAction: () => console.log('长按学习') },
+      { id: 'courses', icon: '📅', text: '课程', longPressAction: () => console.log('长按课程') },
+      { id: 'profile', icon: '👤', text: '我的', longPressAction: () => console.log('长按我的') }
+    ];
+  };
+
+  const navItems = getNavItems();
 
   // 处理触摸开始
   const handleTouchStart = useCallback((e, item) => {

@@ -3,6 +3,8 @@ import CourseCalendar from '../CourseCalendar/CourseCalendar';
 import CourseManagement from '../CourseManagement/CourseManagement';
 import CourseAnnotation from '../CourseAnnotation/CourseAnnotation';
 import OnlineCourseInterface from '../OnlineCourseInterface/OnlineCourseInterface';
+import TeacherDataSync from '../../teacher/TeacherDataSync';
+import AdminCourseManagement from '../../admin/AdminCourseManagement/AdminCourseManagement';
 import './CourseSystem.css';
 
 const CourseSystem = ({ user, onSwitchUser, onLogout }) => {
@@ -57,6 +59,13 @@ const CourseSystem = ({ user, onSwitchUser, onLogout }) => {
     }
   ];
 
+  // 根据用户类型设置默认视图
+  useEffect(() => {
+    if (user && user.user_type === 'admin') {
+      setActiveView('admin');
+    }
+  }, [user]);
+
   useEffect(() => {
     // 直接设置课程数据，不显示加载动画
     setCourses(mockCourses);
@@ -99,6 +108,16 @@ const CourseSystem = ({ user, onSwitchUser, onLogout }) => {
 
   // 渲染视图内容
   const renderViewContent = () => {
+    console.log('renderViewContent called, user:', user);
+    console.log('user.user_type:', user?.user_type);
+    
+    // 管理员视图
+    if (user && user.user_type === 'admin') {
+      console.log('Rendering AdminCourseManagement component');
+      return <AdminCourseManagement user={user} />;
+    }
+
+    console.log('Not admin, rendering other views, activeView:', activeView);
     switch (activeView) {
       case 'calendar':
         return (
@@ -126,6 +145,19 @@ const CourseSystem = ({ user, onSwitchUser, onLogout }) => {
           />
         );
       
+      case 'sync':
+        // 只有教师用户才能看到数据同步视图
+        if (user.user_type === 'teacher') {
+          return <TeacherDataSync teacherId={user.id || user.username} />;
+        }
+        return (
+          <CourseCalendar
+            courses={courses}
+            onCourseClick={handleCourseClick}
+            onDateSelect={handleDateSelect}
+          />
+        );
+      
       default:
         return (
           <CourseCalendar
@@ -139,20 +171,30 @@ const CourseSystem = ({ user, onSwitchUser, onLogout }) => {
 
   // 获取视图标题
   const getViewTitle = () => {
+    if (user && user.user_type === 'admin') {
+      return '👨‍💼 管理员课程管理';
+    }
+    
     switch (activeView) {
       case 'calendar': return '📅 课程日历';
       case 'management': return '📚 课程管理';
       case 'online': return '🎯 在线课程';
+      case 'sync': return '🔄 数据同步';
       default: return '📅 课程日历';
     }
   };
 
   // 获取视图描述
   const getViewDescription = () => {
+    if (user && user.user_type === 'admin') {
+      return '统一安排学生和老师的课程预约，管理用户和课程数据';
+    }
+    
     switch (activeView) {
       case 'calendar': return '查看课程安排和时间表';
       case 'management': return '管理课程预约和安排';
       case 'online': return '进行在线教学和实时标注';
+      case 'sync': return '同步课程数据和学生进度';
       default: return '查看课程安排和时间表';
     }
   };
@@ -165,6 +207,16 @@ const CourseSystem = ({ user, onSwitchUser, onLogout }) => {
     );
   }
 
+  // 管理员模式：只显示AdminCourseManagement组件，不显示普通界面
+  if (user && user.user_type === 'admin') {
+    return (
+      <div className="course-system admin-mode">
+        {renderViewContent()}
+      </div>
+    );
+  }
+
+  // 普通用户模式：显示完整的课程系统界面
   return (
     <div className="course-system">
       {/* 系统头部 */}
@@ -208,33 +260,18 @@ const CourseSystem = ({ user, onSwitchUser, onLogout }) => {
                   🎯
                 </button>
               )}
+              {user.user_type === 'teacher' && (
+                <button
+                  className="action-btn"
+                  onClick={() => setActiveView('sync')}
+                  title="数据同步"
+                >
+                  🔄
+                </button>
+              )}
             </div>
           </div>
         </div>
-      </div>
-
-      {/* 导航标签 */}
-      <div className="system-navigation">
-        <button
-          className={`nav-tab ${activeView === 'calendar' ? 'active' : ''}`}
-          onClick={() => setActiveView('calendar')}
-        >
-          📅 课程日历
-        </button>
-        <button
-          className={`nav-tab ${activeView === 'management' ? 'active' : ''}`}
-          onClick={() => setActiveView('management')}
-        >
-          📚 课程管理
-        </button>
-        {selectedCourse && (
-          <button
-            className={`nav-tab ${activeView === 'online' ? 'active' : ''}`}
-            onClick={() => setActiveView('online')}
-          >
-            🎯 在线课程
-          </button>
-        )}
       </div>
 
       {/* 主要内容区域 */}
@@ -242,48 +279,38 @@ const CourseSystem = ({ user, onSwitchUser, onLogout }) => {
         {renderViewContent()}
       </div>
 
-      {/* 快速操作面板 */}
-      <div className="quick-panel">
-        <div className="panel-header">
-          <h4>⚡ 快速操作</h4>
-        </div>
-        
-        <div className="panel-actions">
-          <button
-            className="quick-btn"
-            onClick={() => setActiveView('calendar')}
-            title="查看日历"
-          >
-            📅
-          </button>
-          
-          <button
-            className="quick-btn"
-            onClick={() => setActiveView('management')}
-            title="管理课程"
-          >
-            📚
-          </button>
-          
-          {selectedCourse && (
-            <button
-              className="quick-btn"
-              onClick={() => setActiveView('online')}
-              title="进入课堂"
-            >
-              🎯
-            </button>
-          )}
-          
-          <button
-            className="quick-btn"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            title="回到顶部"
-          >
-            ⬆️
-          </button>
-        </div>
-      </div>
+      {/* 回到顶部按钮 */}
+      <button
+        className="scroll-to-top-btn"
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        title="回到顶部"
+        style={{
+          position: 'fixed',
+          right: '20px',
+          bottom: '20px',
+          background: 'linear-gradient(135deg, #007aff 0%, #5856d6 100%)',
+          color: 'white',
+          border: 'none',
+          borderRadius: '50%',
+          width: '56px',
+          height: '56px',
+          fontSize: '20px',
+          cursor: 'pointer',
+          boxShadow: '0 4px 16px rgba(0, 122, 255, 0.3)',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          zIndex: 1000
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.transform = 'translateY(-2px)';
+          e.target.style.boxShadow = '0 8px 24px rgba(0, 122, 255, 0.4)';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.transform = 'translateY(0)';
+          e.target.style.boxShadow = '0 4px 16px rgba(0, 122, 255, 0.3)';
+        }}
+      >
+        ⬆️
+      </button>
 
       {/* 系统状态栏 */}
       <div className="system-footer">
@@ -294,16 +321,24 @@ const CourseSystem = ({ user, onSwitchUser, onLogout }) => {
         </div>
         
         <div className="footer-center">
-          <span className="course-count">
-            📊 共 {courses.length} 门课程
-          </span>
+          {user && user.user_type === 'admin' ? (
+            <span className="admin-status">
+              👨‍💼 管理员模式 - 课程预约管理
+            </span>
+          ) : (
+            <span className="course-count">
+              📊 共 {courses.length} 门课程
+            </span>
+          )}
         </div>
         
         <div className="footer-right">
           <span className="current-view">
-            {activeView === 'calendar' ? '📅 日历视图' :
+            {user && user.user_type === 'admin' ? '👨‍💼 管理员视图' :
+             activeView === 'calendar' ? '📅 日历视图' :
              activeView === 'management' ? '📚 管理视图' :
-             activeView === 'online' ? '🎯 在线视图' : '📅 日历视图'}
+             activeView === 'online' ? '🎯 在线视图' :
+             activeView === 'sync' ? '🔄 同步视图' : '📅 日历视图'}
           </span>
         </div>
       </div>

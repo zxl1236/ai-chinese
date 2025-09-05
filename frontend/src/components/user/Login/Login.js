@@ -58,6 +58,44 @@ function Login({ onLogin }) {
     }
   };
 
+  const handleSkipLogin = (userType) => {
+    // 创建模拟用户数据，直接跳过登录
+    const mockUsers = {
+      student: {
+        id: 1,
+        username: 'demo_student',
+        nickname: '演示学生',
+        full_name: '演示学生用户',
+        user_type: 'student',
+        demo_mode: true
+      },
+      teacher: {
+        id: 2,
+        username: 'demo_teacher',
+        nickname: '演示教师',
+        full_name: '演示教师用户',
+        user_type: 'teacher',
+        demo_mode: true
+      },
+      admin: {
+        id: 3,
+        username: 'demo_admin',
+        nickname: '演示管理员',
+        full_name: '演示管理员用户',
+        user_type: 'admin',
+        demo_mode: true
+      }
+    };
+
+    const mockUser = mockUsers[userType];
+    if (mockUser) {
+      // 保存演示用户信息到localStorage
+      localStorage.setItem('user', JSON.stringify(mockUser));
+      localStorage.setItem('demo_mode', 'true');
+      onLogin(mockUser);
+    }
+  };
+
   return (
     <div className="login-container">
       <div className="login-box">
@@ -99,30 +137,57 @@ function Login({ onLogin }) {
         </form>
 
         <div className="demo-accounts">
-          <p>演示账户（一键登录）：</p>
+          <p>快速体验（无需后端）：</p>
           <div className="demo-buttons">
             <button 
               className="demo-btn student-btn" 
-              onClick={() => handleDemoLogin('student')}
+              onClick={() => handleSkipLogin('student')}
             >
-              👨‍🎓 学生账户
+              👨‍🎓 学生演示
             </button>
             <button 
               className="demo-btn teacher-btn" 
-              onClick={() => handleDemoLogin('teacher')}
+              onClick={() => handleSkipLogin('teacher')}
             >
-              👨‍🏫 教师账户
+              👨‍🏫 教师演示
             </button>
             <button 
               className="demo-btn admin-btn" 
+              onClick={() => handleSkipLogin('admin')}
+            >
+              👑 管理员演示
+            </button>
+          </div>
+          
+          <div className="login-divider">
+            <span>或</span>
+          </div>
+          
+          <p>正式登录（需要后端服务）：</p>
+          <div className="demo-buttons small">
+            <button 
+              className="demo-btn-small student-btn" 
+              onClick={() => handleDemoLogin('student')}
+            >
+              👨‍🎓 学生
+            </button>
+            <button 
+              className="demo-btn-small teacher-btn" 
+              onClick={() => handleDemoLogin('teacher')}
+            >
+              👨‍🏫 教师
+            </button>
+            <button 
+              className="demo-btn-small admin-btn" 
               onClick={() => handleDemoLogin('admin')}
             >
-              👑 管理员账户
+              👑 管理员
             </button>
           </div>
         </div>
 
         <div className="login-footer">
+          <p>💡 推荐：先点击"演示"按钮体验功能，后期再部署后端服务</p>
           <p>不同账户类型将看到不同的功能和内容</p>
         </div>
       </div>
