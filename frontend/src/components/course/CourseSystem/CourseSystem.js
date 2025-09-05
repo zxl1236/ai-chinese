@@ -13,7 +13,23 @@ const CourseSystem = ({ user, onSwitchUser, onLogout }) => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // 模拟课程数据
+  // 模拟课程数据 - 使用当前月份的日期
+  const getCurrentMonthDates = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    
+    return {
+      today: `${year}-${String(month + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`,
+      tomorrow: `${year}-${String(month + 1).padStart(2, '0')}-${String(now.getDate() + 1).padStart(2, '0')}`,
+      nextWeek: `${year}-${String(month + 1).padStart(2, '0')}-${String(now.getDate() + 7).padStart(2, '0')}`,
+      nextTwoWeeks: `${year}-${String(month + 1).padStart(2, '0')}-${String(now.getDate() + 14).padStart(2, '0')}`,
+      nextThreeWeeks: `${year}-${String(month + 1).padStart(2, '0')}-${String(now.getDate() + 21).padStart(2, '0')}`
+    };
+  };
+
+  const dates = getCurrentMonthDates();
+  
   const mockCourses = [
     {
       id: 1,
@@ -21,7 +37,7 @@ const CourseSystem = ({ user, onSwitchUser, onLogout }) => {
       description: '阅读理解专项训练，提高学生的阅读分析能力',
       course_type: 'reading',
       difficulty_level: 'intermediate',
-      scheduled_date: '2025-08-30',
+      scheduled_date: dates.today,
       scheduled_time: '18:00',
       duration_minutes: 60,
       status: 'scheduled',
@@ -35,7 +51,7 @@ const CourseSystem = ({ user, onSwitchUser, onLogout }) => {
       description: '古诗文鉴赏与理解，培养文学素养',
       course_type: 'writing',
       difficulty_level: 'advanced',
-      scheduled_date: '2025-01-22',
+      scheduled_date: dates.tomorrow,
       scheduled_time: '19:30',
       duration_minutes: 90,
       status: 'active',
@@ -49,13 +65,41 @@ const CourseSystem = ({ user, onSwitchUser, onLogout }) => {
       description: '利用AI工具提升写作效率和质量',
       course_type: 'ai_tutoring',
       difficulty_level: 'intermediate',
-      scheduled_date: '2025-01-25',
+      scheduled_date: dates.nextWeek,
       scheduled_time: '20:00',
       duration_minutes: 60,
       status: 'scheduled',
       student_name: '刘小华',
       teacher_name: '陈老师',
       notes: '介绍AI写作工具的使用方法'
+    },
+    {
+      id: 4,
+      title: '小学三年级看图作文课',
+      description: '培养学生的观察能力和表达能力',
+      course_type: 'writing',
+      difficulty_level: 'beginner',
+      scheduled_date: dates.nextTwoWeeks,
+      scheduled_time: '16:00',
+      duration_minutes: 45,
+      status: 'completed',
+      student_name: '李小美',
+      teacher_name: '张老师',
+      notes: '重点练习描述人物和场景'
+    },
+    {
+      id: 5,
+      title: '高中文言文阅读课',
+      description: '提高文言文阅读理解能力',
+      course_type: 'reading',
+      difficulty_level: 'advanced',
+      scheduled_date: dates.nextThreeWeeks,
+      scheduled_time: '20:30',
+      duration_minutes: 75,
+      status: 'cancelled',
+      student_name: '赵小强',
+      teacher_name: '刘老师',
+      notes: '学习《岳阳楼记》等经典文言文'
     }
   ];
 

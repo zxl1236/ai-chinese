@@ -228,14 +228,15 @@
   background: #dee2e6;
 }
 
-/* 图例 */
+/* 图例样式 */
 .calendar-legend {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
   padding: 20px;
   background: #f8f9fa;
   border-top: 1px solid #e9ecef;
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
 .legend-item {
@@ -244,6 +245,29 @@
   gap: 8px;
   font-size: 14px;
   color: #666;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.legend-color.scheduled {
+  background: #2196F3;
+}
+
+.legend-color.active {
+  background: #4CAF50;
+}
+
+.legend-color.completed {
+  background: #9E9E9E;
+}
+
+.legend-color.cancelled {
+  background: #F44336;
 }
 
 .legend-color {
